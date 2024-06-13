@@ -1,5 +1,5 @@
 import { TicketWithTag } from '@/models/ticket'
-import TagIcon from './TagIcon'
+import TagIcon from '@/components/TagIcon'
 
 type CardProps = {
   ticket: TicketWithTag
