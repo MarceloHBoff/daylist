@@ -1,5 +1,6 @@
 import { TicketWithTag } from '@/models/ticket'
 import TagIcon from '@/components/TagIcon'
+import CardCheck from './CardCheck'
 
 type CardProps = {
   ticket: TicketWithTag
@@ -7,9 +8,9 @@ type CardProps = {
 
 export default function Card({ ticket }: CardProps) {
   return (
-    <article className="bg-zinc-700 mx-2 my-3 p-3 w-full min-h-16 rounded-xl border-2 border-gray-600 flex">
+    <article className="bg-zinc-700 mx-2 my-3 p-3 w-full min-h-20 rounded-xl border-2 border-gray-600 flex">
       <div className="flex items-center mr-2">
-        <button className="w-5 h-5 border-2 rounded-full hover:opacity-80" />
+        <CardCheck id={ticket.id} />
       </div>
 
       <div className="flex flex-col">
