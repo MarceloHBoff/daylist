@@ -2,6 +2,7 @@ import { api } from '@/lib/axios'
 import { Tag } from '@prisma/client'
 import TagIcon from '@/components/TagIcon'
 import Image from 'next/image'
+import TagForm from './TagForm'
 
 export default async function Tags() {
   const response = await api.get<Tag[]>('/tags')
@@ -27,6 +28,15 @@ export default async function Tags() {
           </button>
         </div>
       ))}
+
+      <TagForm
+        opener={
+          <div className="flex items-center p-2 opacity-80 hover:opacity-100 cursor-pointer">
+            <span className="text-orange-600 mr-2 text-2xl">+</span>
+            <span className="text-white">Add Tag</span>
+          </div>
+        }
+      />
     </main>
   )
 }
