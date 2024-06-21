@@ -33,7 +33,7 @@ export default function Card({ ticket }: CardProps) {
         )}
       </div>
 
-      <CardContextMenu />
+      <CardContextMenu id={ticket.id} />
     </article>
   )
 }

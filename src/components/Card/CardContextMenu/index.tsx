@@ -1,5 +1,6 @@
 'use client'
 
+import { api } from '@/lib/axios'
 import Image from 'next/image'
 import { useState } from 'react'
 
@@ -14,12 +15,29 @@ const options = [
   }
 ]
 
-export default function CardContextMenu() {
+type CardContextMenuProps = {
+  id: string
+}
+
+export default function CardContextMenu({ id }: CardContextMenuProps) {
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => setOpen(true)
 
   const handleClose = () => setOpen(false)
+
+  const onClickMenu = (label: string) => {
+    switch (label) {
+      case 'Duplicate':
+        api.post(`tickets/duplicate?id=${id}`).then(() => {
+          window.location.reload()
+        })
+        break
+      default:
+        break
+    }
+    handleClose()
+  }
 
   return (
     <div
@@ -46,7 +64,7 @@ export default function CardContextMenu() {
               <li
                 key={item.label}
                 className="px-4 py-2 text-white hover:bg-zinc-700 cursor-pointer flex items-center"
-                onClick={handleClose}
+                onClick={() => onClickMenu(item.label)}
               >
                 <Image
                   src={item.icon}
