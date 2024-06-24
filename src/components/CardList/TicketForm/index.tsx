@@ -23,6 +23,7 @@ export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
       <form onSubmit={onSubmit}>
         <input
           className="border-2 border-gray-600 rounded-xl p-4 bg-transparent"
+          autoFocus
           {...register('description')}
         />
       </form>

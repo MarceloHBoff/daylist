@@ -36,6 +36,7 @@ model Ticket {
   done        Boolean   @default(false)
   date        DateTime?
   createdAt   DateTime  @default(now())
+  order       Int       @default(1)
   userId      String
   tagId       String?
 
