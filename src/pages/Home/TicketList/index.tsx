@@ -1,14 +1,14 @@
-import Card from '../Card'
 import { TicketWithTag } from '@/models/ticket'
-import TicketForm from './TicketForm'
 import { format, isToday, isTomorrow } from 'date-fns'
+import Ticket from './Ticket'
+import TicketForm from './TicketForm'
 
-type CardListProps = {
+type TicketListProps = {
   date: Date
   tickets: TicketWithTag[]
 }
 
-export default function CardList({ date, tickets }: CardListProps) {
+export default function TicketList({ date, tickets }: TicketListProps) {
   const validTickets = tickets.filter(p => !p.done)
 
   function formatDate(date: Date) {
@@ -34,7 +34,7 @@ export default function CardList({ date, tickets }: CardListProps) {
       </strong>
 
       {validTickets.map(p => (
-        <Card key={p.id} ticket={p} />
+        <Ticket key={p.id} ticket={p} />
       ))}
 
       <TicketForm

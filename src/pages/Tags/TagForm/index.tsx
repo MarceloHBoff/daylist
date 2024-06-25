@@ -7,13 +7,18 @@ import { useForm } from 'react-hook-form'
 
 type TagFormProps = {
   opener: ReactNode
+  defaultValues?: any
 }
 
-export default function TagForm({ opener }: TagFormProps) {
-  const { register, handleSubmit } = useForm()
+export default function TagForm({ opener, defaultValues }: TagFormProps) {
+  const { register, handleSubmit } = useForm({ defaultValues })
 
   const onSubmit = handleSubmit(async data => {
-    await api.post('tags/insert', { ...data })
+    if (data.id) {
+      await api.post('tags/update', { ...data })
+    } else {
+      await api.post('tags/insert', { ...data })
+    }
     window.location.reload()
   })
 

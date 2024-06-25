@@ -1,8 +1,8 @@
 import { api } from '@/lib/axios'
 import { Tag } from '@prisma/client'
 import TagIcon from '@/components/TagIcon'
-import Image from 'next/image'
 import TagForm from './TagForm'
+import TagActions from './TagActions'
 
 export default async function Tags() {
   const response = await api.get<Tag[]>('/tags')
@@ -23,9 +23,7 @@ export default async function Tags() {
 
           <span className="text-white ml-2">{p.description}</span>
 
-          <button className="hidden ml-auto group-hover:block opacity-0 transition-opacity duration-500 group-hover:opacity-100 animate-fade-in">
-            <Image width={20} height={20} alt="Edit" src="/edit.svg" />
-          </button>
+          <TagActions tag={p} />
         </div>
       ))}
 

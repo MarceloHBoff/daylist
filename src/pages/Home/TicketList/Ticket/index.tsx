@@ -1,17 +1,17 @@
 import { TicketWithTag } from '@/models/ticket'
 import TagIcon from '@/components/TagIcon'
-import CardCheck from './CardCheck'
-import CardContextMenu from './CardContextMenu'
+import TicketCheck from './TicketCheck'
+import TicketContextMenu from './TicketContextMenu'
 
-type CardProps = {
+type TicketProps = {
   ticket: TicketWithTag
 }
 
-export default function Card({ ticket }: CardProps) {
+export default function Ticket({ ticket }: TicketProps) {
   return (
     <article className="bg-zinc-700 mx-2 my-3 p-3 w-full min-h-20 rounded-xl border-2 border-gray-600 flex group">
       <div className="flex items-center mr-2">
-        <CardCheck id={ticket.id} />
+        <TicketCheck id={ticket.id} />
       </div>
 
       <div className="flex flex-col w-full">
@@ -33,7 +33,7 @@ export default function Card({ ticket }: CardProps) {
         )}
       </div>
 
-      <CardContextMenu id={ticket.id} />
+      <TicketContextMenu id={ticket.id} />
     </article>
   )
 }

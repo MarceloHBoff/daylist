@@ -1,8 +1,8 @@
 import { api } from '@/lib/axios'
-import CardList from '@/components/CardList'
 import { daysInWeek } from 'date-fns/constants'
 import { addDays, getDay, isSameDay, startOfDay } from 'date-fns'
 import { TicketWithTag } from '@/models/ticket'
+import TicketList from './TicketList'
 
 export default async function Home() {
   const response = await api.get<TicketWithTag[]>('/tickets')
@@ -18,7 +18,7 @@ export default async function Home() {
       <div className="flex w-full h-full pt-32">
         <div className="flex w-full h-full p-5 border-t-2 border-gray-700 overflow-x-auto">
           {days.map(p => (
-            <CardList
+            <TicketList
               key={p.key}
               date={p.date}
               tickets={tickets.filter(t =>

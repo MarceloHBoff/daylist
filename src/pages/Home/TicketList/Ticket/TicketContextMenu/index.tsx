@@ -15,11 +15,11 @@ const options = [
   }
 ]
 
-type CardContextMenuProps = {
+type TicketContextMenuProps = {
   id: string
 }
 
-export default function CardContextMenu({ id }: CardContextMenuProps) {
+export default function TicketContextMenu({ id }: TicketContextMenuProps) {
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => setOpen(true)
