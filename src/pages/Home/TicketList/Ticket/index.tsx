@@ -33,7 +33,9 @@ export default function Ticket({ ticket }: TicketProps) {
         )}
       </div>
 
-      <TicketContextMenu id={ticket.id} />
+      <div className="w-8">
+        <TicketContextMenu id={ticket.id} />
+      </div>
     </article>
   )
 }

@@ -38,7 +38,7 @@ export default function TicketList({ date, tickets }: TicketListProps) {
       ))}
 
       <TicketForm
-        defaultValues={{ date }}
+        defaultValues={{ date: date.toISOString().replace('.000Z', '') }}
         opener={
           <div className="flex items-center p-2 opacity-80 hover:opacity-100 cursor-pointer">
             <span className="text-orange-600 mr-2 text-2xl">+</span>

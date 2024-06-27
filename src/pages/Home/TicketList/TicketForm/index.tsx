@@ -1,6 +1,7 @@
 'use client'
 
 import Modal from '@/components/Modal'
+import TagSelect from '@/components/TagSelect'
 import { api } from '@/lib/axios'
 import { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
@@ -20,12 +21,23 @@ export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
 
   return (
     <Modal title="New Ticket" opener={opener} onButtonClick={onSubmit}>
-      <form onSubmit={onSubmit}>
+      <form onSubmit={onSubmit} className="flex flex-col">
         <input
-          className="border-2 border-gray-600 rounded-xl p-4 bg-transparent"
+          className="border-2 border-gray-600 rounded-xl p-4 bg-transparent outline-none focus:border-gray-500 mb-4"
           autoFocus
+          autoComplete="off"
+          placeholder="Type your ticket description..."
           {...register('description')}
         />
+        <div className="flex">
+          <input
+            className="w-full border-2 border-gray-600 rounded-xl p-4 bg-transparent outline-none focus:border-gray-500 mr-4"
+            type="datetime-local"
+            {...register('date')}
+          />
+
+          <TagSelect register={register} name="tagId" />
+        </div>
       </form>
     </Modal>
   )

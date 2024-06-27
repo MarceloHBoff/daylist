@@ -16,6 +16,10 @@ export default async function handler(
   data.userId = '7eb9f4e9-7088-4fac-9683-49e82259678e'
   data.date = startOfDay(data.date ?? '')
 
+  if (!data.tagId) {
+    data.tagId = null
+  }
+
   const total = await prisma.ticket.count({
     where: {
       date: getDateFilter(data.date)
