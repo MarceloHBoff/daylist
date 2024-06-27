@@ -2,6 +2,7 @@ import { TicketWithTag } from '@/models/ticket'
 import TagIcon from '@/components/TagIcon'
 import TicketCheck from './TicketCheck'
 import TicketContextMenu from './TicketContextMenu'
+import TicketForm from '../TicketForm'
 
 type TicketProps = {
   ticket: TicketWithTag
@@ -15,9 +16,17 @@ export default function Ticket({ ticket }: TicketProps) {
       </div>
 
       <div className="flex flex-col w-full">
-        <div className="text-slate-300 text-sm font-bold">
-          {ticket.description}
-        </div>
+        <TicketForm
+          defaultValues={{
+            ...ticket,
+            date: new Date(ticket.date ?? '').toISOString().replace('.000Z', '')
+          }}
+          opener={
+            <div className="text-slate-300 text-sm font-bold cursor-pointer">
+              {ticket.description}
+            </div>
+          }
+        />
 
         {ticket.tag && (
           <div

@@ -33,6 +33,11 @@ export default function TicketContextMenu({ id }: TicketContextMenuProps) {
           window.location.reload()
         })
         break
+      case 'Delete':
+        api.post(`tickets/delete?id=${id}`).then(() => {
+          window.location.reload()
+        })
+        break
       default:
         break
     }

@@ -15,7 +15,11 @@ export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
   const { register, handleSubmit } = useForm({ defaultValues })
 
   const onSubmit = handleSubmit(async data => {
-    await api.post('tickets/insert', { ...data })
+    if (data.id) {
+      await api.post('tickets/update', { ...data })
+    } else {
+      await api.post('tickets/insert', { ...data })
+    }
     window.location.reload()
   })
 

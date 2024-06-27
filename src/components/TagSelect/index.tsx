@@ -15,7 +15,9 @@ export default function TagSelect({ register, name }: TagSelectProps) {
     api.get<Tag[]>('/tags').then(p => setTags(p.data))
   }, [])
 
-  console.log(tags)
+  if (tags.length === 0) {
+    return null
+  }
 
   return (
     <select
