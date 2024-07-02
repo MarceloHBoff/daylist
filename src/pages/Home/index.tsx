@@ -3,6 +3,8 @@ import { daysInWeek } from 'date-fns/constants'
 import { addDays, getDay, isSameDay, startOfDay } from 'date-fns'
 import { TicketWithTag } from '@/models/ticket'
 import TicketList from './TicketList'
+import DropDown from '@/components/DropDown'
+import Container from '../Container'
 
 export default async function Home() {
   const response = await api.get<TicketWithTag[]>('/tickets')
@@ -14,8 +16,12 @@ export default async function Home() {
   }))
 
   return (
-    <main className="w-full h-full bg-zinc-800">
-      <div className="flex w-full h-full pt-32">
+    <Container path="/">
+      <div className="w-56 ml-10 my-8">
+        <DropDown />
+      </div>
+
+      <div className="flex w-full h-full">
         <div className="flex w-full h-full p-5 border-t-2 border-gray-700 overflow-x-auto">
           {days.map(p => (
             <TicketList
@@ -28,6 +34,6 @@ export default async function Home() {
           ))}
         </div>
       </div>
-    </main>
+    </Container>
   )
 }
