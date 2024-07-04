@@ -15,6 +15,7 @@ import DropDown from '@/components/DropDown'
 import Container from '../Container'
 import Link from 'next/link'
 import Image from 'next/image'
+import { formatDay } from '@/utils/date'
 
 type HomeProps = {
   week: number
@@ -65,7 +66,8 @@ export default async function Home({ week }: HomeProps) {
           {days.map(p => (
             <TicketList
               key={p.key}
-              date={p.date}
+              title={formatDay(p.date)}
+              defaultValues={{ date: p.date }}
               tickets={tickets.filter(t =>
                 isSameDay(new Date(t.date ?? ''), p.date)
               )}

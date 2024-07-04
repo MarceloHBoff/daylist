@@ -4,6 +4,7 @@ import Modal from '@/components/Modal'
 import Select from '@/components/Select'
 import TagSelect from '@/components/TagSelect'
 import { api } from '@/lib/axios'
+import { parseForm } from '@/utils/date'
 import { addWeeks, endOfWeek, startOfWeek } from 'date-fns'
 import { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
@@ -18,10 +19,8 @@ const date = addWeeks(new Date(), 1)
 export default function DateForm({ opener, type }: DateFormProps) {
   const { register, handleSubmit } = useForm({
     defaultValues: {
-      initialDate:
-        type === 0 ? startOfWeek(date).toISOString().split('T')[0] : null,
-      finalDate:
-        type === 0 ? endOfWeek(date).toISOString().split('T')[0] : null,
+      initialDate: type === 0 ? parseForm(startOfWeek(date)) : null,
+      finalDate: type === 0 ? parseForm(endOfWeek(date)) : null,
       description: ''
     }
   })

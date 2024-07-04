@@ -10,6 +10,7 @@ export default async function handler(
 
   const tickets = await prisma.ticket.findMany({
     where: {
+      userId: '7eb9f4e9-7088-4fac-9683-49e82259678e',
       done: false,
       date: {
         gte: startOfDay(initialDate?.toString() ?? ''),

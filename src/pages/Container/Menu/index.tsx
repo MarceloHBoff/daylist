@@ -3,7 +3,7 @@ import Link from 'next/link'
 const menus = [
   { label: 'Home', path: '/' },
   { label: 'Tags', path: '/tags' },
-  { label: 'Tags/Ticket', path: '/tags-ticket' }
+  { label: 'Ticket by Tags', path: '/ticket-tags' }
 ]
 
 type MenuProps = {

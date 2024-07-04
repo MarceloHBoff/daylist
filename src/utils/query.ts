@@ -14,19 +14,23 @@ export function getDateFilter(date: Date | null) {
 export async function createTicket(data: Ticket) {
   data.done = false
   data.userId = '7eb9f4e9-7088-4fac-9683-49e82259678e'
-  data.date = startOfDay(data.date ?? '')
+  if (data.date) {
+    data.date = startOfDay(data.date ?? '')
+  }
 
   if (!data.tagId) {
     data.tagId = null
   }
 
-  const total = await prisma.ticket.count({
-    where: {
-      date: getDateFilter(data.date)
-    }
-  })
+  if (data.date) {
+    const total = await prisma.ticket.count({
+      where: {
+        date: getDateFilter(data.date)
+      }
+    })
 
-  data.order = 1 + total
+    data.order = 1 + total
+  }
 
   return await prisma.ticket.create({ data })
 }

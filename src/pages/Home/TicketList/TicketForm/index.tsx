@@ -3,6 +3,7 @@
 import Modal from '@/components/Modal'
 import TagSelect from '@/components/TagSelect'
 import { api } from '@/lib/axios'
+import { parseForm } from '@/utils/date'
 import { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
 
@@ -12,7 +13,12 @@ type TicketFormProps = {
 }
 
 export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
-  const { register, handleSubmit } = useForm({ defaultValues })
+  const { register, handleSubmit } = useForm({
+    defaultValues: {
+      ...defaultValues,
+      date: parseForm(defaultValues.date)
+    }
+  })
 
   const onSubmit = handleSubmit(async data => {
     if (data.id) {
@@ -36,7 +42,7 @@ export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
         <div className="flex">
           <input
             className="w-full border-2 border-gray-600 rounded-xl p-4 bg-transparent outline-none focus:border-gray-500 mr-4"
-            type="datetime-local"
+            type="date"
             {...register('date')}
           />
 

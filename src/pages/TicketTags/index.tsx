@@ -1,0 +1,32 @@
+import { api } from '@/lib/axios'
+import Container from '../Container'
+import { TicketWithTag } from '@/models/ticket'
+import { groupBy } from '@/utils/array'
+import TicketList from '../Home/TicketList'
+
+export default async function TicketTags() {
+  const response = await api.get<TicketWithTag[]>(`/tickets/all`)
+  const tickets = groupBy(response.data, p => p.tag?.description ?? '')
+
+  return (
+    <Container path="/tags-ticket">
+      <div className="py-4 px-8">
+        <div className="text-white font-bold text-3xl p-2 mb-4 border-b-2 border-b-slate-500">
+          Ticket by Tags
+        </div>
+
+        <article className="flex">
+          {tickets.map(p => (
+            <TicketList
+              key={p.key}
+              title={p.key}
+              tickets={p.data}
+              showDate
+              defaultValues={{ tagId: p.data[0].tagId }}
+            />
+          ))}
+        </article>
+      </div>
+    </Container>
+  )
+}
