@@ -16,7 +16,7 @@ export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
   const { register, handleSubmit } = useForm({
     defaultValues: {
       ...defaultValues,
-      date: parseForm(defaultValues.date)
+      date: parseForm(defaultValues?.date)
     }
   })
 

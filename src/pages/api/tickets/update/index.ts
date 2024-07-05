@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '@/lib/prisma'
 import { Ticket } from '@prisma/client'
-import { startOfDay } from 'date-fns'
+import { addDays, startOfDay } from 'date-fns'
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,7 +14,7 @@ export default async function handler(
   const ticket = await prisma.ticket.update({
     data: {
       description: data.description,
-      date: startOfDay(data.date ?? ''),
+      date: addDays(startOfDay(data.date ?? ''), 1),
       tagId: data.tagId
     },
     where: { id: data.id }

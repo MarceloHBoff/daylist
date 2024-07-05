@@ -7,18 +7,20 @@ type TicketListProps = {
   tickets: TicketWithTag[]
   defaultValues?: any
   showDate?: boolean
+  outdated?: boolean
 }
 
 export default function TicketList({
   title,
   tickets,
   defaultValues,
-  showDate = false
+  showDate = false,
+  outdated = false
 }: TicketListProps) {
   const validTickets = tickets.filter(p => !p.done)
 
   return (
-    <section className="mx-2 p-2 w-full min-w-72 overflow-y-hidden hover:overflow-y-auto overflow-x-hidden">
+    <section className="mx-2 p-2 w-full min-w-72 max-w-96 overflow-y-hidden hover:overflow-y-auto overflow-x-hidden">
       <strong className="ml-3 text-white">
         {title}
         <span className="text-xs ml-2 text-gray-500">
@@ -27,18 +29,20 @@ export default function TicketList({
       </strong>
 
       {validTickets.map(p => (
-        <Ticket key={p.id} ticket={p} showDate={showDate} />
+        <Ticket key={p.id} ticket={p} showDate={showDate} outdated={outdated} />
       ))}
 
-      <TicketForm
-        defaultValues={defaultValues}
-        opener={
-          <div className="flex items-center p-2 opacity-80 hover:opacity-100 cursor-pointer">
-            <span className="text-orange-600 mr-2 text-2xl">+</span>
-            <span className="text-white">Add ticket</span>
-          </div>
-        }
-      />
+      {!outdated && (
+        <TicketForm
+          defaultValues={defaultValues}
+          opener={
+            <div className="flex items-center p-2 opacity-80 hover:opacity-100 cursor-pointer">
+              <span className="text-orange-600 mr-2 text-2xl">+</span>
+              <span className="text-white">Add ticket</span>
+            </div>
+          }
+        />
+      )}
     </section>
   )
 }

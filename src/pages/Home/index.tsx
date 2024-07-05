@@ -31,6 +31,9 @@ export default async function Home({ week }: HomeProps) {
   )
   const tickets = response.data
 
+  const responseOutdated = await api.get<TicketWithTag[]>(`/tickets/outdated`)
+  const outdated = responseOutdated.data
+
   const daysInWeek = differenceInDays(finalDate, initialDate) + 1
 
   const days = new Array(daysInWeek).fill(0).map((_, index) => ({
@@ -63,6 +66,10 @@ export default async function Home({ week }: HomeProps) {
 
       <div className="flex w-full">
         <div className="flex w-full p-5 border-t-2 border-gray-700 overflow-x-auto">
+          {outdated.length > 0 && (
+            <TicketList title="Outdated" tickets={outdated} showDate outdated />
+          )}
+
           {days.map(p => (
             <TicketList
               key={p.key}

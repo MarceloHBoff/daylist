@@ -9,11 +9,20 @@ import Image from 'next/image'
 type TicketProps = {
   ticket: TicketWithTag
   showDate?: boolean
+  outdated?: boolean
 }
 
-export default function Ticket({ ticket, showDate = false }: TicketProps) {
+export default function Ticket({
+  ticket,
+  showDate = false,
+  outdated = false
+}: TicketProps) {
   return (
-    <article className="bg-zinc-700 mx-2 my-3 p-3 w-full min-h-20 rounded-xl border-2 border-gray-600 flex group">
+    <article
+      className={`bg-zinc-700 mx-2 my-3 p-3 w-full min-h-20 rounded-xl border-2 border-gray-600 flex group ${
+        outdated && 'border-red-600'
+      }`}
+    >
       <div className="flex items-center mr-2">
         <TicketCheck id={ticket.id} />
       </div>
