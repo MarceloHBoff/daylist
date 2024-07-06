@@ -1,7 +1,7 @@
 'use client'
 
 import { api } from '@/lib/axios'
-import { plop } from './audio'
+import { plop } from '@/utils/audio'
 
 type TicketCheckProps = {
   id: string
