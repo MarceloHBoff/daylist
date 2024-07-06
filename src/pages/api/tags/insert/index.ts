@@ -12,7 +12,7 @@ export default async function handler(
 
   data.description = data.description.toLocaleUpperCase()
   data.color = data.color.toLocaleUpperCase()
-  data.userId = '7eb9f4e9-7088-4fac-9683-49e82259678e'
+  data.userId = '9fe83035-7071-4158-9dda-371a6cc61bed'
 
   const tag = await prisma.tag.create({ data: body })
 

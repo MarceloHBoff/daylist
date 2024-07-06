@@ -9,7 +9,7 @@ export default async function handler(
 
   const ticket = await prisma.ticket.update({
     data: { done: true },
-    where: { id, userId: '7eb9f4e9-7088-4fac-9683-49e82259678e' }
+    where: { id, userId: '9fe83035-7071-4158-9dda-371a6cc61bed' }
   })
 
   return res.status(200).json(ticket)

@@ -27,6 +27,7 @@ export default function TagForm({ opener, defaultValues }: TagFormProps) {
       <form onSubmit={onSubmit} className="flex items-center">
         <input
           className="border-2 border-gray-600 rounded-xl p-4 bg-transparent uppercase"
+          autoComplete="off"
           {...register('description')}
         />
         <input
