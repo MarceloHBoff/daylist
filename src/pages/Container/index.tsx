@@ -7,7 +7,7 @@ type ContainerProps = ComponentProps & {
 
 export default function Container({ path, children }: ContainerProps) {
   return (
-    <main className="w-full max-h-screen bg-zinc-800">
+    <main className="w-full h-screen bg-zinc-800">
       <Menu path={path} />
 
       {children}

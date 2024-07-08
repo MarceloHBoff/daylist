@@ -20,7 +20,7 @@ export default function TicketList({
   const validTickets = tickets.filter(p => !p.done)
 
   return (
-    <section className="mx-2 p-2 w-full min-w-72 max-w-96 overflow-y-hidden hover:overflow-y-auto overflow-x-hidden">
+    <section className="h-ticket-list mx-2 p-2 w-full min-w-96 max-w-[400px] overflow-y-hidden hover:overflow-y-auto overflow-x-hidden scrollbar-stable">
       <strong className="ml-3 text-white">
         {title}
         <span className="text-xs ml-2 text-gray-500">

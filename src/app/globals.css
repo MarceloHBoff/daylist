@@ -20,3 +20,19 @@
     background-color: #262e3a;
   }
 }
+
+.h-ticket-list {
+  height: calc(100vh - 226px);
+}
+
+.h-ticket-tags {
+  height: calc(100vh - 110px);
+}
+
+.h-ticket-tags .h-ticket-list {
+  height: calc(100vh - 156px);
+}
+
+.scrollbar-stable {
+  scrollbar-gutter: stable;
+}

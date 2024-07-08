@@ -10,12 +10,12 @@ export default async function TicketTags() {
 
   return (
     <Container path="/tags-ticket">
-      <div className="py-4 px-8">
-        <div className="text-white font-bold text-3xl p-2 mb-4 border-b-2 border-b-slate-500">
+      <div className="py-4 h-ticket-tags">
+        <div className="text-white font-bold text-3xl mx-8 p-2 mb-4 border-b-2 border-b-slate-500">
           Ticket by Tags
         </div>
 
-        <article className="flex">
+        <article className="flex h-full overflow-x-auto">
           {tickets.map(p => (
             <TicketList
               key={p.key}
