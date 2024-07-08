@@ -13,14 +13,14 @@ export default async function handler(
 
     ticket.done = false
 
-    const total = await prisma.ticket.count({
-      where: {
-        date: getDateFilter(ticket.date)
-      }
-    })
-
-    ticket.done = false
-    ticket.order = total + 1
+    if (ticket.date) {
+      const total = await prisma.ticket.count({
+        where: {
+          date: getDateFilter(ticket.date)
+        }
+      })
+      ticket.order = total + 1
+    }
 
     const newTicket = await prisma.ticket.create({
       data: { ...ticket, id: undefined }

@@ -9,8 +9,6 @@ export default async function handler(
   const id = req.query.id as string
   const order = Number(req.query.order)
 
-  console.log(id, order)
-
   try {
     const ticket = await prisma.ticket.findUniqueOrThrow({ where: { id } })
 

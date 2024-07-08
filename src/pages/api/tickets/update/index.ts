@@ -14,7 +14,7 @@ export default async function handler(
   const ticket = await prisma.ticket.update({
     data: {
       description: data.description,
-      date: addDays(startOfDay(data.date ?? ''), 1),
+      date: data.date ? addDays(startOfDay(data.date ?? ''), 1) : null,
       tagId: data.tagId
     },
     where: { id: data.id }

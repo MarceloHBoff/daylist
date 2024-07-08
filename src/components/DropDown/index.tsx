@@ -18,11 +18,11 @@ export default function DropDown() {
       >
         Create Tickets
         <Image
-          className="ml-auto"
+          className="ml-4"
           alt="Down"
           src="/down.svg"
-          width={24}
-          height={24}
+          width={18}
+          height={18}
         />
       </button>
 

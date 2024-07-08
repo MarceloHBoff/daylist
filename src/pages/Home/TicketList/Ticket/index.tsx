@@ -31,7 +31,7 @@ export default function Ticket({
         <TicketForm
           defaultValues={{ ...ticket }}
           opener={
-            <div className="text-slate-300 text-sm font-bold cursor-pointer">
+            <div className="text-slate-100 text-sm font-bold cursor-pointer">
               {ticket.description}
             </div>
           }
@@ -66,7 +66,7 @@ export default function Ticket({
       </div>
 
       <div className="w-8">
-        <TicketContextMenu id={ticket.id} />
+        <TicketContextMenu id={ticket.id} order={ticket.order} />
       </div>
     </article>
   )

@@ -6,6 +6,14 @@ import { useState } from 'react'
 
 const options = [
   {
+    label: 'Move Up',
+    icon: '/up.svg'
+  },
+  {
+    label: 'Move Down',
+    icon: '/down.svg'
+  },
+  {
     label: 'Duplicate',
     icon: '/duplicate.svg'
   },
@@ -17,9 +25,13 @@ const options = [
 
 type TicketContextMenuProps = {
   id: string
+  order: number
 }
 
-export default function TicketContextMenu({ id }: TicketContextMenuProps) {
+export default function TicketContextMenu({
+  id,
+  order
+}: TicketContextMenuProps) {
   const [open, setOpen] = useState(false)
 
   const handleOpen = () => setOpen(true)
@@ -28,6 +40,20 @@ export default function TicketContextMenu({ id }: TicketContextMenuProps) {
 
   const onClickMenu = (label: string) => {
     switch (label) {
+      case 'Move Up':
+        api
+          .post(`tickets/change-order?id=${id}&order=${order - 1}`)
+          .then(() => {
+            window.location.reload()
+          })
+        break
+      case 'Move Down':
+        api
+          .post(`tickets/change-order?id=${id}&order=${order + 1}`)
+          .then(() => {
+            window.location.reload()
+          })
+        break
       case 'Duplicate':
         api.post(`tickets/duplicate?id=${id}`).then(() => {
           window.location.reload()
@@ -74,8 +100,8 @@ export default function TicketContextMenu({ id }: TicketContextMenuProps) {
                 <Image
                   src={item.icon}
                   alt={item.label}
-                  width={18}
-                  height={18}
+                  width={20}
+                  height={20}
                   className="opacity-75"
                 />
 
