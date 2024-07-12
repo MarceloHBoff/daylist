@@ -1,3 +1,5 @@
+import type { NextApiRequest, NextApiResponse } from 'next'
+
 import { createTicket } from '@/utils/query'
 import { Ticket } from '@prisma/client'
 import {
@@ -9,7 +11,6 @@ import {
   endOfYear,
   setDay
 } from 'date-fns'
-import type { NextApiRequest, NextApiResponse } from 'next'
 
 type Params = {
   type: number

@@ -1,4 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
+
 import { prisma } from '@/lib/prisma'
 import { Ticket } from '@prisma/client'
 import { addDays, startOfDay } from 'date-fns'

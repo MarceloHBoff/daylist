@@ -1,4 +1,10 @@
+import Image from 'next/image'
+import Link from 'next/link'
+
+import DropDown from '@/components/DropDown'
 import { api } from '@/lib/axios'
+import { TicketWithTag } from '@/models/ticket'
+import { formatDay } from '@/utils/date'
 import {
   addDays,
   addWeeks,
@@ -9,13 +15,10 @@ import {
   startOfDay,
   startOfWeek
 } from 'date-fns'
-import { TicketWithTag } from '@/models/ticket'
-import TicketList from './TicketList'
-import DropDown from '@/components/DropDown'
+
 import Container from '../Container'
-import Link from 'next/link'
-import Image from 'next/image'
-import { formatDay } from '@/utils/date'
+
+import TicketList from './TicketList'
 
 type HomeProps = {
   week: number

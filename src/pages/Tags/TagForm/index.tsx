@@ -1,9 +1,10 @@
 'use client'
 
-import Modal from '@/components/Modal'
-import { api } from '@/lib/axios'
 import { ReactNode } from 'react'
 import { useForm } from 'react-hook-form'
+
+import Modal from '@/components/Modal'
+import { api } from '@/lib/axios'
 
 type TagFormProps = {
   opener: ReactNode

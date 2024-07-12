@@ -1,4 +1,5 @@
 import { ComponentProps } from '@/types'
+
 import Menu from './Menu'
 
 type ContainerProps = ComponentProps & {

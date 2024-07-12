@@ -1,7 +1,8 @@
 import { api } from '@/lib/axios'
-import Container from '../Container'
 import { TicketWithTag } from '@/models/ticket'
 import { groupBy } from '@/utils/array'
+
+import Container from '../Container'
 import TicketList from '../Home/TicketList'
 
 export default async function TicketTags() {

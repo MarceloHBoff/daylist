@@ -1,8 +1,10 @@
 'use client'
 
+import Image from 'next/image'
+
 import { api } from '@/lib/axios'
 import { Tag } from '@prisma/client'
-import Image from 'next/image'
+
 import TagForm from '../TagForm'
 
 type TagActionsProps = {

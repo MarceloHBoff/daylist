@@ -1,9 +1,12 @@
+import TagIcon from '@/components/TagIcon'
 import { api } from '@/lib/axios'
 import { Tag } from '@prisma/client'
-import TagIcon from '@/components/TagIcon'
-import TagForm from './TagForm'
-import TagActions from './TagActions'
+
 import Container from '../Container'
+
+import TagActions from './TagActions'
+import TagForm from './TagForm'
+
 
 export default async function Tags() {
   const response = await api.get<Tag[]>('/tags')

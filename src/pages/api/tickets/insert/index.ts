@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
-import { Ticket } from '@prisma/client'
+
 import { createTicket } from '@/utils/query'
+import { Ticket } from '@prisma/client'
 
 export default async function handler(
   req: NextApiRequest,

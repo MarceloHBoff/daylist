@@ -1,8 +1,9 @@
-import { api } from '@/lib/axios'
-import { Tag } from '@prisma/client'
 import { useEffect, useState } from 'react'
 import { UseFormRegister } from 'react-hook-form'
-import Select from '../Select'
+
+import Select from '@/components/Select'
+import { api } from '@/lib/axios'
+import { Tag } from '@prisma/client'
 
 type TagSelectProps = {
   register: UseFormRegister<any>

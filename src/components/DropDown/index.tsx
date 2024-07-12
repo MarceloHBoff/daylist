@@ -1,7 +1,9 @@
 'use client'
 
 import Image from 'next/image'
+
 import { useState } from 'react'
+
 import DateForm from './DateForm'
 
 const options = ['Every Day', 'Day on Month', 'Day on Week']

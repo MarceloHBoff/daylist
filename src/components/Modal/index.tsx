@@ -1,6 +1,7 @@
 'use client'
 
 import { ReactNode, useState } from 'react'
+
 import ModalContent from './ModalContent'
 
 type ModalProps = {

@@ -1,10 +1,13 @@
-import { TicketWithTag } from '@/models/ticket'
+import Image from 'next/image'
+
 import TagIcon from '@/components/TagIcon'
+import { TicketWithTag } from '@/models/ticket'
+import { getDaySuffix } from '@/utils/date'
+
+import TicketForm from '../TicketForm'
+
 import TicketCheck from './TicketCheck'
 import TicketContextMenu from './TicketContextMenu'
-import TicketForm from '../TicketForm'
-import { getDaySuffix } from '@/utils/date'
-import Image from 'next/image'
 
 type TicketProps = {
   ticket: TicketWithTag
@@ -66,7 +69,11 @@ export default function Ticket({
       </div>
 
       <div className="w-8">
-        <TicketContextMenu id={ticket.id} order={ticket.order} />
+        <TicketContextMenu
+          id={ticket.id}
+          order={ticket.order}
+          showDate={showDate}
+        />
       </div>
     </article>
   )

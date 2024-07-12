@@ -1,38 +1,46 @@
 'use client'
 
-import { api } from '@/lib/axios'
 import Image from 'next/image'
+
 import { useState } from 'react'
 
-const options = [
-  {
-    label: 'Move Up',
-    icon: '/up.svg'
-  },
-  {
-    label: 'Move Down',
-    icon: '/down.svg'
-  },
-  {
-    label: 'Duplicate',
-    icon: '/duplicate.svg'
-  },
-  {
-    label: 'Delete',
-    icon: '/delete.svg'
-  }
-]
+import { api } from '@/lib/axios'
 
 type TicketContextMenuProps = {
   id: string
   order: number
+  showDate?: boolean
 }
 
 export default function TicketContextMenu({
   id,
-  order
+  order,
+  showDate = false
 }: TicketContextMenuProps) {
   const [open, setOpen] = useState(false)
+
+  const options = [
+    {
+      label: 'Move Up',
+      icon: '/up.svg',
+      show: !showDate
+    },
+    {
+      label: 'Move Down',
+      icon: '/down.svg',
+      show: !showDate
+    },
+    {
+      label: 'Duplicate',
+      icon: '/duplicate.svg',
+      show: true
+    },
+    {
+      label: 'Delete',
+      icon: '/delete.svg',
+      show: true
+    }
+  ]
 
   const handleOpen = () => setOpen(true)
 
@@ -91,23 +99,25 @@ export default function TicketContextMenu({
             className="absolute bg-zinc-600 shadow-lg rounded-lg py-2 z-50 min-w-44"
             style={{ top: 20, right: 20 }}
           >
-            {options.map(item => (
-              <li
-                key={item.label}
-                className="px-4 py-2 text-white hover:bg-zinc-700 cursor-pointer flex items-center"
-                onClick={() => onClickMenu(item.label)}
-              >
-                <Image
-                  src={item.icon}
-                  alt={item.label}
-                  width={20}
-                  height={20}
-                  className="opacity-75"
-                />
+            {options
+              .filter(p => p.show)
+              .map(item => (
+                <li
+                  key={item.label}
+                  className="px-4 py-2 text-white hover:bg-zinc-700 cursor-pointer flex items-center"
+                  onClick={() => onClickMenu(item.label)}
+                >
+                  <Image
+                    src={item.icon}
+                    alt={item.label}
+                    width={20}
+                    height={20}
+                    className="opacity-75"
+                  />
 
-                <span className="ml-4">{item.label}</span>
-              </li>
-            ))}
+                  <span className="ml-4">{item.label}</span>
+                </li>
+              ))}
           </ul>
 
           <div className="fixed inset-0 z-40" onClick={handleClose} />
