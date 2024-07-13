@@ -16,8 +16,6 @@ import {
   startOfWeek
 } from 'date-fns'
 
-import Container from '../Container'
-
 import TicketList from './TicketList'
 
 type HomeProps = {
@@ -45,7 +43,7 @@ export default async function Home({ week }: HomeProps) {
   }))
 
   return (
-    <Container path="/">
+    <>
       <div className="m-10 flex items-center justify-between">
         <DropDown />
 
@@ -85,6 +83,6 @@ export default async function Home({ week }: HomeProps) {
           ))}
         </div>
       </div>
-    </Container>
+    </>
   )
 }
