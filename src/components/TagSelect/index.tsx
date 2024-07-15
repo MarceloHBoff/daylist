@@ -1,16 +1,10 @@
 import { useEffect, useState } from 'react'
-import { UseFormRegister } from 'react-hook-form'
 
-import Select from '@/components/Select'
+import Select from '@/components/Form/Select'
 import { api } from '@/lib/axios'
 import { Tag } from '@prisma/client'
 
-type TagSelectProps = {
-  register: UseFormRegister<any>
-  name: string
-}
-
-export default function TagSelect({ register, name }: TagSelectProps) {
+export default function TagSelect() {
   const [tags, setTags] = useState<Tag[]>([])
 
   useEffect(() => {
@@ -21,5 +15,5 @@ export default function TagSelect({ register, name }: TagSelectProps) {
     return null
   }
 
-  return <Select name={name} options={tags} register={register} />
+  return <Select name="tagId" options={tags} />
 }

@@ -4,14 +4,12 @@ type ModalContentProps = {
   title: string
   onClose: () => void
   children: ReactNode
-  onButtonClick: () => Promise<void>
 }
 
 export default function ModalContent({
   title,
   children,
-  onClose,
-  onButtonClick
+  onClose
 }: ModalContentProps) {
   document.addEventListener('keydown', event => {
     if (event.key === 'Escape') {
@@ -38,17 +36,6 @@ export default function ModalContent({
           </button>
         </div>
         <div className="mt-4">{children}</div>
-        <div className="mt-4 flex justify-end">
-          <button
-            onClick={async () => {
-              await onButtonClick()
-              onClose()
-            }}
-            className="px-4 py-2 bg-orange-500 hover:bg-orange-600 rounded-lg"
-          >
-            Save
-          </button>
-        </div>
       </div>
     </div>
   )

@@ -8,15 +8,9 @@ type ModalProps = {
   title: string
   opener: ReactNode
   children: ReactNode
-  onButtonClick: () => Promise<void>
 }
 
-export default function Modal({
-  title,
-  opener,
-  children,
-  onButtonClick
-}: ModalProps) {
+export default function Modal({ title, opener, children }: ModalProps) {
   const [showModal, setShowModal] = useState(false)
 
   return (
@@ -24,11 +18,7 @@ export default function Modal({
       <div onClick={() => setShowModal(true)}>{opener}</div>
 
       {showModal && (
-        <ModalContent
-          title={title}
-          onClose={() => setShowModal(false)}
-          onButtonClick={onButtonClick}
-        >
+        <ModalContent title={title} onClose={() => setShowModal(false)}>
           {children}
         </ModalContent>
       )}

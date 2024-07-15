@@ -1,12 +1,13 @@
 'use client'
 
 import { ReactNode } from 'react'
-import { useForm } from 'react-hook-form'
 
+import * as Form from '@/components/Form'
 import Modal from '@/components/Modal'
 import TagSelect from '@/components/TagSelect'
 import { api } from '@/lib/axios'
 import { parseForm } from '@/utils/date'
+import { Ticket } from '@prisma/client'
 
 type TicketFormProps = {
   opener: ReactNode
@@ -14,42 +15,39 @@ type TicketFormProps = {
 }
 
 export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
-  const { register, handleSubmit } = useForm({
-    defaultValues: {
-      ...defaultValues,
-      date: parseForm(defaultValues?.date)
-    }
-  })
-
-  const onSubmit = handleSubmit(async data => {
+  const onSubmit = async (data: Ticket) => {
     if (data.id) {
       await api.post('tickets/update', { ...data })
     } else {
       await api.post('tickets/insert', { ...data })
     }
     window.location.reload()
-  })
+  }
 
   return (
-    <Modal title="New Ticket" opener={opener} onButtonClick={onSubmit}>
-      <form onSubmit={onSubmit} className="flex flex-col">
-        <input
-          className="border-2 border-gray-600 rounded-xl p-4 bg-transparent outline-none focus:border-gray-500 mb-4"
-          autoFocus
-          autoComplete="off"
+    <Modal title="New Ticket" opener={opener}>
+      <Form.Form
+        onSubmit={onSubmit}
+        defaultData={{
+          ...defaultValues,
+          date: parseForm(defaultValues?.date)
+        }}
+      >
+        <Form.Input
+          name="description"
           placeholder="Type your ticket description..."
-          {...register('description')}
         />
-        <div className="flex">
-          <input
-            className="w-full border-2 border-gray-600 rounded-xl p-4 bg-transparent outline-none focus:border-gray-500 mr-4"
-            type="date"
-            {...register('date')}
-          />
 
-          <TagSelect register={register} name="tagId" />
+        <div className="flex mt-2">
+          <div className="mr-2">
+            <Form.Input name="date" type="date" />
+          </div>
+
+          <TagSelect />
         </div>
-      </form>
+
+        <Form.Submit />
+      </Form.Form>
     </Modal>
   )
 }

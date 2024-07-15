@@ -47,9 +47,7 @@ export default function Ticket({
           >
             <TagIcon color={ticket.tag.color} />
 
-            <span className="ml-2 text-sm font-medium">
-              {ticket.tag.description}
-            </span>
+            <span className="ml-2 text-sm">{ticket.tag.description}</span>
 
             {showDate && ticket.date && (
               <div className="ml-auto text-base text-zinc-400 flex items-center">
