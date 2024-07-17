@@ -2,7 +2,8 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import DropDown from '@/components/DropDown'
-import { api } from '@/lib/axios'
+import TicketList from '@/components/TicketList'
+import { apiGet } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
 import { formatDay } from '@/utils/date'
 import {
@@ -16,24 +17,20 @@ import {
   startOfWeek
 } from 'date-fns'
 
-import TicketList from './TicketList'
-
-type HomeProps = {
+type DashboardProps = {
   week: number
 }
 
-export default async function Home({ week }: HomeProps) {
+export default async function Dashboard({ week }: DashboardProps) {
   const initialDate =
     week > 0 ? startOfWeek(addWeeks(new Date(), week)) : new Date()
   const finalDate = endOfWeek(initialDate)
 
-  const response = await api.get<TicketWithTag[]>(
-    `/tickets?initialDate=${initialDate}&finalDate=${finalDate}`
+  const tickets = await apiGet<TicketWithTag[]>(
+    `/tickets?initialDate=${initialDate.toISOString()}&finalDate=${finalDate.toISOString()}`
   )
-  const tickets = response.data
 
-  const responseOutdated = await api.get<TicketWithTag[]>(`/tickets/outdated`)
-  const outdated = responseOutdated.data
+  const outdated = await apiGet<TicketWithTag[]>(`/tickets/outdated`)
 
   const daysInWeek = differenceInDays(finalDate, initialDate) + 1
 

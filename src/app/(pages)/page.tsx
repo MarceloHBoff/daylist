@@ -1,5 +1,10 @@
-import Home from '@/pages/Home'
+import Dashboard from '@/pages/Dashboard'
+import PageWrapper from '@/pages/PageWrapper'
 
 export default function App() {
-  return <Home week={0} />
+  return (
+    <PageWrapper>
+      <Dashboard week={0} />
+    </PageWrapper>
+  )
 }

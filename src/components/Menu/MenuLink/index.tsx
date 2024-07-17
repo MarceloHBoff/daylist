@@ -13,7 +13,7 @@ export default function MenuLink() {
   const pathname = usePathname()
 
   return (
-    <div className="my-3">
+    <div className="my-3 mx-auto">
       {menus.map(p => (
         <Link
           key={p.label}

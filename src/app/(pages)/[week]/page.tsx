@@ -1,5 +1,10 @@
-import Home from '@/pages/Home'
+import Dashboard from '@/pages/Dashboard'
+import PageWrapper from '@/pages/PageWrapper'
 
 export default function Week({ params }: { params: { week: number } }) {
-  return <Home week={params.week} />
+  return (
+    <PageWrapper>
+      <Dashboard week={params.week} />
+    </PageWrapper>
+  )
 }
