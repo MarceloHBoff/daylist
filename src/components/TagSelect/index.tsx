@@ -1,14 +1,14 @@
 import { useEffect, useState } from 'react'
 
 import Select from '@/components/Form/Select'
-import { api } from '@/lib/axios'
+import { apiGet } from '@/lib/api'
 import { Tag } from '@prisma/client'
 
 export default function TagSelect() {
   const [tags, setTags] = useState<Tag[]>([])
 
   useEffect(() => {
-    api.get<Tag[]>('/tags').then(p => setTags(p.data))
+    apiGet<Tag[]>('/tags').then(setTags)
   }, [])
 
   if (tags.length === 0) {

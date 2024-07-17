@@ -5,7 +5,7 @@ import { ReactNode } from 'react'
 import * as Form from '@/components/Form'
 import Modal from '@/components/Modal'
 import TagSelect from '@/components/TagSelect'
-import { api } from '@/lib/axios'
+import { apiPost } from '@/lib/api'
 import { parseForm } from '@/utils/date'
 import { addDays } from 'date-fns'
 
@@ -16,7 +16,7 @@ type DateFormProps = {
 
 export default function DateForm({ opener, type }: DateFormProps) {
   const onSubmit = async (data: any) => {
-    await api.post('tickets/insert-many', { type, ...data })
+    await apiPost('/tickets/insert-many', { type, ...data })
 
     window.location.reload()
   }

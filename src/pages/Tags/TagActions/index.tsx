@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 
-import { api } from '@/lib/axios'
+import { apiPost } from '@/lib/api'
 import { Tag } from '@prisma/client'
 
 import TagForm from '../TagForm'
@@ -13,7 +13,8 @@ type TagActionsProps = {
 
 export default function TagActions({ tag }: TagActionsProps) {
   const onDelete = async () => {
-    await api.post(`tags/delete?id=${tag.id}`)
+    await apiPost(`tags/delete?id=${tag.id}`, {})
+
     window.location.reload()
   }
 

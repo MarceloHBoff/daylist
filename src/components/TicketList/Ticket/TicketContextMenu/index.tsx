@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 import { useState } from 'react'
 
-import { api } from '@/lib/axios'
+import { apiPost } from '@/lib/api'
 
 type TicketContextMenuProps = {
   id: string
@@ -46,31 +46,23 @@ export default function TicketContextMenu({
 
   const handleClose = () => setOpen(false)
 
-  const onClickMenu = (label: string) => {
+  const onClickMenu = async (label: string) => {
     switch (label) {
       case 'Move Up':
-        api
-          .post(`tickets/change-order?id=${id}&order=${order - 1}`)
-          .then(() => {
-            window.location.reload()
-          })
+        await apiPost(`tickets/change-order?id=${id}&order=${order - 1}`, {})
+        window.location.reload()
         break
       case 'Move Down':
-        api
-          .post(`tickets/change-order?id=${id}&order=${order + 1}`)
-          .then(() => {
-            window.location.reload()
-          })
+        apiPost(`tickets/change-order?id=${id}&order=${order + 1}`, {})
+        window.location.reload()
         break
       case 'Duplicate':
-        api.post(`tickets/duplicate?id=${id}`).then(() => {
-          window.location.reload()
-        })
+        apiPost(`tickets/duplicate?id=${id}`, {})
+        window.location.reload()
         break
       case 'Delete':
-        api.post(`tickets/delete?id=${id}`).then(() => {
-          window.location.reload()
-        })
+        apiPost(`tickets/delete?id=${id}`, {})
+        window.location.reload()
         break
       default:
         break

@@ -1,6 +1,6 @@
 'use client'
 
-import { api } from '@/lib/axios'
+import { apiPost } from '@/lib/api'
 import { plop } from '@/utils/audio'
 
 type TicketCheckProps = {
@@ -11,9 +11,9 @@ export default function TicketCheck({ id }: TicketCheckProps) {
   const onMarkAsDone = async () => {
     await new Audio(plop).play()
 
-    api.post(`tickets/mark-as-done?id=${id}`).then(() => {
-      window.location.reload()
-    })
+    await apiPost(`/tickets/mark-as-done?id=${id}`, {})
+
+    window.location.reload()
   }
 
   return (

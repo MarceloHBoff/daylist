@@ -1,13 +1,12 @@
-import { api } from '@/lib/axios'
+import TicketList from '@/components/TicketList'
+import { apiGet } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
 import { groupBy } from '@/utils/array'
 
-import TicketList from '../Home/TicketList'
-
 export default async function TicketTags() {
-  const response = await api.get<TicketWithTag[]>(`/tickets/all`)
-  const tickets = groupBy(response.data, p => p.tag?.description ?? '').sort(
-    (a, b) => (a.data.length > b.data.length ? 1 : -1)
+  const data = await apiGet<TicketWithTag[]>(`/tickets/all`)
+  const tickets = groupBy(data, p => p.tag?.description ?? '').sort((a, b) =>
+    a.data.length > b.data.length ? 1 : -1
   )
 
   return (

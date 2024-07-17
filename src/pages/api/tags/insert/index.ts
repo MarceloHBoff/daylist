@@ -9,13 +9,13 @@ export default async function handler(
 ) {
   const { body } = req
 
-  const data = body as Tag
+  const data = JSON.parse(body) as Tag
 
   data.description = data.description.toLocaleUpperCase()
   data.color = data.color.toLocaleUpperCase()
   data.userId = '9fe83035-7071-4158-9dda-371a6cc61bed'
 
-  const tag = await prisma.tag.create({ data: body })
+  const tag = await prisma.tag.create({ data })
 
   return res.status(201).json(tag)
 }

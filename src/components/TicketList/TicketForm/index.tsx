@@ -5,7 +5,7 @@ import { ReactNode } from 'react'
 import * as Form from '@/components/Form'
 import Modal from '@/components/Modal'
 import TagSelect from '@/components/TagSelect'
-import { api } from '@/lib/axios'
+import { apiPost } from '@/lib/api'
 import { parseForm } from '@/utils/date'
 import { Ticket } from '@prisma/client'
 
@@ -17,9 +17,9 @@ type TicketFormProps = {
 export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
   const onSubmit = async (data: Ticket) => {
     if (data.id) {
-      await api.post('tickets/update', { ...data })
+      apiPost('tickets/update', { ...data })
     } else {
-      await api.post('tickets/insert', { ...data })
+      apiPost('tickets/insert', { ...data })
     }
     window.location.reload()
   }

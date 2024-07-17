@@ -4,7 +4,7 @@ import { ReactNode } from 'react'
 
 import * as Form from '@/components/Form'
 import Modal from '@/components/Modal'
-import { api } from '@/lib/axios'
+import { apiPost } from '@/lib/api'
 import { Tag } from '@prisma/client'
 
 type TagFormProps = {
@@ -15,9 +15,9 @@ type TagFormProps = {
 export default function TagForm({ opener, defaultValues }: TagFormProps) {
   const onSubmit = async (data: Tag) => {
     if (data.id) {
-      await api.post('tags/update', { ...data })
+      await apiPost('/tags/update', { ...data })
     } else {
-      await api.post('tags/insert', { ...data })
+      await apiPost('/tags/insert', { ...data })
     }
     window.location.reload()
   }

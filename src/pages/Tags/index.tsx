@@ -1,13 +1,12 @@
 import TagIcon from '@/components/TagIcon'
-import { api } from '@/lib/axios'
+import { apiGet } from '@/lib/api'
 import { Tag } from '@prisma/client'
 
 import TagActions from './TagActions'
 import TagForm from './TagForm'
 
 export default async function Tags() {
-  const response = await api.get<Tag[]>('/tags')
-  const tags = response.data
+  const tags = await apiGet<Tag[]>('/tags')
 
   return (
     <div className="pt-28 px-64">
