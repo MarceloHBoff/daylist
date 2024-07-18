@@ -27,10 +27,13 @@ export default async function Dashboard({ week }: DashboardProps) {
   const finalDate = endOfWeek(initialDate)
 
   const tickets = await apiGet<TicketWithTag[]>(
-    `/tickets?initialDate=${initialDate.toISOString()}&finalDate=${finalDate.toISOString()}`
+    `/tickets?initialDate=${initialDate.toISOString()}&finalDate=${finalDate.toISOString()}`,
+    { cache: 'no-cache' }
   )
 
-  const outdated = await apiGet<TicketWithTag[]>(`/tickets/outdated`)
+  const outdated = await apiGet<TicketWithTag[]>(`/tickets/outdated`, {
+    cache: 'no-cache'
+  })
 
   const daysInWeek = differenceInDays(finalDate, initialDate) + 1
 

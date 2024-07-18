@@ -9,7 +9,7 @@ export default async function handler(
 ) {
   const { body } = req
 
-  const data = body as Ticket
+  const data = JSON.parse(body) as Ticket
 
   const ticket = await createTicket(data)
 

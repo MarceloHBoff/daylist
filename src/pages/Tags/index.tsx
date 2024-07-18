@@ -6,7 +6,7 @@ import TagActions from './TagActions'
 import TagForm from './TagForm'
 
 export default async function Tags() {
-  const tags = await apiGet<Tag[]>('/tags')
+  const tags = await apiGet<Tag[]>('/tags', { cache: 'no-cache' })
 
   return (
     <div className="pt-28 px-64">

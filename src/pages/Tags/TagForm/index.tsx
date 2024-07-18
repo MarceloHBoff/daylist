@@ -24,7 +24,10 @@ export default function TagForm({ opener, defaultValues }: TagFormProps) {
 
   return (
     <Modal title="New Tag" opener={opener}>
-      <Form.Form onSubmit={onSubmit} defaultData={defaultValues}>
+      <Form.Form
+        onSubmit={onSubmit}
+        defaultData={{ color: '#000000', ...defaultValues }}
+      >
         <div className="flex">
           <Form.Input name="description" autoComplete="off" />
 

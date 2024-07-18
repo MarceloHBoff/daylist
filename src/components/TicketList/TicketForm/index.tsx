@@ -17,9 +17,9 @@ type TicketFormProps = {
 export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
   const onSubmit = async (data: Ticket) => {
     if (data.id) {
-      apiPost('tickets/update', { ...data })
+      apiPost('/tickets/update', { ...data })
     } else {
-      apiPost('tickets/insert', { ...data })
+      apiPost('/tickets/insert', { ...data })
     }
     window.location.reload()
   }

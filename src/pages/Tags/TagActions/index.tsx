@@ -13,7 +13,7 @@ type TagActionsProps = {
 
 export default function TagActions({ tag }: TagActionsProps) {
   const onDelete = async () => {
-    await apiPost(`tags/delete?id=${tag.id}`, {})
+    await apiPost(`/tags/delete?id=${tag.id}`, {})
 
     window.location.reload()
   }

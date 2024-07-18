@@ -9,7 +9,7 @@ export default async function handler(
 ) {
   const { body } = req
 
-  const data = body as Tag
+  const data = JSON.parse(body) as Tag
 
   const tag = await prisma.tag.update({ data, where: { id: data.id } })
 

@@ -49,19 +49,19 @@ export default function TicketContextMenu({
   const onClickMenu = async (label: string) => {
     switch (label) {
       case 'Move Up':
-        await apiPost(`tickets/change-order?id=${id}&order=${order - 1}`, {})
+        await apiPost(`/tickets/change-order?id=${id}&order=${order - 1}`, {})
         window.location.reload()
         break
       case 'Move Down':
-        apiPost(`tickets/change-order?id=${id}&order=${order + 1}`, {})
+        apiPost(`/tickets/change-order?id=${id}&order=${order + 1}`, {})
         window.location.reload()
         break
       case 'Duplicate':
-        apiPost(`tickets/duplicate?id=${id}`, {})
+        apiPost(`/tickets/duplicate?id=${id}`, {})
         window.location.reload()
         break
       case 'Delete':
-        apiPost(`tickets/delete?id=${id}`, {})
+        apiPost(`/tickets/delete?id=${id}`, {})
         window.location.reload()
         break
       default:

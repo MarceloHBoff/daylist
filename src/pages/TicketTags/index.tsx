@@ -4,7 +4,10 @@ import { TicketWithTag } from '@/models/ticket'
 import { groupBy } from '@/utils/array'
 
 export default async function TicketTags() {
-  const data = await apiGet<TicketWithTag[]>(`/tickets/all`)
+  const data = await apiGet<TicketWithTag[]>(`/tickets/all`, {
+    cache: 'no-cache'
+  })
+
   const tickets = groupBy(data, p => p.tag?.description ?? '').sort((a, b) =>
     a.data.length > b.data.length ? 1 : -1
   )

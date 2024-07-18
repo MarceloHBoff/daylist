@@ -3,10 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import { prisma } from '@/lib/prisma'
 import { startOfDay } from 'date-fns'
 
-export default async function handler(
-  req: NextApiRequest,
-  res: NextApiResponse
-) {
+export default async function handler(_: NextApiRequest, res: NextApiResponse) {
   const tickets = await prisma.ticket.findMany({
     where: {
       userId: '9fe83035-7071-4158-9dda-371a6cc61bed',

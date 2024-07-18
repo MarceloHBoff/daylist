@@ -36,7 +36,7 @@ export default async function handler(
     finalDate,
     description,
     tagId
-  } = body as Params
+  } = JSON.parse(body) as Params
 
   const ticket = { description, tagId } as Ticket
 
