@@ -1,4 +1,4 @@
-export function groupBy<T>(array: T[], fn: (data: T) => string) {
+export function groupBy<T>(array: T[], fn: (data: T) => string | number) {
   const reduced = array.reduce((acc, p) => {
     const groupByField = fn(p)
 

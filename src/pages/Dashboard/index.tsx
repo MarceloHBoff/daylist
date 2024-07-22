@@ -3,7 +3,7 @@ import Link from 'next/link'
 
 import DropDown from '@/components/DropDown'
 import TicketList from '@/components/TicketList'
-import { apiGet } from '@/lib/api'
+import { apiGet, apiPost } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
 import { formatDay } from '@/utils/date'
 import {
@@ -30,9 +30,12 @@ export default async function Dashboard({ week }: DashboardProps) {
     `/tickets?initialDate=${initialDate.toISOString()}&finalDate=${finalDate.toISOString()}`,
     { cache: 'no-cache' }
   )
-
   const outdated = await apiGet<TicketWithTag[]>(`/tickets/outdated`, {
     cache: 'no-cache'
+  })
+  await apiPost(`/tickets/reorder-tickets`, {
+    initialDate: initialDate.toISOString(),
+    finalDate: finalDate.toISOString()
   })
 
   const daysInWeek = differenceInDays(finalDate, initialDate) + 1

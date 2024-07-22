@@ -1,5 +1,8 @@
 function api(path: string, init?: RequestInit) {
-  const baseUrl = process.env.NEXT_PUBLIC_API_BASE_URL
+  const baseUrl =
+    typeof window === 'undefined'
+      ? process.env.NEXT_PUBLIC_API_BASE_URL
+      : process.env.NEXT_PUBLIC_CLIENT_API_URL
   const apiPrefix = '/api'
   const url = new URL(apiPrefix.concat(path), baseUrl)
 
