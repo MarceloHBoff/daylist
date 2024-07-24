@@ -1,23 +1,16 @@
 version: '3.4'
 
 services:
-  postgres:
-    image: postgres
-    restart: always
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: docker
-      POSTGRES_DB: daylist
-    ports:
-      - 5435:5432
-
   daylist:
     container_name: daylist
     image: daylist
     restart: always
     environment:
-      - DATABASE_URL=postgresql://postgres:docker@192.168.0.4:5435/daylist
+      - DATABASE_URL=
       - NEXT_PUBLIC_API_URL=http://192.168.0.4:3410
+      - NEXT_PUBLIC_CLIENT_API_URL=http://192.168.0.4:3410
+      - GOOGLE_CLIENT_ID=
+      - GOOGLE_CLIENT_SECRET=
     ports:
       - 3410:3000
     build:

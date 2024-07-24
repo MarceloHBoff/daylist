@@ -1,4 +1,4 @@
-import TicketList from '@/components/TicketList'
+import * as Ticket from '@/components/Ticket'
 import { apiGet } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
 import { groupBy } from '@/utils/array'
@@ -20,13 +20,17 @@ export default async function TicketTags() {
 
       <article className="flex h-full overflow-x-auto">
         {tickets.map(p => (
-          <TicketList
+          <Ticket.TicketsWrapper
             key={p.key}
             title={p.key}
-            tickets={p.data}
-            showDate
             defaultValues={{ tagId: p.data[0].tagId }}
-          />
+          >
+            {p.data.map(ticket => (
+              <Ticket.TicketContainer key={ticket.id}>
+                <Ticket.TicketCard ticket={ticket} showDate />
+              </Ticket.TicketContainer>
+            ))}
+          </Ticket.TicketsWrapper>
         ))}
       </article>
     </div>

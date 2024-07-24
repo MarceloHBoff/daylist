@@ -1,5 +1,7 @@
 FROM node:18
 
+ENV TZ=America/Sao_Paulo
+
 WORKDIR /app
 
 COPY package*.json ./
@@ -11,7 +13,6 @@ RUN npm install
 
 USER root
 RUN chmod -R u+w .
-
 RUN npx prisma generate --schema=./prisma/schema.prisma
 
 EXPOSE 3000

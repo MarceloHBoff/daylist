@@ -1,37 +1,30 @@
-import { TicketWithTag } from '@/models/ticket'
+import { ComponentProps } from '@/types'
 
-import Ticket from './Ticket'
-import TicketForm from './TicketForm'
+import TicketForm from '../TicketForm'
 
-type TicketListProps = {
+type TicketListWrapperProps = ComponentProps & {
   title: string
-  tickets: TicketWithTag[]
   defaultValues?: any
-  showDate?: boolean
   outdated?: boolean
 }
 
-export default function TicketList({
+export default function TicketListWrapper({
   title,
-  tickets,
   defaultValues,
-  showDate = false,
-  outdated = false
-}: TicketListProps) {
-  const validTickets = tickets.filter(p => !p.done)
+  outdated = false,
+  children
+}: TicketListWrapperProps) {
+  // @ts-ignore
+  const length = children.length
 
   return (
     <section className="h-ticket-list mx-2 p-2 w-full min-w-96 max-w-[400px] overflow-y-hidden hover:overflow-y-auto overflow-x-hidden scrollbar-stable">
       <strong className="ml-3 text-white">
         {title}
-        <span className="text-xs ml-2 text-gray-500">
-          {validTickets.length}
-        </span>
+        <span className="text-xs ml-2 text-gray-500">{length}</span>
       </strong>
 
-      {validTickets.map(p => (
-        <Ticket key={p.id} ticket={p} showDate={showDate} outdated={outdated} />
-      ))}
+      {children}
 
       {!outdated && (
         <TicketForm

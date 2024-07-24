@@ -2,7 +2,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 
 import DropDown from '@/components/DropDown'
-import TicketList from '@/components/TicketList'
+import * as Ticket from '@/components/Ticket'
 import { apiGet, apiPost } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
 import { formatDay } from '@/utils/date'
@@ -71,18 +71,26 @@ export default async function Dashboard({ week }: DashboardProps) {
       <div className="flex w-full">
         <div className="flex w-full p-5 border-t-2 border-gray-700 overflow-x-auto">
           {outdated.length > 0 && (
-            <TicketList title="Outdated" tickets={outdated} showDate outdated />
+            <Ticket.TicketsWrapper title="Outdated" outdated>
+              {outdated.map(ticket => (
+                <Ticket.TicketContainer
+                  key={ticket.id}
+                  className="border-red-600"
+                >
+                  <Ticket.TicketCard ticket={ticket} showDate />
+                </Ticket.TicketContainer>
+              ))}
+            </Ticket.TicketsWrapper>
           )}
 
           {days.map(p => (
-            <TicketList
-              key={p.key}
-              title={formatDay(p.date)}
-              defaultValues={{ date: p.date }}
-              tickets={tickets.filter(t =>
-                isSameDay(new Date(t.date ?? ''), p.date)
-              )}
-            />
+            <Ticket.TicketsWrapper key={p.key} title={formatDay(p.date)}>
+              <Ticket.TicketDraggable
+                tickets={tickets.filter(t =>
+                  isSameDay(new Date(t.date ?? ''), p.date)
+                )}
+              />
+            </Ticket.TicketsWrapper>
           ))}
         </div>
       </div>
