@@ -2,19 +2,20 @@
 
 import { useState } from 'react'
 
+import TagIcon from '@/components/TagIcon'
 import { apiPost } from '@/lib/api'
-import { TicketWithTag } from '@/models/ticket'
 import { reorder } from '@/utils/array'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
+import { Tag } from '@prisma/client'
 
-import Ticket from '../TicketCard'
+import TagActions from '../TagActions'
 
-type TicketDraggableProps = {
-  tickets: TicketWithTag[]
+type TagDraggableProps = {
+  tags: Tag[]
 }
 
-export default function TicketDraggable({ tickets }: TicketDraggableProps) {
-  const [data, setData] = useState(tickets.filter(p => !p.done))
+export default function TagDraggable({ tags }: TagDraggableProps) {
+  const [data, setData] = useState(tags)
   const [isDragging, setIsDragging] = useState(false)
 
   return (
@@ -26,7 +27,7 @@ export default function TicketDraggable({ tickets }: TicketDraggableProps) {
           setData(reorder(data, p.source.index, p.destination.index))
 
           await apiPost(
-            `/tickets/reorder?id=${p.draggableId}&startIndex=${p.source.index}&endIndex=${p.destination.index}`,
+            `/tags/reorder?startIndex=${p.source.index}&endIndex=${p.destination.index}`,
             {}
           )
         }
@@ -38,21 +39,24 @@ export default function TicketDraggable({ tickets }: TicketDraggableProps) {
           <div
             {...provided.droppableProps}
             ref={provided.innerRef}
-            className={`${isDragging && 'mb-28'}`}
+            className={`${isDragging && 'mb-16'}`}
           >
             {data.map((p, index) => (
               <Draggable key={p.id} draggableId={p.id} index={index}>
-                {(provided, snapshot) => (
-                  <article
+                {provided => (
+                  <div
+                    key={p.id}
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className={`bg-zinc-700 mx-2 my-3 p-3 w-full min-h-20 rounded-xl border-2 border-gray-600 flex group ${
-                      snapshot.isDragging && 'border-blue-300'
-                    }`}
+                    className="flex items-center p-2 mb-4 border-b-2 border-b-zinc-700 group"
                   >
-                    <Ticket key={p.id} ticket={p} showDate={false} />
-                  </article>
+                    <TagIcon color={p.color} />
+
+                    <span className="text-white ml-2">{p.description}</span>
+
+                    <TagActions tag={p} />
+                  </div>
                 )}
               </Draggable>
             ))}

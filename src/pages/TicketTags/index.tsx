@@ -1,16 +1,16 @@
 import * as Ticket from '@/components/Ticket'
 import { apiGet } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
-import { groupBy } from '@/utils/array'
+
+type TicketTagsType = {
+  key: string
+  data: TicketWithTag[]
+}
 
 export default async function TicketTags() {
-  const data = await apiGet<TicketWithTag[]>(`/tickets/all`, {
+  const tickets = await apiGet<TicketTagsType[]>(`/tickets/all`, {
     cache: 'no-cache'
   })
-
-  const tickets = groupBy(data, p => p.tag?.description ?? '').sort((a, b) =>
-    a.data.length > b.data.length ? 1 : -1
-  )
 
   return (
     <div className="py-4 h-ticket-tags">

@@ -1,8 +1,7 @@
-import TagIcon from '@/components/TagIcon'
 import { apiGet } from '@/lib/api'
 import { Tag } from '@prisma/client'
 
-import TagActions from './TagActions'
+import TagDraggable from './TagDraggable'
 import TagForm from './TagForm'
 
 export default async function Tags() {
@@ -14,18 +13,7 @@ export default async function Tags() {
         Tags
       </div>
 
-      {tags.map(p => (
-        <div
-          key={p.id}
-          className="flex items-center p-2 mb-4 border-b-2 border-b-zinc-700 group"
-        >
-          <TagIcon color={p.color} />
-
-          <span className="text-white ml-2">{p.description}</span>
-
-          <TagActions tag={p} />
-        </div>
-      ))}
+      <TagDraggable tags={tags} />
 
       <TagForm
         opener={

@@ -9,7 +9,7 @@ export default function SignOut() {
   return (
     <div className="flex items-center justify-end">
       {data && (
-        <div className="flex">
+        <div className="hidden xl:flex">
           <Image
             src={data?.user?.image ?? ''}
             alt={data?.user?.name ?? ''}

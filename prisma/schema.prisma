@@ -24,6 +24,7 @@ model Tag {
   description String
   color       String
   createdAt   DateTime @default(now())
+  order       Int      @default(1)
   userId      String
   user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   ticket      Ticket[]

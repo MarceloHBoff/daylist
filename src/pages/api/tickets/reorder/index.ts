@@ -1,6 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import { prisma } from '@/lib/prisma'
+import { reorder } from '@/utils/array'
 import { getDateFilter } from '@/utils/query'
 
 export default async function handler(
@@ -8,31 +9,30 @@ export default async function handler(
   res: NextApiResponse
 ) {
   const id = req.query.id as string
-  const order = Number(req.query.order)
+  const startIndex = Number(req.query.startIndex)
+  const endIndex = Number(req.query.endIndex)
 
   try {
     const ticket = await prisma.ticket.findUniqueOrThrow({ where: { id } })
 
     const ticketsFromSameDay = await prisma.ticket.findMany({
       where: {
-        id: {
-          not: ticket.id
-        },
+        userId: '9fe83035-7071-4158-9dda-371a6cc61bed',
         date: getDateFilter(ticket.date)
       },
       orderBy: { order: 'asc' }
     })
 
-    ticketsFromSameDay.splice(order - 1, 0, ticket)
+    const newOrderTickets = reorder(ticketsFromSameDay, startIndex, endIndex)
 
-    let newOrder = 1
-    for await (const ticket of ticketsFromSameDay) {
-      await prisma.ticket.updateMany({
-        data: { order: newOrder },
-        where: { id: ticket.id }
-      })
-      newOrder++
-    }
+    await prisma.$transaction(
+      newOrderTickets.map((p, index) =>
+        prisma.ticket.updateMany({
+          data: { order: index + 1 },
+          where: { id: p.id }
+        })
+      )
+    )
 
     return res.status(204).send('')
   } catch {
