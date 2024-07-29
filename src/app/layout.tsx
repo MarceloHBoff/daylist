@@ -17,7 +17,7 @@ export default function RootLayout({ children }: ComponentProps) {
   return (
     <SessionWrapper>
       <html lang="en">
-        <body className={`${inter.className} bg-zinc-800 w-full h-screen`}>
+        <body className={`${inter.className} h-screen w-full bg-zinc-800`}>
           {children}
         </body>
       </html>

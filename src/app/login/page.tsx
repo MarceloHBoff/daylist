@@ -12,20 +12,20 @@ export default function Login() {
   }
 
   return (
-    <main className="w-screen h-screen bg-zinc-800">
-      <div className="h-full flex items-center justify-center">
-        <article className="flex flex-col items-center justify-evenly bg-zinc-700 rounded-xl p-16 max-w-[800px]">
+    <main className="h-screen w-screen bg-zinc-800">
+      <div className="flex h-full items-center justify-center">
+        <article className="flex max-w-[800px] flex-col items-center justify-evenly rounded-xl bg-zinc-700 p-16">
           <div className="flex flex-col items-center justify-center">
             <Image src="/favicon.ico" width={80} height={80} alt="Day list" />
 
-            <span className="text-white text-4xl font-bold my-4">Day list</span>
-            <span className="text-zinc-400 text-xl font-bold">
+            <span className="my-4 text-4xl font-bold text-white">Day list</span>
+            <span className="text-xl font-bold text-zinc-400">
               Optimize your day completion your tasks
             </span>
           </div>
 
           <button
-            className="flex items-center bg-white rounded-xl mt-12 p-4"
+            className="mt-12 flex items-center rounded-xl bg-white p-4"
             onClick={() => signIn('google')}
           >
             <Image alt="google" src="/google.svg" height={30} width={30} />

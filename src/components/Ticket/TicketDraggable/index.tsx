@@ -47,7 +47,7 @@ export default function TicketDraggable({ tickets }: TicketDraggableProps) {
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className={`bg-zinc-700 mx-2 my-3 p-3 w-full min-h-20 rounded-xl border-2 border-gray-600 flex group ${
+                    className={`group mx-2 my-3 flex min-h-20 w-full rounded-xl border-2 border-gray-600 bg-zinc-700 p-3 ${
                       snapshot.isDragging && 'border-blue-300'
                     }`}
                   >

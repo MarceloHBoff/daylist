@@ -23,7 +23,7 @@ export default function Select({ options, name }: SelectProps) {
         return (
           <div className="relative w-full">
             <button
-              className="min-h-16 w-full text-left flex items-center border-2 rounded-xl p-4 border-gray-600  bg-gray-700 outline-none focus:border-gray-500"
+              className="flex min-h-16 w-full items-center rounded-xl border-2 border-gray-600 bg-gray-700 p-4 text-left outline-none focus:border-gray-500"
               type="button"
               onClick={() => setIsOpen(true)}
             >
@@ -39,16 +39,16 @@ export default function Select({ options, name }: SelectProps) {
             {isOpen && (
               <>
                 <div
-                  className="fixed inset-0 h-screen w-screen z-40"
+                  className="fixed inset-0 z-40 h-screen w-screen"
                   onClick={() => setIsOpen(false)}
                 />
 
-                <ul className="w-full z-50 absolute mt-2 rounded-xl overflow-x-hidden overflow-y-auto max-h-96 bg-zinc-600">
+                <ul className="absolute z-50 mt-2 max-h-96 w-full overflow-y-auto overflow-x-hidden rounded-xl bg-zinc-600">
                   {options.map(p => (
                     <li
                       key={p.id}
                       value={p.id}
-                      className="px-4 py-3 cursor-pointer text-white hover:bg-zinc-500 flex items-center"
+                      className="flex cursor-pointer items-center px-4 py-3 text-white hover:bg-zinc-500"
                       onClick={() => {
                         setIsOpen(false)
                         field.onChange(p.id)

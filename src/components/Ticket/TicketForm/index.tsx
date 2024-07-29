@@ -38,7 +38,7 @@ export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
           placeholder="Type your ticket description..."
         />
 
-        <div className="flex mt-2">
+        <div className="mt-2 flex">
           <div className="mr-2">
             <Form.Input name="date" type="date" />
           </div>

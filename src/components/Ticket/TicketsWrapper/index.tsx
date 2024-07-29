@@ -18,10 +18,10 @@ export default function TicketListWrapper({
   const length = children.length
 
   return (
-    <section className="h-ticket-list mx-2 p-2 w-full min-w-96 max-w-[400px] overflow-y-hidden hover:overflow-y-auto overflow-x-hidden scrollbar-stable">
+    <section className="h-ticket-list scrollbar-stable mx-2 w-full min-w-96 max-w-[400px] overflow-x-hidden overflow-y-hidden p-2 hover:overflow-y-auto">
       <strong className="ml-3 text-white">
         {title}
-        <span className="text-xs ml-2 text-gray-500">{length}</span>
+        <span className="ml-2 text-xs text-gray-500">{length}</span>
       </strong>
 
       {children}
@@ -30,8 +30,8 @@ export default function TicketListWrapper({
         <TicketForm
           defaultValues={defaultValues}
           opener={
-            <div className="flex items-center p-2 opacity-80 hover:opacity-100 cursor-pointer">
-              <span className="text-orange-600 mr-2 text-2xl">+</span>
+            <div className="flex cursor-pointer items-center p-2 opacity-80 hover:opacity-100">
+              <span className="mr-2 text-2xl text-orange-600">+</span>
               <span className="text-white">Add ticket</span>
             </div>
           }

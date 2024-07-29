@@ -19,18 +19,18 @@ export default function ModalContent({
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10"
+      className="fixed inset-0 z-10 flex items-center justify-center bg-black bg-opacity-50"
       onClick={onClose}
     >
       <div
-        className="bg-gray-800 text-white p-6 rounded-lg shadow-lg w-1/3"
+        className="w-1/3 rounded-lg bg-gray-800 p-6 text-white shadow-lg"
         onClick={e => e.stopPropagation()}
       >
-        <div className="flex justify-between items-center border-b border-gray-700 pb-3">
+        <div className="flex items-center justify-between border-b border-gray-700 pb-3">
           <h3 className="text-xl font-semibold">{title}</h3>
           <button
             onClick={onClose}
-            className="text-gray-400 hover:text-white text-lg"
+            className="text-lg text-gray-400 hover:text-white"
           >
             X
           </button>

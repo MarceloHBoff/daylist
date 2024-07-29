@@ -17,15 +17,15 @@ type TicketProps = {
 export default function Ticket({ ticket, showDate = false }: TicketProps) {
   return (
     <>
-      <div className="flex items-center mr-2">
+      <div className="mr-2 flex items-center">
         <TicketCheck id={ticket.id} />
       </div>
 
-      <div className="flex flex-col w-full">
+      <div className="flex w-full flex-col">
         <TicketForm
           defaultValues={{ ...ticket }}
           opener={
-            <div className="text-slate-100 text-sm font-bold cursor-pointer">
+            <div className="cursor-pointer text-sm font-bold text-slate-100">
               {ticket.description}
             </div>
           }
@@ -41,7 +41,7 @@ export default function Ticket({ ticket, showDate = false }: TicketProps) {
             <span className="ml-2 text-sm">{ticket.tag.description}</span>
 
             {showDate && ticket.date && (
-              <div className="ml-auto text-base text-zinc-400 flex items-center">
+              <div className="ml-auto flex items-center text-base text-zinc-400">
                 <Image
                   src="/calendar.svg"
                   alt="calendar"

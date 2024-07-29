@@ -32,7 +32,7 @@ export default function TagForm({ opener, defaultValues }: TagFormProps) {
           <Form.Input name="description" autoComplete="off" />
 
           <Form.Input
-            className="ml-2 w-60 h-16 py-2"
+            className="ml-2 h-16 w-60 py-2"
             name="color"
             type="color"
           />

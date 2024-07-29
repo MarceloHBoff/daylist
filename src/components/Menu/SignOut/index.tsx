@@ -18,11 +18,11 @@ export default function SignOut() {
             className="rounded-full"
           />
 
-          <div className="flex flex-col mx-4">
-            <span className="text-white text-sm font-bold">
+          <div className="mx-4 flex flex-col">
+            <span className="text-sm font-bold text-white">
               {data?.user?.name}
             </span>
-            <span className="text-white text-xs font-bold">
+            <span className="text-xs font-bold text-white">
               {data?.user?.email}
             </span>
           </div>

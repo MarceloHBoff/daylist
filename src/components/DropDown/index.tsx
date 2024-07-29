@@ -14,7 +14,7 @@ export default function DropDown() {
   return (
     <div className="relative">
       <button
-        className="w-full relative z-50 flex items-center p-3 rounded-xl bg-zinc-700 hover:bg-zinc-600 transition-all text-white"
+        className="relative z-50 flex w-full items-center rounded-xl bg-zinc-700 p-3 text-white transition-all hover:bg-zinc-600"
         type="button"
         onClick={() => setIsOpen(true)}
       >
@@ -31,17 +31,17 @@ export default function DropDown() {
       {isOpen && (
         <>
           <div
-            className="fixed inset-0 h-screen w-screen z-40"
+            className="fixed inset-0 z-40 h-screen w-screen"
             onClick={() => setIsOpen(false)}
           />
 
-          <ul className="w-full z-50 absolute mt-2 rounded-xl overflow-hidden bg-zinc-600">
+          <ul className="absolute z-50 mt-2 w-full overflow-hidden rounded-xl bg-zinc-600">
             {options.map((p, index) => (
               <DateForm
                 key={p}
                 type={index}
                 opener={
-                  <li className="p-4 cursor-pointer text-white hover:bg-zinc-500">
+                  <li className="cursor-pointer p-4 text-white hover:bg-zinc-500">
                     {p}
                   </li>
                 }

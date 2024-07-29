@@ -18,11 +18,11 @@ export default function TicketCheck({ id }: TicketCheckProps) {
 
   return (
     <button
-      className="w-5 h-5 border-2 rounded-full hover:opacity-80 hover:border-green-500 transition duration-300 group"
+      className="group h-5 w-5 rounded-full border-2 transition duration-300 hover:border-green-500 hover:opacity-80"
       onClick={onMarkAsDone}
     >
       <svg
-        className="inset-0 w-4 h-4 m-auto text-green-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+        className="inset-0 m-auto h-4 w-4 text-green-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

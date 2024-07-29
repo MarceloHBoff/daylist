@@ -53,7 +53,7 @@ export default function TicketContextMenu({ id }: TicketContextMenuProps) {
       }}
     >
       <div
-        className="hidden group-hover:block cursor-pointer"
+        className="hidden cursor-pointer group-hover:block"
         onClick={handleOpen}
       >
         <Image src="/more.svg" alt="More" width={24} height={24} />
@@ -62,13 +62,13 @@ export default function TicketContextMenu({ id }: TicketContextMenuProps) {
       {open && (
         <div className="">
           <ul
-            className="absolute bg-zinc-600 shadow-lg rounded-lg py-2 z-50 min-w-44"
+            className="absolute z-50 min-w-44 rounded-lg bg-zinc-600 py-2 shadow-lg"
             style={{ top: 20, right: 20 }}
           >
             {options.map(item => (
               <li
                 key={item.label}
-                className="px-4 py-2 text-white hover:bg-zinc-700 cursor-pointer flex items-center"
+                className="flex cursor-pointer items-center px-4 py-2 text-white hover:bg-zinc-700"
                 onClick={() => onClickMenu(item.label)}
               >
                 <Image

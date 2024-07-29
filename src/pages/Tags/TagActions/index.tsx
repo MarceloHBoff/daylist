@@ -19,17 +19,17 @@ export default function TagActions({ tag }: TagActionsProps) {
   }
 
   return (
-    <div className="flex ml-auto">
+    <div className="ml-auto flex">
       <TagForm
         defaultValues={tag}
         opener={
-          <button className="hidden group-hover:block opacity-0 transition-opacity duration-500 group-hover:opacity-100 animate-fade-in">
+          <button className="hidden animate-fade-in opacity-0 transition-opacity duration-500 group-hover:block group-hover:opacity-100">
             <Image width={20} height={20} alt="Edit" src="/edit.svg" />
           </button>
         }
       />
       <button
-        className="hidden ml-2 group-hover:block opacity-0 transition-opacity duration-500 group-hover:opacity-100 animate-fade-in"
+        className="ml-2 hidden animate-fade-in opacity-0 transition-opacity duration-500 group-hover:block group-hover:opacity-100"
         onClick={onDelete}
       >
         <Image width={20} height={20} alt="Delete" src="/delete.svg" />

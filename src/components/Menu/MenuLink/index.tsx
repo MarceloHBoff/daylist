@@ -18,7 +18,7 @@ export default function MenuLink() {
         <Link
           key={p.label}
           href={p.path}
-          className={`mx-8 text-base lg:text-xl font-bold ${
+          className={`mx-8 text-base font-bold lg:text-xl ${
             pathname === p.path
               ? 'text-blue-400 hover:text-blue-400'
               : 'text-zinc-200 hover:text-zinc-50'
