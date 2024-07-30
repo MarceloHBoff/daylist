@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { apiPost } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
@@ -14,8 +14,12 @@ type TicketDraggableProps = {
 }
 
 export default function TicketDraggable({ tickets }: TicketDraggableProps) {
-  const [data, setData] = useState(tickets.filter(p => !p.done))
+  const [data, setData] = useState<TicketWithTag[]>([])
   const [isDragging, setIsDragging] = useState(false)
+
+  useEffect(() => {
+    setData(tickets.filter(p => !p.done))
+  }, [tickets])
 
   return (
     <DragDropContext

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import TagIcon from '@/components/TagIcon'
 import { apiPost } from '@/lib/api'
@@ -15,8 +15,12 @@ type TagDraggableProps = {
 }
 
 export default function TagDraggable({ tags }: TagDraggableProps) {
-  const [data, setData] = useState(tags)
+  const [data, setData] = useState<Tag[]>([])
   const [isDragging, setIsDragging] = useState(false)
+
+  useEffect(() => {
+    setData(tags)
+  }, [tags])
 
   return (
     <DragDropContext
@@ -49,11 +53,11 @@ export default function TagDraggable({ tags }: TagDraggableProps) {
                     ref={provided.innerRef}
                     {...provided.draggableProps}
                     {...provided.dragHandleProps}
-                    className="flex items-center p-2 mb-4 border-b-2 border-b-zinc-700 group"
+                    className="group mb-4 flex items-center border-b-2 border-b-zinc-700 p-2"
                   >
                     <TagIcon color={p.color} />
 
-                    <span className="text-white ml-2">{p.description}</span>
+                    <span className="ml-2 text-white">{p.description}</span>
 
                     <TagActions tag={p} />
                   </div>

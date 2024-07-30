@@ -1,17 +1,20 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
+import RequestError from '@/error/requestError'
 import { prisma } from '@/lib/prisma'
+import auth from '@/utils/auth'
 import { getDateFilter } from '@/utils/query'
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse
 ) {
-  const id = req.query.id as string
-
   try {
-    const ticket = await prisma.ticket.findUniqueOrThrow({ where: { id } })
+    await auth(req)
 
+    const id = req.query.id as string
+
+    const ticket = await prisma.ticket.findUniqueOrThrow({ where: { id } })
     ticket.done = false
 
     if (ticket.date) {
@@ -28,7 +31,8 @@ export default async function handler(
     })
 
     return res.status(201).json(newTicket)
-  } catch {
-    return res.status(404)
+  } catch (e) {
+    const { message, code } = e as RequestError
+    return res.status(code).json({ message })
   }
 }

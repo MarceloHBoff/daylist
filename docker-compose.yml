@@ -9,10 +9,12 @@ services:
       - DATABASE_URL=
       - NEXT_PUBLIC_API_URL=http://192.168.0.4:3410
       - NEXT_PUBLIC_CLIENT_API_URL=http://192.168.0.4:3410
+      - AUTH_SECRET=
+      - NEXTAUTH_URL=http://localhost:3410/api/auth/
       - GOOGLE_CLIENT_ID=
       - GOOGLE_CLIENT_SECRET=
     ports:
-      - 3410:3000
+      - 3410:3410
     build:
       context: .
       dockerfile: Dockerfile

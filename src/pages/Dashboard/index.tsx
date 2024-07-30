@@ -1,8 +1,14 @@
+'use client'
+
 import Image from 'next/image'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+
+import { useEffect, useState } from 'react'
 
 import DropDown from '@/components/DropDown'
 import * as Ticket from '@/components/Ticket'
+import RequestError from '@/error/requestError'
 import { apiGet } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
 import { formatDay } from '@/utils/date'
@@ -21,18 +27,32 @@ type DashboardProps = {
   week: number
 }
 
-export default async function Dashboard({ week }: DashboardProps) {
+export default function Dashboard({ week }: DashboardProps) {
+  const router = useRouter()
   const initialDate =
     week > 0 ? startOfWeek(addWeeks(new Date(), week)) : new Date()
   const finalDate = endOfWeek(initialDate)
 
-  const tickets = await apiGet<TicketWithTag[]>(
-    `/tickets?initialDate=${initialDate.toISOString()}&finalDate=${finalDate.toISOString()}`,
-    { cache: 'no-cache' }
-  )
-  const outdated = await apiGet<TicketWithTag[]>(`/tickets/outdated`, {
-    cache: 'no-cache'
-  })
+  const [tickets, setTickets] = useState<TicketWithTag[]>([])
+  const [outdated, setOutdated] = useState<TicketWithTag[]>([])
+
+  useEffect(() => {
+    apiGet<TicketWithTag[]>(
+      `/tickets?initialDate=${initialDate.toISOString()}&finalDate=${finalDate.toISOString()}`,
+      { cache: 'no-cache' }
+    )
+      .then(setTickets)
+      .catch((e: RequestError) => {
+        if (e.code === 401) {
+          router.replace('/login')
+        }
+      })
+
+    apiGet<TicketWithTag[]>(`/tickets/outdated`, {
+      cache: 'no-cache'
+    }).then(setOutdated)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const daysInWeek = differenceInDays(finalDate, initialDate) + 1
 
@@ -46,18 +66,18 @@ export default async function Dashboard({ week }: DashboardProps) {
       <div className="m-10 flex items-center justify-between">
         <DropDown />
 
-        <div className="flex mr-6 -mb-16">
+        <div className="-mb-16 mr-6 flex">
           {Number(week) > 0 && (
             <Link
               href={`/${Number(week) - 1}`}
-              className="border-2 rounded-xl px-3 py-1 mr-4 border-zinc-500 transition-opacity hover:opacity-70"
+              className="mr-4 rounded-xl border-2 border-zinc-500 px-3 py-1 transition-opacity hover:opacity-70"
             >
               <Image src="left.svg" alt="left" height={26} width={26} />
             </Link>
           )}
           <Link
             href={`/${Number(week) + 1}`}
-            className="border-2 rounded-xl px-3 py-1 border-zinc-500 transition-opacity hover:opacity-70"
+            className="rounded-xl border-2 border-zinc-500 px-3 py-1 transition-opacity hover:opacity-70"
           >
             <Image src="right.svg" alt="left" height={26} width={26} />
           </Link>
@@ -65,7 +85,7 @@ export default async function Dashboard({ week }: DashboardProps) {
       </div>
 
       <div className="flex w-full">
-        <div className="flex w-full p-5 border-t-2 border-gray-700 overflow-x-auto">
+        <div className="flex w-full overflow-x-auto border-t-2 border-gray-700 p-5">
           {outdated.length > 0 && (
             <Ticket.TicketsWrapper title="Outdated" outdated>
               {outdated.map(ticket => (

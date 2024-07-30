@@ -15,6 +15,8 @@ USER root
 RUN chmod -R u+w .
 RUN npx prisma generate --schema=./prisma/schema.prisma
 
-EXPOSE 3000
+RUN npm run build
 
-CMD npm run dev
+EXPOSE 3410
+
+CMD npm run start

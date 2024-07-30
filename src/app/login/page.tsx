@@ -1,16 +1,13 @@
-'use client'
-
-import { signIn, useSession } from 'next-auth/react'
+import { Metadata } from 'next'
 import Image from 'next/image'
-import { redirect } from 'next/navigation'
 
-export default function Login() {
-  const { status } = useSession()
+import SignInButton from '@/components/SignInButton'
 
-  if (status === 'authenticated') {
-    redirect('/')
-  }
+export const metadata: Metadata = {
+  title: 'Login | Day List'
+}
 
+export default async function Login() {
   return (
     <main className="h-screen w-screen bg-zinc-800">
       <div className="flex h-full items-center justify-center">
@@ -24,14 +21,7 @@ export default function Login() {
             </span>
           </div>
 
-          <button
-            className="mt-12 flex items-center rounded-xl bg-white p-4"
-            onClick={() => signIn('google')}
-          >
-            <Image alt="google" src="/google.svg" height={30} width={30} />
-
-            <span className="ml-4 text-zinc-800">Sign In with Google</span>
-          </button>
+          <SignInButton />
         </article>
       </div>
     </main>

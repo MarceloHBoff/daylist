@@ -1,6 +1,5 @@
 import { Metadata } from 'next'
 
-import PageWrapper from '@/pages/PageWrapper'
 import TicketTags from '@/pages/TicketTags'
 
 export const metadata: Metadata = {
@@ -8,9 +7,5 @@ export const metadata: Metadata = {
 }
 
 export default function TicketTagsPage() {
-  return (
-    <PageWrapper>
-      <TicketTags />
-    </PageWrapper>
-  )
+  return <TicketTags />
 }
