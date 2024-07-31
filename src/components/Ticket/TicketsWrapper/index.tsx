@@ -2,18 +2,18 @@ import { ComponentProps } from '@/types'
 
 import TicketForm from '../TicketForm'
 
-type TicketListWrapperProps = ComponentProps & {
+type TicketsWrapperProps = ComponentProps & {
   title: string
   defaultValues?: any
   outdated?: boolean
 }
 
-export default function TicketListWrapper({
+export default function TicketsWrapper({
   title,
   defaultValues,
   outdated = false,
   children
-}: TicketListWrapperProps) {
+}: TicketsWrapperProps) {
   // @ts-ignore
   const length = children.length
 
