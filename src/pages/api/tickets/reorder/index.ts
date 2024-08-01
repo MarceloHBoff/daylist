@@ -11,17 +11,19 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    await auth(req)
+    const userId = await auth(req, res)
 
     const id = req.query.id as string
     const startIndex = Number(req.query.startIndex)
     const endIndex = Number(req.query.endIndex)
 
-    const ticket = await prisma.ticket.findUniqueOrThrow({ where: { id } })
+    const ticket = await prisma.ticket.findUniqueOrThrow({
+      where: { id, userId }
+    })
 
     const ticketsFromSameDay = await prisma.ticket.findMany({
       where: {
-        userId: '9fe83035-7071-4158-9dda-371a6cc61bed',
+        userId,
         date: getDateFilter(ticket.date),
         done: false
       },
@@ -42,6 +44,6 @@ export default async function handler(
     return res.status(204).send('')
   } catch (e) {
     const { message, code } = e as RequestError
-    return res.status(code).json({ message })
+    return res.status(code ?? 500).json({ message })
   }
 }

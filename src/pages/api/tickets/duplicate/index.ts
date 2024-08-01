@@ -10,16 +10,19 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    await auth(req)
+    const userId = await auth(req, res)
 
     const id = req.query.id as string
 
-    const ticket = await prisma.ticket.findUniqueOrThrow({ where: { id } })
+    const ticket = await prisma.ticket.findUniqueOrThrow({
+      where: { id, userId }
+    })
     ticket.done = false
 
     if (ticket.date) {
       const total = await prisma.ticket.count({
         where: {
+          userId,
           date: getDateFilter(ticket.date)
         }
       })
@@ -33,6 +36,6 @@ export default async function handler(
     return res.status(201).json(newTicket)
   } catch (e) {
     const { message, code } = e as RequestError
-    return res.status(code).json({ message })
+    return res.status(code ?? 500).json({ message })
   }
 }

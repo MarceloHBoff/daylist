@@ -10,17 +10,18 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    await auth(req)
+    const userId = await auth(req, res)
 
     const { body } = req
 
     const data = JSON.parse(body) as Ticket
 
+    data.userId = userId
     const ticket = await createTicket(data)
 
     return res.status(201).json(ticket)
   } catch (e) {
     const { message, code } = e as RequestError
-    return res.status(code).json({ message })
+    return res.status(code ?? 500).json({ message })
   }
 }

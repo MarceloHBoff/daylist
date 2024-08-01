@@ -13,7 +13,6 @@ export function getDateFilter(date: Date | null) {
 
 export async function createTicket(data: Ticket) {
   data.done = false
-  data.userId = '9fe83035-7071-4158-9dda-371a6cc61bed'
   if (data.date) {
     data.date = addDays(startOfDay(data.date ?? ''), 1)
   }

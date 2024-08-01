@@ -10,11 +10,11 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    await auth(req)
+    const userId = await auth(req, res)
 
     const tickets = await prisma.ticket.findMany({
       where: {
-        userId: '9fe83035-7071-4158-9dda-371a6cc61bed',
+        userId,
         done: false
       },
       include: { tag: true }
@@ -27,6 +27,6 @@ export default async function handler(
     return res.status(200).json(ticketByTags)
   } catch (e) {
     const { message, code } = e as RequestError
-    return res.status(code).json({ message })
+    return res.status(code ?? 500).json({ message })
   }
 }

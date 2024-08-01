@@ -1,15 +1,15 @@
-import { NextApiRequest } from 'next'
-import { getToken } from 'next-auth/jwt'
+import { NextApiRequest, NextApiResponse } from 'next'
+import { getServerSession } from 'next-auth'
 
 import RequestError from '@/error/requestError'
+import { authOptions } from '@/pages/api/auth/[...nextauth]'
 
-export default async function auth(req: NextApiRequest) {
-  const token = await getToken({
-    req,
-    secret: process.env.AUTH_SECRET ?? ''
-  })
+export default async function auth(req: NextApiRequest, res: NextApiResponse) {
+  const data = await getServerSession(req, res, authOptions)
 
-  if (!token) {
+  if (!data) {
     throw new RequestError('Unauthorized', 401)
   }
+
+  return data.user.id
 }

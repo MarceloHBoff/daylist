@@ -10,15 +10,13 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    await auth(req)
+    const userId = await auth(req, res)
 
     const startIndex = Number(req.query.startIndex)
     const endIndex = Number(req.query.endIndex)
 
     const allTags = await prisma.tag.findMany({
-      where: {
-        userId: '9fe83035-7071-4158-9dda-371a6cc61bed'
-      },
+      where: { userId },
       orderBy: { order: 'asc' }
     })
 
@@ -36,6 +34,6 @@ export default async function handler(
     return res.status(204).send('')
   } catch (e) {
     const { message, code } = e as RequestError
-    return res.status(code).json({ message })
+    return res.status(code ?? 500).json({ message })
   }
 }

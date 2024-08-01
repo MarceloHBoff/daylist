@@ -9,23 +9,20 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    await auth(req)
+    const userId = await auth(req, res)
 
     const id = req.query.id as string
 
     await prisma.ticket.updateMany({
       data: { tagId: null },
-      where: {
-        userId: '9fe83035-7071-4158-9dda-371a6cc61bed',
-        tagId: id
-      }
+      where: { userId, tagId: id }
     })
 
-    await prisma.tag.delete({ where: { id } })
+    await prisma.tag.delete({ where: { id, userId } })
 
     return res.status(204).send('')
   } catch (e) {
     const { message, code } = e as RequestError
-    return res.status(code).json({ message })
+    return res.status(code ?? 500).json({ message })
   }
 }

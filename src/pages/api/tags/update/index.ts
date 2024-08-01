@@ -10,17 +10,20 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    await auth(req)
+    const userId = await auth(req, res)
 
     const { body } = req
 
     const data = JSON.parse(body) as Tag
 
-    const tag = await prisma.tag.update({ data, where: { id: data.id } })
+    const tag = await prisma.tag.update({
+      data,
+      where: { id: data.id, userId }
+    })
 
     return res.status(200).send(tag)
   } catch (e) {
     const { message, code } = e as RequestError
-    return res.status(code).json({ message })
+    return res.status(code ?? 500).json({ message })
   }
 }

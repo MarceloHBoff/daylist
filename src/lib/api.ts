@@ -1,12 +1,7 @@
 import RequestError from '@/error/requestError'
 
 function api(path: string, init?: RequestInit) {
-  const baseUrl =
-    typeof window === 'undefined'
-      ? process.env.NEXT_PUBLIC_API_BASE_URL
-      : process.env.NEXT_PUBLIC_CLIENT_API_URL
-  const apiPrefix = '/api'
-  const url = new URL(apiPrefix.concat(path), baseUrl)
+  const url = '/api' + path
 
   return fetch(url, init)
 }

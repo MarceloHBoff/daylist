@@ -2,14 +2,9 @@
 
 import { signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
-import { redirect } from 'next/navigation'
 
 export default function SignInButton() {
   const { status } = useSession()
-
-  if (status === 'authenticated') {
-    redirect('/')
-  }
 
   if (status === 'loading') {
     return (
@@ -20,7 +15,7 @@ export default function SignInButton() {
   return (
     <button
       className="mt-12 flex items-center rounded-xl bg-white p-4"
-      onClick={() => signIn('google')}
+      onClick={() => signIn('google', { callbackUrl: '/' })}
     >
       <Image alt="google" src="/google.svg" height={30} width={30} />
 

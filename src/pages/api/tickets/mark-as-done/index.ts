@@ -9,18 +9,18 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    await auth(req)
+    const userId = await auth(req, res)
 
     const id = req.query.id as string
 
     const ticket = await prisma.ticket.update({
       data: { done: true },
-      where: { id, userId: '9fe83035-7071-4158-9dda-371a6cc61bed' }
+      where: { id, userId }
     })
 
     return res.status(200).json(ticket)
   } catch (e) {
     const { message, code } = e as RequestError
-    return res.status(code).json({ message })
+    return res.status(code ?? 500).json({ message })
   }
 }

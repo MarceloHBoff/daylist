@@ -29,7 +29,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    await auth(req)
+    const userId = await auth(req, res)
 
     const { body } = req
 
@@ -44,6 +44,7 @@ export default async function handler(
     } = JSON.parse(body) as Params
 
     const ticket = { description, tagId } as Ticket
+    ticket.userId = userId
 
     const startDate = initialDate ? new Date(initialDate) : new Date()
     const endDate = finalDate ? new Date(finalDate) : endOfYear(new Date())
@@ -80,6 +81,6 @@ export default async function handler(
     return res.status(204).send('')
   } catch (e) {
     const { message, code } = e as RequestError
-    return res.status(code).json({ message })
+    return res.status(code ?? 500).json({ message })
   }
 }

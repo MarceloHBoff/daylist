@@ -8,17 +8,6 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  createdAt DateTime @default(now())
-  tickets   Ticket[]
-  tags      Tag[]
-
-  @@map("users")
-}
-
 model Tag {
   id          String   @id @default(uuid())
   description String
@@ -26,7 +15,6 @@ model Tag {
   createdAt   DateTime @default(now())
   order       Int      @default(1)
   userId      String
-  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   ticket      Ticket[]
 
   @@map("tags")
@@ -42,8 +30,7 @@ model Ticket {
   userId      String
   tagId       String?
 
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
-  tag  Tag? @relation(fields: [tagId], references: [id], onDelete: Cascade)
+  tag Tag? @relation(fields: [tagId], references: [id], onDelete: Cascade)
 
   @@map("tickets")
 }

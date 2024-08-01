@@ -9,15 +9,15 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    await auth(req)
+    const userId = await auth(req, res)
 
     const id = req.query.id as string
 
-    await prisma.ticket.delete({ where: { id } })
+    await prisma.ticket.delete({ where: { id, userId } })
 
     return res.status(204).send('')
   } catch (e) {
     const { message, code } = e as RequestError
-    return res.status(code).json({ message })
+    return res.status(code ?? 500).json({ message })
   }
 }

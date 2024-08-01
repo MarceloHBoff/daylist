@@ -10,7 +10,7 @@ export default async function handler(
   res: NextApiResponse
 ) {
   try {
-    await auth(req)
+    const userId = await auth(req, res)
 
     const { body } = req
 
@@ -18,13 +18,13 @@ export default async function handler(
 
     data.description = data.description.toLocaleUpperCase()
     data.color = data.color.toLocaleUpperCase()
-    data.userId = '9fe83035-7071-4158-9dda-371a6cc61bed'
+    data.userId = userId
 
     const tag = await prisma.tag.create({ data })
 
     return res.status(201).json(tag)
   } catch (e) {
     const { message, code } = e as RequestError
-    return res.status(code).json({ message })
+    return res.status(code ?? 500).json({ message })
   }
 }
