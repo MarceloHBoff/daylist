@@ -7,8 +7,6 @@ services:
     restart: always
     environment:
       - DATABASE_URL=
-      - NEXT_PUBLIC_API_URL=http://192.168.0.4:3410
-      - NEXT_PUBLIC_CLIENT_API_URL=http://192.168.0.4:3410
       - AUTH_SECRET=
       - NEXTAUTH_URL=http://localhost:3410/api/auth/
       - GOOGLE_CLIENT_ID=
