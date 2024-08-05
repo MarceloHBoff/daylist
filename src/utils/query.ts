@@ -11,10 +11,14 @@ export function getDateFilter(date: Date | null) {
   }
 }
 
+export function getCorrectDate(date: Date) {
+  return new Date(addDays(new Date(date), 1).setHours(12))
+}
+
 export async function createTicket(data: Ticket) {
   data.done = false
   if (data.date) {
-    data.date = addDays(startOfDay(data.date ?? ''), 1)
+    data.date = getCorrectDate(data.date)
   }
 
   if (!data.tagId) {
