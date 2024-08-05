@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 
 import RequestError from '@/error/requestError'
+import { useLoading } from '@/hooks/loading'
 import { apiGet } from '@/lib/api'
 import { Tag } from '@prisma/client'
 
@@ -13,16 +14,21 @@ import TagForm from './TagForm'
 
 export default function Tags() {
   const router = useRouter()
+  const { loader } = useLoading()
+
   const [tags, setTags] = useState<Tag[]>([])
 
   useEffect(() => {
-    apiGet<Tag[]>('/tags', { cache: 'no-cache' })
-      .then(setTags)
-      .catch((e: RequestError) => {
-        if (e.code === 401) {
+    loader(async () => {
+      try {
+        setTags(await apiGet<Tag[]>('/tags', { cache: 'no-cache' }))
+      } catch (e) {
+        const { code } = e as RequestError
+        if (code === 401) {
           router.replace('/login')
         }
-      })
+      }
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

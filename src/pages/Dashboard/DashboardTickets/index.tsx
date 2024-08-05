@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 
 import * as Ticket from '@/components/Ticket'
 import RequestError from '@/error/requestError'
+import { useLoading } from '@/hooks/loading'
 import { apiGet } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
 import { formatDay } from '@/utils/date'
@@ -26,6 +27,7 @@ type DashboardTicketsProps = {
 
 export default function DashboardTickets({ week }: DashboardTicketsProps) {
   const router = useRouter()
+  const { loader } = useLoading()
 
   const initialDate =
     week > 0
@@ -43,17 +45,21 @@ export default function DashboardTickets({ week }: DashboardTicketsProps) {
   const [tickets, setTickets] = useState<TicketWithTag[]>([])
 
   useEffect(() => {
-    apiGet<TicketWithTag[]>(
-      `/tickets?initialDate=${initialDate.toISOString()}&finalDate=${finalDate.toISOString()}`,
-      { cache: 'no-cache' }
-    )
-      .then(setTickets)
-      .catch((e: RequestError) => {
-        if (e.code === 401) {
+    loader(async () => {
+      try {
+        setTickets(
+          await apiGet<TicketWithTag[]>(
+            `/tickets?initialDate=${initialDate.toISOString()}&finalDate=${finalDate.toISOString()}`,
+            { cache: 'no-cache' }
+          )
+        )
+      } catch (e) {
+        const { code } = e as RequestError
+        if (code === 401) {
           router.replace('/login')
         }
-      })
-
+      }
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
-import SessionWrapper from '@/components/SessionWrapper'
+import AppProvider from '@/hooks'
 import { ComponentProps } from '@/types'
 
 import './globals.css'
@@ -15,12 +15,10 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: ComponentProps) {
   return (
-    <SessionWrapper>
-      <html lang="en">
-        <body className={`${inter.className} h-screen w-full bg-zinc-800`}>
-          {children}
-        </body>
-      </html>
-    </SessionWrapper>
+    <html lang="en">
+      <body className={`${inter.className} h-screen w-full bg-zinc-800`}>
+        <AppProvider>{children}</AppProvider>
+      </body>
+    </html>
   )
 }

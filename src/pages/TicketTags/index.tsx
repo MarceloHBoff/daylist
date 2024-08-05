@@ -6,6 +6,7 @@ import { useEffect, useState } from 'react'
 
 import * as Ticket from '@/components/Ticket'
 import RequestError from '@/error/requestError'
+import { useLoading } from '@/hooks/loading'
 import { apiGet } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
 
@@ -16,18 +17,25 @@ type TicketTagsType = {
 
 export default function TicketTags() {
   const router = useRouter()
+  const { loader } = useLoading()
+
   const [tickets, setTickets] = useState<TicketTagsType[]>([])
 
   useEffect(() => {
-    apiGet<TicketTagsType[]>(`/tickets/all`, {
-      cache: 'no-cache'
-    })
-      .then(setTickets)
-      .catch((e: RequestError) => {
-        if (e.code === 401) {
+    loader(async () => {
+      try {
+        setTickets(
+          await apiGet<TicketTagsType[]>(`/tickets/all`, {
+            cache: 'no-cache'
+          })
+        )
+      } catch (e) {
+        const { code } = e as RequestError
+        if (code === 401) {
           router.replace('/login')
         }
-      })
+      }
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 

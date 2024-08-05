@@ -3,16 +3,23 @@
 import { useEffect, useState } from 'react'
 
 import * as Ticket from '@/components/Ticket'
+import { useLoading } from '@/hooks/loading'
 import { apiGet } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
 
 export default function DashboardOutdated() {
+  const { loader } = useLoading()
+
   const [outdated, setOutdated] = useState<TicketWithTag[]>([])
 
   useEffect(() => {
-    apiGet<TicketWithTag[]>(`/tickets/outdated`, {
-      cache: 'no-cache'
-    }).then(setOutdated)
+    loader(async () => {
+      setOutdated(
+        await apiGet<TicketWithTag[]>(`/tickets/outdated`, {
+          cache: 'no-cache'
+        })
+      )
+    })
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
