@@ -3,7 +3,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 import RequestError from '@/error/requestError'
 import { prisma } from '@/lib/prisma'
 import auth from '@/utils/auth'
-import { getDateFilter } from '@/utils/query'
+import { getCorrectDate, getDateFilter } from '@/utils/query'
 import { Ticket } from '@prisma/client'
 import { isSameDay } from 'date-fns'
 
@@ -40,7 +40,7 @@ export default async function handler(
     const ticket = await prisma.ticket.update({
       data: {
         description: data.description,
-        date: data.date ? new Date(data.date) : null,
+        date: data.date ? getCorrectDate(data.date) : null,
         tagId: data.tagId,
         order: data.order ?? 1
       },

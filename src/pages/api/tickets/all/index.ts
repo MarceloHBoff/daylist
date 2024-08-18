@@ -15,7 +15,10 @@ export default async function handler(
     const tickets = await prisma.ticket.findMany({
       where: {
         userId,
-        done: false
+        done: false,
+        tagId: {
+          not: null
+        }
       },
       include: { tag: true }
     })

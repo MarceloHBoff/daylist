@@ -1,5 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { Ticket } from '@prisma/client'
+import { addDays } from 'date-fns'
 
 export function getDateFilter(date: Date | null) {
   const currentDate = new Date(date ?? '')
@@ -10,10 +11,21 @@ export function getDateFilter(date: Date | null) {
   }
 }
 
+export function getCorrectDate(date: Date) {
+  const newDate = new Date(addDays(new Date(date), 1).setHours(12))
+  if (typeof date === 'string') {
+    const day = Number(String(date).substring(8, 10))
+    if (newDate.getDate() !== day) {
+      newDate.setDate(day)
+    }
+  }
+  return newDate
+}
+
 export async function createTicket(data: Ticket) {
   data.done = false
   if (data.date) {
-    data.date = new Date(data.date)
+    data.date = getCorrectDate(data.date)
   }
 
   if (!data.tagId) {
