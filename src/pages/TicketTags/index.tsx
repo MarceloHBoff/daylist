@@ -25,9 +25,7 @@ export default function TicketTags() {
     loader(async () => {
       try {
         setTickets(
-          await apiGet<TicketTagsType[]>(`/tickets/all`, {
-            cache: 'no-cache'
-          })
+          await apiGet<TicketTagsType[]>(`/tickets/all`, { cache: 'no-cache' })
         )
       } catch (e) {
         const { code } = e as RequestError
@@ -52,11 +50,17 @@ export default function TicketTags() {
             title={p.key}
             defaultValues={{ tagId: p.data[0].tagId }}
           >
-            {p.data.map(ticket => (
-              <Ticket.TicketContainer key={ticket.id}>
-                <Ticket.TicketCard ticket={ticket} showDate />
-              </Ticket.TicketContainer>
-            ))}
+            {p.data
+              .sort((a, b) => {
+                if (!a.date) return 1
+                if (!b.date) return -1
+                return a.date > b.date ? 1 : -1
+              })
+              .map(ticket => (
+                <Ticket.TicketContainer key={ticket.id}>
+                  <Ticket.TicketCard ticket={ticket} showDate />
+                </Ticket.TicketContainer>
+              ))}
           </Ticket.TicketsWrapper>
         ))}
       </article>
