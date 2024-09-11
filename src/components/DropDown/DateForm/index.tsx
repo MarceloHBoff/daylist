@@ -26,8 +26,8 @@ export default function DateForm({ opener, type }: DateFormProps) {
       <Form.Form
         onSubmit={onSubmit}
         defaultData={{
-          initialDate: type === 0 ? parseForm(addDays(new Date(), 2)) : null,
-          finalDate: type === 0 ? parseForm(addDays(new Date(), 9)) : null,
+          initialDate: type === 0 ? parseForm(addDays(new Date(), 1)) : null,
+          finalDate: type === 0 ? parseForm(addDays(new Date(), 7)) : null,
           description: ''
         }}
       >

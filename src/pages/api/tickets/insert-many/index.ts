@@ -53,7 +53,7 @@ export default async function handler(
       const days = differenceInDays(endDate, startDate)
 
       for (let index = 0; index < days + 1; index++) {
-        const date = addDays(startDate, index)
+        const date = addDays(startDate, index - 1)
 
         await createTicket({ ...ticket, date })
       }
