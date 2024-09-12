@@ -4,18 +4,18 @@ import { useEffect, useState } from 'react'
 
 import TagIcon from '@/components/TagIcon'
 import { apiPost } from '@/lib/api'
+import { TagWithTickets } from '@/models/ticket'
 import { reorder } from '@/utils/array'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
-import { Tag } from '@prisma/client'
 
 import TagActions from '../TagActions'
 
 type TagDraggableProps = {
-  tags: Tag[]
+  tags: TagWithTickets[]
 }
 
 export default function TagDraggable({ tags }: TagDraggableProps) {
-  const [data, setData] = useState<Tag[]>([])
+  const [data, setData] = useState<TagWithTickets[]>([])
   const [isDragging, setIsDragging] = useState(false)
 
   useEffect(() => {
@@ -58,6 +58,10 @@ export default function TagDraggable({ tags }: TagDraggableProps) {
                     <TagIcon color={p.color} />
 
                     <span className="ml-2 text-white">{p.description}</span>
+
+                    <span className="ml-4 text-xs text-gray-500">
+                      {p.ticket.filter(p => !p.done).length}
+                    </span>
 
                     <TagActions tag={p} />
                   </div>

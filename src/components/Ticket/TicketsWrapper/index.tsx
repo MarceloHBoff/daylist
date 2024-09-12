@@ -15,7 +15,7 @@ export default function TicketsWrapper({
   children
 }: TicketsWrapperProps) {
   // @ts-ignore
-  const length = children.length
+  const length = children.length ?? children.props.tickets.length
 
   return (
     <section className="h-ticket-list scrollbar-stable mx-2 w-full min-w-96 max-w-[400px] overflow-x-hidden overflow-y-hidden p-2 hover:overflow-y-auto">

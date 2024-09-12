@@ -7,7 +7,7 @@ import { useEffect, useState } from 'react'
 import RequestError from '@/error/requestError'
 import { useLoading } from '@/hooks/loading'
 import { apiGet } from '@/lib/api'
-import { Tag } from '@prisma/client'
+import { TagWithTickets } from '@/models/ticket'
 
 import TagDraggable from './TagDraggable'
 import TagForm from './TagForm'
@@ -16,12 +16,12 @@ export default function Tags() {
   const router = useRouter()
   const { loader } = useLoading()
 
-  const [tags, setTags] = useState<Tag[]>([])
+  const [tags, setTags] = useState<TagWithTickets[]>([])
 
   useEffect(() => {
     loader(async () => {
       try {
-        setTags(await apiGet<Tag[]>('/tags', { cache: 'no-cache' }))
+        setTags(await apiGet<TagWithTickets[]>('/tags', { cache: 'no-cache' }))
       } catch (e) {
         const { code } = e as RequestError
         if (code === 401) {

@@ -13,8 +13,10 @@ export default async function handler(
 
     const tags = await prisma.tag.findMany({
       where: { userId },
+      include: { ticket: true },
       orderBy: { order: 'asc' }
     })
+
     return res.status(200).json(tags)
   } catch (e) {
     const { message, code } = e as RequestError
