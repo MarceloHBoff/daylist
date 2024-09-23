@@ -65,13 +65,19 @@ export default async function handler(
       for (let index = 0; index < days + 1; index++) {
         await createTicket({
           ...ticket,
-          date: new Date(date.setMonth(new Date().getMonth() + index))
+          date: addDays(
+            new Date(date.setMonth(new Date().getMonth() + index)),
+            -1
+          )
         })
       }
     } else if (type === 2) {
       const days = differenceInWeeks(endDate, startDate)
 
-      let date = setDay(new Date(), dayOnWeek ?? 0, { weekStartsOn: 0 })
+      let date = addDays(
+        setDay(new Date(), dayOnWeek ?? 0, { weekStartsOn: 0 }),
+        -1
+      )
 
       for (let index = 0; index < days + 1; index++) {
         await createTicket({ ...ticket, date: addWeeks(date, index) })

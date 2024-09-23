@@ -47,12 +47,12 @@ export default function TagDraggable({ tags }: TagDraggableProps) {
           >
             {data.map((p, index) => (
               <Draggable key={p.id} draggableId={p.id} index={index}>
-                {provided => (
+                {providedItem => (
                   <div
                     key={p.id}
-                    ref={provided.innerRef}
-                    {...provided.draggableProps}
-                    {...provided.dragHandleProps}
+                    ref={providedItem.innerRef}
+                    {...providedItem.draggableProps}
+                    {...providedItem.dragHandleProps}
                     className="group mb-4 flex items-center border-b-2 border-b-zinc-700 p-2"
                   >
                     <TagIcon color={p.color} />
