@@ -16,10 +16,6 @@ export function getCorrectDate(date: Date) {
   if (typeof date === 'string') {
     const day = Number(String(date).substring(8, 10))
     if (newDate.getDate() !== day) {
-      console.log(newDate.getDate(), day)
-      console.log(isFirstDayOfMonth(newDate))
-      console.log(addDays(newDate, -2))
-
       if (isFirstDayOfMonth(newDate) && day > 1) {
         newDate = addDays(newDate, -2)
         newDate.setDate(day)
