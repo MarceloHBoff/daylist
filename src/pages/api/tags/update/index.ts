@@ -17,7 +17,10 @@ export default async function handler(
     const data = JSON.parse(body) as Tag
 
     const tag = await prisma.tag.update({
-      data,
+      data: {
+        description: data.description,
+        color: data.color
+      },
       where: { id: data.id, userId }
     })
 
