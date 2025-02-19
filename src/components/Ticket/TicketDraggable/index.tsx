@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
+import Loading from '@/components/Loading'
 import { apiPost } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
 import { reorder } from '@/utils/array'
@@ -16,6 +17,7 @@ type TicketDraggableProps = {
 export default function TicketDraggable({ tickets }: TicketDraggableProps) {
   const [data, setData] = useState<TicketWithTag[]>([])
   const [isDragging, setIsDragging] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
   useEffect(() => {
     setData(tickets.filter(p => !p.done))
@@ -24,6 +26,7 @@ export default function TicketDraggable({ tickets }: TicketDraggableProps) {
   return (
     <DragDropContext
       onDragEnd={async p => {
+        setIsLoading(true)
         setIsDragging(false)
 
         if (p.destination) {
@@ -34,6 +37,7 @@ export default function TicketDraggable({ tickets }: TicketDraggableProps) {
             {}
           )
         }
+        setIsLoading(false)
       }}
       onDragStart={() => setIsDragging(true)}
     >
@@ -63,6 +67,8 @@ export default function TicketDraggable({ tickets }: TicketDraggableProps) {
           </div>
         )}
       </Droppable>
+
+      {isLoading && <Loading />}
     </DragDropContext>
   )
 }
