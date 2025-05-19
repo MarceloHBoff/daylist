@@ -3,6 +3,7 @@ import Image from 'next/image'
 import TagIcon from '@/components/TagIcon'
 import { TicketWithTag } from '@/models/ticket'
 import { getDaySuffix } from '@/utils/date'
+import { format } from 'date-fns'
 
 import TicketForm from '../TicketForm'
 
@@ -26,6 +27,11 @@ export default function Ticket({ ticket, showDate = false }: TicketProps) {
           defaultValues={{ ...ticket }}
           opener={
             <div className="cursor-pointer text-sm font-bold text-slate-100">
+              {ticket.date && (
+                <span className="text-red-300">
+                  {format(new Date(ticket.date), 'HH:mm')}
+                </span>
+              )}{' '}
               {ticket.description}
             </div>
           }

@@ -6,8 +6,8 @@ import * as Form from '@/components/Form'
 import Modal from '@/components/Modal'
 import TagSelect from '@/components/TagSelect'
 import { apiPost } from '@/lib/api'
-import { parseForm } from '@/utils/date'
 import { Ticket } from '@prisma/client'
+import { format } from 'date-fns'
 
 type TicketFormProps = {
   opener: ReactNode
@@ -30,7 +30,9 @@ export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
         onSubmit={onSubmit}
         defaultData={{
           ...defaultValues,
-          date: parseForm(defaultValues?.date)
+          date: defaultValues.date
+            ? format(new Date(defaultValues.date), "yyyy-MM-dd'T'hh:mm:ss")
+            : null
         }}
       >
         <Form.Input
@@ -40,7 +42,7 @@ export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
 
         <div className="mt-2 flex">
           <div className="mr-2">
-            <Form.Input name="date" type="date" />
+            <Form.Input name="date" type="datetime-local" />
           </div>
 
           <TagSelect />

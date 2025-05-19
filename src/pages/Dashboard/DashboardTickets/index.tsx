@@ -2,12 +2,12 @@
 
 import { useRouter } from 'next/navigation'
 
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import * as Ticket from '@/components/Ticket'
 import RequestError from '@/error/requestError'
 import { useLoading } from '@/hooks/loading'
-import { apiGet } from '@/lib/api'
+import { apiGet, apiPost } from '@/lib/api'
 import { TicketWithTag } from '@/models/ticket'
 import { formatDay } from '@/utils/date'
 import {
@@ -63,6 +63,14 @@ export default function DashboardTickets({ week }: DashboardTicketsProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  const onReorder = useCallback(async (date: Date) => {
+    await apiPost(`/tickets/sort-by-time?date=${date.toISOString()}`, {
+      cache: 'no-cache'
+    })
+
+    window.location.reload()
+  }, [])
+
   return (
     <>
       {days.map(p => (
@@ -70,6 +78,7 @@ export default function DashboardTickets({ week }: DashboardTicketsProps) {
           key={p.key}
           title={formatDay(p.date)}
           defaultValues={{ date: p.date }}
+          onReorder={() => onReorder(p.date)}
         >
           <Ticket.TicketDraggable
             tickets={tickets.filter(t =>

@@ -12,7 +12,8 @@ export function getDateFilter(date: Date | null) {
 }
 
 export function getCorrectDate(date: Date) {
-  let newDate = new Date(addDays(new Date(date), 1).setHours(12))
+  let newDate = new Date(addDays(new Date(date), 1))
+
   if (typeof date === 'string') {
     const day = Number(String(date).substring(8, 10))
     if (newDate.getDate() !== day) {
@@ -24,6 +25,7 @@ export function getCorrectDate(date: Date) {
       }
     }
   }
+
   return newDate
 }
 
