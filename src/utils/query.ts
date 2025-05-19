@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma'
 import { Ticket } from '@prisma/client'
-import { addDays, isFirstDayOfMonth } from 'date-fns'
+import { addDays, addHours, isFirstDayOfMonth } from 'date-fns'
 
 export function getDateFilter(date: Date | null) {
   const currentDate = new Date(date ?? '')
@@ -12,10 +12,11 @@ export function getDateFilter(date: Date | null) {
 }
 
 export function getCorrectDate(date: Date) {
-  let newDate = new Date(addDays(new Date(date), 1))
+  let newDate = new Date(addHours(addDays(new Date(date), 1), 3))
 
   if (typeof date === 'string') {
     const day = Number(String(date).substring(8, 10))
+
     if (newDate.getDate() !== day) {
       if (isFirstDayOfMonth(newDate) && day > 1) {
         newDate = addDays(newDate, -2)
