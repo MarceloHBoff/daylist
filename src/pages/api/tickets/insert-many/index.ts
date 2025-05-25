@@ -16,6 +16,7 @@ import {
 
 type Params = {
   type: number
+  time: string
   description: string
   tagId: string
   initialDate?: Date
@@ -35,6 +36,7 @@ export default async function handler(
 
     const {
       type,
+      time,
       dayOnMonth,
       dayOnWeek,
       initialDate,
@@ -55,12 +57,19 @@ export default async function handler(
       for (let index = 0; index < days + 1; index++) {
         const date = addDays(startDate, index - 1)
 
+        date.setHours(Number(time.split(':')[0]) - 3)
+        date.setMinutes(Number(time.split(':')[1]))
+        date.setSeconds(0)
+
         await createTicket({ ...ticket, date })
       }
     } else if (type === 1) {
       const days = differenceInMonths(endDate, startDate)
 
       const date = new Date(new Date().setDate(dayOnMonth ?? 0))
+      date.setHours(Number(time.split(':')[0]))
+      date.setMinutes(Number(time.split(':')[1]))
+      date.setSeconds(0)
 
       for (let index = 0; index < days + 1; index++) {
         await createTicket({
@@ -78,6 +87,9 @@ export default async function handler(
         setDay(new Date(), dayOnWeek ?? 0, { weekStartsOn: 0 }),
         -1
       )
+      date.setHours(Number(time.split(':')[0]))
+      date.setMinutes(Number(time.split(':')[1]))
+      date.setSeconds(0)
 
       for (let index = 0; index < days + 1; index++) {
         await createTicket({ ...ticket, date: addWeeks(date, index) })

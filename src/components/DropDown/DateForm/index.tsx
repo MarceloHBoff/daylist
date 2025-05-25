@@ -1,8 +1,9 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 
 import * as Form from '@/components/Form'
+import Loading from '@/components/Loading'
 import Modal from '@/components/Modal'
 import TagSelect from '@/components/TagSelect'
 import { apiPost } from '@/lib/api'
@@ -15,10 +16,18 @@ type DateFormProps = {
 }
 
 export default function DateForm({ opener, type }: DateFormProps) {
+  const [isLoading, setIsLoading] = useState(false)
+
   const onSubmit = async (data: any) => {
+    setIsLoading(true)
     await apiPost('/tickets/insert-many', { type, ...data })
 
+    setIsLoading(false)
     window.location.reload()
+  }
+
+  if (isLoading) {
+    return <Loading />
   }
 
   return (
@@ -33,11 +42,13 @@ export default function DateForm({ opener, type }: DateFormProps) {
       >
         {type === 0 ? (
           <div className="flex">
-            <div className="mr-2">
+            <div className="mr-2 w-full">
               <Form.Input name="initialDate" type="date" />
             </div>
 
-            <Form.Input name="finalDate" type="date" />
+            <div className="w-full">
+              <Form.Input name="finalDate" type="date" />
+            </div>
           </div>
         ) : type === 1 ? (
           <Form.Select
@@ -61,6 +72,14 @@ export default function DateForm({ opener, type }: DateFormProps) {
             ]}
           />
         )}
+
+        <div className="mt-2">
+          <Form.Input
+            name="time"
+            type="time"
+            placeholder="Type your ticket description..."
+          />
+        </div>
 
         <div className="mt-2">
           <Form.Input
