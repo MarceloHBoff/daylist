@@ -57,7 +57,7 @@ export default async function handler(
       for (let index = 0; index < days + 1; index++) {
         const date = addDays(startDate, index - 1)
 
-        date.setHours(Number(time.split(':')[0]) - 3)
+        date.setHours(Number(time.split(':')[0]))
         date.setMinutes(Number(time.split(':')[1]))
         date.setSeconds(0)
 
