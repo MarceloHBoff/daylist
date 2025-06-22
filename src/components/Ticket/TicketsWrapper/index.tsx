@@ -22,7 +22,7 @@ export default function TicketsWrapper({
   const length = children.length ?? children.props.tickets.length
 
   return (
-    <section className="h-ticket-list scrollbar-stable mx-2 w-full min-w-96 max-w-[400px] overflow-x-hidden overflow-y-hidden p-2 hover:overflow-y-auto">
+    <section className="h-ticket-list scrollbar-stable mx-2 w-full min-w-96 max-w-[400px] overflow-x-hidden p-2 xl:overflow-y-hidden xl:hover:overflow-y-auto">
       <div className="flex items-center">
         <strong className="ml-3 text-white">{title}</strong>
 

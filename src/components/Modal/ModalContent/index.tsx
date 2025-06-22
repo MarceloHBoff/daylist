@@ -23,7 +23,7 @@ export default function ModalContent({
       onClick={onClose}
     >
       <div
-        className="w-1/3 rounded-lg bg-gray-800 p-6 text-white shadow-lg"
+        className="m-2 w-full rounded-lg bg-gray-800 p-6 text-white shadow-lg md:w-1/2"
         onClick={e => e.stopPropagation()}
       >
         <div className="flex items-center justify-between border-b border-gray-700 pb-3">

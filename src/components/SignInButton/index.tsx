@@ -19,7 +19,9 @@ export default function SignInButton() {
     >
       <Image alt="google" src="/google.svg" height={30} width={30} />
 
-      <span className="ml-4 text-zinc-800">Sign In with Google</span>
+      <span className="ml-2 text-center text-base font-bold text-zinc-800 md:ml-4 md:text-lg">
+        Sign In with Google
+      </span>
     </button>
   )
 }

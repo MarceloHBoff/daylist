@@ -12,7 +12,7 @@ export default function DashboardHeader({ week }: DashboardHeaderProps) {
     <div className="m-10 flex items-center justify-between">
       <DropDown />
 
-      <div className="-mb-16 mr-6 flex">
+      <div className="-mb-16 flex xl:mr-6">
         {Number(week) > 0 && (
           <Link
             href={`/${Number(week) - 1}`}

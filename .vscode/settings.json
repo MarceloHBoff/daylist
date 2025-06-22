@@ -5,11 +5,19 @@
     "activityBar.activeBackground": "#3f3f46",
     "activityBar.background": "#3f3f46"
   },
+  "[typescriptreact]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "always",
+      "source.fixAll.eslint": "always"
+    }
+  },
   "[typescript]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode",
     "editor.formatOnSave": true,
     "editor.codeActionsOnSave": {
-      "source.organizeImports": "never",
+      "source.organizeImports": "always",
       "source.fixAll.eslint": "always"
     }
   },
