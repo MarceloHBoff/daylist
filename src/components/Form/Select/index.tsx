@@ -43,7 +43,7 @@ export default function Select({ options, name }: SelectProps) {
                   onClick={() => setIsOpen(false)}
                 />
 
-                <ul className="absolute z-50 mt-2 max-h-96 w-full overflow-y-auto overflow-x-hidden rounded-xl bg-zinc-600">
+                <ul className="absolute z-50 mt-2 max-h-52 w-full overflow-y-auto overflow-x-hidden rounded-xl bg-zinc-600">
                   {options.map(p => (
                     <li
                       key={p.id}

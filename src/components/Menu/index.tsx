@@ -16,7 +16,7 @@ export default function Menu() {
 
   return (
     <>
-      <nav className="flex items-center justify-between border-b-2 border-b-slate-400 bg-zinc-700 p-4 md:justify-center">
+      <nav className="flex items-center justify-between border-b-2 border-b-slate-400 bg-zinc-700 p-1 md:justify-center">
         <div className="flex w-full items-center justify-between md:hidden">
           <div className="flex items-center">
             <Image src="/favicon.ico" width={32} height={32} alt="Day list" />
