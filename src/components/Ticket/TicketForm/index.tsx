@@ -31,7 +31,7 @@ export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
         defaultData={{
           ...defaultValues,
           date: defaultValues.date
-            ? format(new Date(defaultValues.date), "yyyy-MM-dd'T'hh:mm:ss")
+            ? format(defaultValues.date, "yyyy-MM-dd'T'HH:mm:ss")
             : null
         }}
       >
