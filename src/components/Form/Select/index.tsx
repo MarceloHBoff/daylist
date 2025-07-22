@@ -12,6 +12,13 @@ export default function Select({ options, name }: SelectProps) {
   const { control } = useFormContext()
 
   const [isOpen, setIsOpen] = useState(false)
+  const [text, setText] = useState('')
+
+  const filteredOptions = options.filter(
+    p =>
+      !text ||
+      p.description.toLocaleLowerCase().includes(text.toLocaleLowerCase())
+  )
 
   return (
     <Controller
@@ -27,13 +34,34 @@ export default function Select({ options, name }: SelectProps) {
               type="button"
               onClick={() => setIsOpen(true)}
             >
-              {selected?.color && (
-                <div className="mr-2">
-                  <TagIcon color={selected.color} />
-                </div>
-              )}
+              {isOpen ? (
+                <input
+                  className="h-full w-full bg-transparent text-white outline-none"
+                  autoFocus
+                  autoComplete="off"
+                  id={name}
+                  name={name}
+                  value={text}
+                  onChange={p => setText(p.target.value)}
+                  onKeyDown={e => {
+                    if (e.key === 'Enter' && filteredOptions.length > 0) {
+                      setIsOpen(false)
+                      setText('')
+                      field.onChange(filteredOptions[0].id)
+                    }
+                  }}
+                />
+              ) : (
+                <>
+                  {selected?.color && (
+                    <div className="mr-2">
+                      <TagIcon color={selected.color} />
+                    </div>
+                  )}
 
-              {field.value ? selected?.description : ''}
+                  {field.value ? selected?.description : ''}
+                </>
+              )}
             </button>
 
             {isOpen && (
@@ -44,7 +72,7 @@ export default function Select({ options, name }: SelectProps) {
                 />
 
                 <ul className="absolute z-50 mt-2 max-h-52 w-full overflow-y-auto overflow-x-hidden rounded-xl bg-zinc-600">
-                  {options.map(p => (
+                  {filteredOptions.map(p => (
                     <li
                       key={p.id}
                       value={p.id}
