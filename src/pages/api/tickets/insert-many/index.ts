@@ -2,7 +2,7 @@ import type { NextApiRequest, NextApiResponse } from 'next'
 
 import RequestError from '@/error/requestError'
 import auth from '@/utils/auth'
-import { createTicket } from '@/utils/query'
+import { createTicket, getCorrectDate } from '@/utils/query'
 import { Ticket } from '@prisma/client'
 import {
   addDays,
@@ -11,6 +11,7 @@ import {
   differenceInMonths,
   differenceInWeeks,
   endOfYear,
+  isWeekend,
   setDay
 } from 'date-fns'
 
@@ -51,7 +52,7 @@ export default async function handler(
     const startDate = initialDate ? new Date(initialDate) : new Date()
     const endDate = finalDate ? new Date(finalDate) : endOfYear(new Date())
 
-    if (type === 0) {
+    if (type === 0 || type === 1) {
       const days = differenceInDays(endDate, startDate)
 
       for (let index = 0; index < days + 1; index++) {
@@ -61,9 +62,11 @@ export default async function handler(
         date.setMinutes(Number(time.split(':')[1]))
         date.setSeconds(0)
 
-        await createTicket({ ...ticket, date })
+        if (type === 0 || (type === 1 && !isWeekend(getCorrectDate(date)))) {
+          await createTicket({ ...ticket, date })
+        }
       }
-    } else if (type === 1) {
+    } else if (type === 2) {
       const days = differenceInMonths(endDate, startDate)
 
       const date = new Date(new Date().setDate(dayOnMonth ?? 0))
@@ -80,7 +83,7 @@ export default async function handler(
           )
         })
       }
-    } else if (type === 2) {
+    } else if (type === 3) {
       const days = differenceInWeeks(endDate, startDate)
 
       let date = addDays(

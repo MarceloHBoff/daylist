@@ -30,17 +30,32 @@ export default function DateForm({ opener, type }: DateFormProps) {
     return <Loading />
   }
 
+  const getSubTitle = () => {
+    switch (type) {
+      case 0:
+        return 'Every Day'
+      case 1:
+        return 'Every Business Day'
+      case 2:
+        return 'Day on Month'
+      case 3:
+        return 'Day on Week'
+    }
+  }
+
   return (
-    <Modal title="New Tickets" opener={opener}>
+    <Modal title={`New Tickets - ${getSubTitle()}`} opener={opener}>
       <Form.Form
         onSubmit={onSubmit}
         defaultData={{
-          initialDate: type === 0 ? parseForm(addDays(new Date(), 2)) : null,
-          finalDate: type === 0 ? parseForm(addDays(new Date(), 8)) : null,
+          initialDate:
+            type === 0 || type === 1 ? parseForm(addDays(new Date(), 2)) : null,
+          finalDate:
+            type === 0 || type === 1 ? parseForm(addDays(new Date(), 8)) : null,
           description: ''
         }}
       >
-        {type === 0 ? (
+        {type === 0 || type === 1 ? (
           <div className="flex">
             <div className="mr-2 w-full">
               <Form.Input name="initialDate" type="date" />
@@ -50,7 +65,7 @@ export default function DateForm({ opener, type }: DateFormProps) {
               <Form.Input name="finalDate" type="date" />
             </div>
           </div>
-        ) : type === 1 ? (
+        ) : type === 2 ? (
           <Form.Select
             name="dayOnMonth"
             options={[...Array(31)].map((_, index) => ({

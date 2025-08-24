@@ -6,7 +6,12 @@ import { useState } from 'react'
 
 import DateForm from './DateForm'
 
-const options = ['Every Day', 'Day on Month', 'Day on Week']
+const options = [
+  'Every Day',
+  'Every Business Day',
+  'Day on Month',
+  'Day on Week'
+]
 
 export default function DropDown() {
   const [isOpen, setIsOpen] = useState(false)
@@ -14,13 +19,13 @@ export default function DropDown() {
   return (
     <div className="relative">
       <button
-        className="relative z-50 flex w-full items-center rounded-xl bg-zinc-700 p-3 text-white transition-all hover:bg-zinc-600"
+        className="relative z-50 flex w-56 items-center rounded-xl bg-zinc-700 p-3 text-white transition-all hover:bg-zinc-600"
         type="button"
         onClick={() => setIsOpen(true)}
       >
         Create Tickets
         <Image
-          className="ml-4"
+          className="ml-auto"
           alt="Down"
           src="/down.svg"
           width={18}
