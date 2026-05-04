@@ -10,7 +10,7 @@ export default function TicketContainer({
 }: TicketContainerProps) {
   return (
     <article
-      className={`group mx-2 my-3 flex min-h-20 w-full rounded-xl border-2 border-gray-600 bg-zinc-700 p-3 ${className}`}
+      className={`group mx-2 my-3 flex w-full rounded-xl border border-zinc-700/70 bg-gradient-to-br from-zinc-800 to-zinc-900/80 p-4 shadow-sm transition-all duration-200 hover:border-zinc-600 hover:shadow-md ${className}`}
     >
       {children}
     </article>

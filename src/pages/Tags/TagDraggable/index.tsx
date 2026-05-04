@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-import TagIcon from '@/components/TagIcon'
+import TagBadge from '@/components/TagBadge'
 import { apiPost } from '@/lib/api'
 import { TagWithTickets } from '@/models/ticket'
 import { reorder } from '@/utils/array'
@@ -55,9 +55,11 @@ export default function TagDraggable({ tags }: TagDraggableProps) {
                     {...providedItem.dragHandleProps}
                     className="group mb-4 flex items-center border-b-2 border-b-zinc-700 p-2"
                   >
-                    <TagIcon color={p.color} />
-
-                    <span className="ml-2 text-white">{p.description}</span>
+                    <TagBadge
+                      color={p.color}
+                      description={p.description}
+                      showIcon
+                    />
 
                     <span className="ml-4 text-xs text-gray-500">
                       {p.ticket.filter(p => !p.done).length}

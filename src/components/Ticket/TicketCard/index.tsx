@@ -1,6 +1,6 @@
 import Image from 'next/image'
 
-import TagIcon from '@/components/TagIcon'
+import TagBadge from '@/components/TagBadge'
 import { TicketWithTag } from '@/models/ticket'
 import { getDaySuffix } from '@/utils/date'
 import { format } from 'date-fns'
@@ -18,44 +18,44 @@ type TicketProps = {
 export default function Ticket({ ticket, showDate = false }: TicketProps) {
   return (
     <>
-      <div className="mr-2 flex items-center">
+      <div className="mr-3 flex items-start pt-0.5">
         <TicketCheck id={ticket.id} />
       </div>
 
-      <div className="flex w-full flex-col">
+      <div className="flex min-w-0 flex-1 flex-col gap-2">
         <TicketForm
           defaultValues={{ ...ticket }}
           opener={
-            <div className="cursor-pointer text-sm font-bold text-slate-100">
+            <div className="flex cursor-pointer flex-wrap items-center gap-2">
               {ticket.date && (
-                <span className="text-red-300">
+                <span className="rounded px-1.5 py-0.5 text-xs font-semibold bg-red-500/15 text-red-400 border border-red-500/25">
                   {format(new Date(ticket.date), 'HH:mm')}
                 </span>
-              )}{' '}
-              {ticket.description}
+              )}
+              <span className="text-sm font-medium text-slate-100 leading-snug">
+                {ticket.description}
+              </span>
             </div>
           }
         />
 
-        {ticket.tag && (
-          <div
-            className="mt-3 flex items-center"
-            style={{ color: ticket.tag.color }}
-          >
-            <TagIcon color={ticket.tag.color} />
-
-            <span className="ml-2 text-sm">{ticket.tag.description}</span>
+        {(ticket.tag || (showDate && ticket.date)) && (
+          <div className="flex items-center gap-2">
+            {ticket.tag && (
+              <TagBadge
+                color={ticket.tag.color}
+                description={ticket.tag.description}
+              />
+            )}
 
             {showDate && ticket.date && (
-              <div className="ml-auto flex items-center text-base text-zinc-400">
+              <div className="ml-auto flex items-center gap-1.5 text-xs text-zinc-500">
                 <Image
                   src="/calendar.svg"
                   alt="calendar"
-                  width={16}
-                  height={16}
-                  className="mr-2"
+                  width={12}
+                  height={12}
                 />
-
                 {getDaySuffix(ticket.date)}
               </div>
             )}
@@ -63,7 +63,7 @@ export default function Ticket({ ticket, showDate = false }: TicketProps) {
         )}
       </div>
 
-      <div className="w-8">
+      <div className="ml-1 flex items-start">
         <TicketContextMenu id={ticket.id} />
       </div>
     </>
