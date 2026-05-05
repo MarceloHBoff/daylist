@@ -1,27 +1,10 @@
 'use client'
 
-import { useEffect, useState } from 'react'
-
 import * as Ticket from '@/components/Ticket'
-import { useLoading } from '@/hooks/loading'
-import { apiGet } from '@/lib/api'
-import { TicketWithTag } from '@/models/ticket'
+import { useOutdatedTickets } from '@/hooks/tickets'
 
 export default function DashboardOutdated() {
-  const { loader } = useLoading()
-
-  const [outdated, setOutdated] = useState<TicketWithTag[]>([])
-
-  useEffect(() => {
-    loader(async () => {
-      setOutdated(
-        await apiGet<TicketWithTag[]>(`/tickets/outdated`, {
-          cache: 'no-cache'
-        })
-      )
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  const { data: outdated = [] } = useOutdatedTickets()
 
   return (
     <>

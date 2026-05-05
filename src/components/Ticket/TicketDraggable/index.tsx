@@ -2,8 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-import Loading from '@/components/Loading'
-import { apiPost } from '@/lib/api'
+import { useReorderTickets } from '@/hooks/tickets'
 import { TicketWithTag } from '@/models/ticket'
 import { reorder } from '@/utils/array'
 import { DragDropContext, Draggable, Droppable } from '@hello-pangea/dnd'
@@ -17,7 +16,7 @@ type TicketDraggableProps = {
 export default function TicketDraggable({ tickets }: TicketDraggableProps) {
   const [data, setData] = useState<TicketWithTag[]>([])
   const [isDragging, setIsDragging] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
+  const reorderTickets = useReorderTickets()
 
   useEffect(() => {
     setData(tickets.filter(p => !p.done))
@@ -26,18 +25,17 @@ export default function TicketDraggable({ tickets }: TicketDraggableProps) {
   return (
     <DragDropContext
       onDragEnd={async p => {
-        setIsLoading(true)
         setIsDragging(false)
 
         if (p.destination) {
           setData(reorder(data, p.source.index, p.destination.index))
 
-          await apiPost(
-            `/tickets/reorder?id=${p.draggableId}&startIndex=${p.source.index}&endIndex=${p.destination.index}`,
-            {}
-          )
+          reorderTickets.mutate({
+            id: p.draggableId,
+            startIndex: p.source.index,
+            endIndex: p.destination.index
+          })
         }
-        setIsLoading(false)
       }}
       onDragStart={() => setIsDragging(true)}
     >
@@ -69,8 +67,6 @@ export default function TicketDraggable({ tickets }: TicketDraggableProps) {
           </div>
         )}
       </Droppable>
-
-      {isLoading && <Loading />}
     </DragDropContext>
   )
 }

@@ -1,14 +1,9 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
-
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useMemo } from 'react'
 
 import * as Ticket from '@/components/Ticket'
-import RequestError from '@/error/requestError'
-import { useLoading } from '@/hooks/loading'
-import { apiGet, apiPost } from '@/lib/api'
-import { TicketWithTag } from '@/models/ticket'
+import { useSortByTime, useTickets } from '@/hooks/tickets'
 import { formatDay } from '@/utils/date'
 import {
   addDays,
@@ -26,50 +21,35 @@ type DashboardTicketsProps = {
 }
 
 export default function DashboardTickets({ week }: DashboardTicketsProps) {
-  const router = useRouter()
-  const { loader } = useLoading()
+  const initialDate = useMemo(
+    () =>
+      week > 0
+        ? startOfWeek(addWeeks(new Date(), week), { weekStartsOn: 1 })
+        : new Date(),
+    [week]
+  )
+  const finalDate = useMemo(
+    () => endOfWeek(initialDate, { weekStartsOn: 1 }),
+    [initialDate]
+  )
 
-  const initialDate =
-    week > 0
-      ? startOfWeek(addWeeks(new Date(), week), { weekStartsOn: 1 })
-      : new Date()
-  const finalDate = endOfWeek(initialDate, { weekStartsOn: 1 })
+  const days = useMemo(() => {
+    const count = differenceInDays(finalDate, initialDate) + 1
+    return new Array(count).fill(0).map((_, index) => ({
+      key: getDay(addDays(initialDate, index)) + 1,
+      date: startOfDay(addDays(initialDate, index))
+    }))
+  }, [initialDate, finalDate])
 
-  const daysInWeek = differenceInDays(finalDate, initialDate) + 1
+  const { data: tickets = [] } = useTickets(initialDate, finalDate)
+  const sortByTime = useSortByTime()
 
-  const days = new Array(daysInWeek).fill(0).map((_, index) => ({
-    key: getDay(addDays(initialDate, index)) + 1,
-    date: startOfDay(addDays(initialDate, index))
-  }))
-
-  const [tickets, setTickets] = useState<TicketWithTag[]>([])
-
-  useEffect(() => {
-    loader(async () => {
-      try {
-        setTickets(
-          await apiGet<TicketWithTag[]>(
-            `/tickets?initialDate=${initialDate.toISOString()}&finalDate=${finalDate.toISOString()}`,
-            { cache: 'no-cache' }
-          )
-        )
-      } catch (e) {
-        const { code } = e as RequestError
-        if (code === 401) {
-          router.replace('/login')
-        }
-      }
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
-
-  const onReorder = useCallback(async (date: Date) => {
-    await apiPost(`/tickets/sort-by-time?date=${date.toISOString()}`, {
-      cache: 'no-cache'
-    })
-
-    window.location.reload()
-  }, [])
+  const onReorder = useCallback(
+    async (date: Date) => {
+      sortByTime.mutate(date)
+    },
+    [sortByTime]
+  )
 
   return (
     <>

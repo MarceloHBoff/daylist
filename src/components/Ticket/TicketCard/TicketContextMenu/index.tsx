@@ -4,7 +4,7 @@ import Image from 'next/image'
 
 import { useState } from 'react'
 
-import { apiPost } from '@/lib/api'
+import { useDeleteTicket, useDuplicateTicket } from '@/hooks/tickets'
 
 type TicketContextMenuProps = {
   id: string
@@ -23,20 +23,19 @@ const options = [
 
 export default function TicketContextMenu({ id }: TicketContextMenuProps) {
   const [open, setOpen] = useState(false)
+  const deleteTicket = useDeleteTicket()
+  const duplicateTicket = useDuplicateTicket()
 
   const handleOpen = () => setOpen(true)
-
   const handleClose = () => setOpen(false)
 
   const onClickMenu = async (label: string) => {
     switch (label) {
       case 'Duplicate':
-        apiPost(`/tickets/duplicate?id=${id}`, {})
-        window.location.reload()
+        duplicateTicket.mutate(id)
         break
       case 'Delete':
-        apiPost(`/tickets/delete?id=${id}`, {})
-        window.location.reload()
+        deleteTicket.mutate(id)
         break
       default:
         break
