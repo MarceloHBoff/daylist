@@ -20,10 +20,11 @@ export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
   const updateTicket = useUpdateTicket()
 
   const onSubmit = async (data: Ticket) => {
+    setShowModal(false)
     if (data.id) {
-      updateTicket.mutate(data, { onSuccess: () => setShowModal(false) })
+      updateTicket.mutate(data)
     } else {
-      insertTicket.mutate(data, { onSuccess: () => setShowModal(false) })
+      insertTicket.mutate(data)
     }
   }
 
