@@ -2,7 +2,7 @@
 
 import Image from 'next/image'
 
-import { apiPost } from '@/lib/api'
+import { useDeleteTag } from '@/hooks/tags'
 import { Tag } from '@prisma/client'
 
 import TagForm from '../TagForm'
@@ -12,11 +12,7 @@ type TagActionsProps = {
 }
 
 export default function TagActions({ tag }: TagActionsProps) {
-  const onDelete = async () => {
-    await apiPost(`/tags/delete?id=${tag.id}`, {})
-
-    window.location.reload()
-  }
+  const deleteTag = useDeleteTag()
 
   return (
     <div className="ml-auto flex">
@@ -30,7 +26,7 @@ export default function TagActions({ tag }: TagActionsProps) {
       />
       <button
         className="ml-2 hidden animate-fade-in opacity-0 transition-opacity duration-500 group-hover:block group-hover:opacity-100"
-        onClick={onDelete}
+        onClick={() => deleteTag.mutate(tag.id)}
       >
         <Image width={20} height={20} alt="Delete" src="/delete.svg" />
       </button>

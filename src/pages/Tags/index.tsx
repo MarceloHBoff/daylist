@@ -2,35 +2,20 @@
 
 import { useRouter } from 'next/navigation'
 
-import { useEffect, useState } from 'react'
-
 import RequestError from '@/error/requestError'
-import { useLoading } from '@/hooks/loading'
-import { apiGet } from '@/lib/api'
-import { TagWithTickets } from '@/models/ticket'
+import { useTags } from '@/hooks/tags'
 
 import TagDraggable from './TagDraggable'
 import TagForm from './TagForm'
 
 export default function Tags() {
   const router = useRouter()
-  const { loader } = useLoading()
+  const { data: tags = [], error } = useTags()
 
-  const [tags, setTags] = useState<TagWithTickets[]>([])
-
-  useEffect(() => {
-    loader(async () => {
-      try {
-        setTags(await apiGet<TagWithTickets[]>('/tags', { cache: 'no-cache' }))
-      } catch (e) {
-        const { code } = e as RequestError
-        if (code === 401) {
-          router.replace('/login')
-        }
-      }
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  if (error) {
+    const { code } = error as unknown as RequestError
+    if (code === 401) router.replace('/login')
+  }
 
   return (
     <div className="px-64 pt-28">

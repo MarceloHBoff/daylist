@@ -1,45 +1,56 @@
 'use client'
 
-import { ReactNode } from 'react'
+import { ReactNode, useState } from 'react'
 
 import * as Form from '@/components/Form'
-import Modal from '@/components/Modal'
-import { apiPost } from '@/lib/api'
+import ModalContent from '@/components/Modal/ModalContent'
+import { useInsertTag, useUpdateTag } from '@/hooks/tags'
 import { Tag } from '@prisma/client'
 
 type TagFormProps = {
   opener: ReactNode
   defaultValues?: any
+  onSuccess?: () => void
 }
 
-export default function TagForm({ opener, defaultValues }: TagFormProps) {
-  const onSubmit = async (data: Tag) => {
+export default function TagForm({ opener, defaultValues, onSuccess }: TagFormProps) {
+  const [showModal, setShowModal] = useState(false)
+  const insertTag = useInsertTag()
+  const updateTag = useUpdateTag()
+
+  const onSubmit = (data: Tag) => {
+    setShowModal(false)
     if (data.id) {
-      await apiPost('/tags/update', { ...data })
+      updateTag.mutate(data, { onSuccess })
     } else {
-      await apiPost('/tags/insert', { ...data })
+      insertTag.mutate(data, { onSuccess })
     }
-    window.location.reload()
   }
 
   return (
-    <Modal title="New Tag" opener={opener}>
-      <Form.Form
-        onSubmit={onSubmit}
-        defaultData={{ color: '#000000', ...defaultValues }}
-      >
-        <div className="flex">
-          <Form.Input name="description" autoComplete="off" />
+    <>
+      <div onClick={() => setShowModal(true)}>{opener}</div>
 
-          <Form.Input
-            className="ml-2 h-16 w-60 py-2"
-            name="color"
-            type="color"
-          />
-        </div>
+      {showModal && (
+        <ModalContent title="New Tag" onClose={() => setShowModal(false)}>
+          <Form.Form
+            onSubmit={onSubmit}
+            defaultData={{ color: '#000000', ...defaultValues }}
+          >
+            <div className="flex">
+              <Form.Input name="description" autoComplete="off" />
 
-        <Form.Submit />
-      </Form.Form>
-    </Modal>
+              <Form.Input
+                className="ml-2 h-16 w-60 py-2"
+                name="color"
+                type="color"
+              />
+            </div>
+
+            <Form.Submit />
+          </Form.Form>
+        </ModalContent>
+      )}
+    </>
   )
 }
