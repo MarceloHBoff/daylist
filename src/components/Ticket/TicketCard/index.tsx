@@ -28,11 +28,11 @@ export default function Ticket({ ticket, showDate = false }: TicketProps) {
           opener={
             <div className="flex cursor-pointer flex-wrap items-center gap-2">
               {ticket.date && (
-                <span className="rounded px-1.5 py-0.5 text-xs font-semibold bg-red-500/15 text-red-400 border border-red-500/25">
+                <span className="rounded border border-red-500/25 bg-red-500/15 px-1.5 py-0.5 text-xs font-semibold text-red-400">
                   {format(new Date(ticket.date), 'HH:mm')}
                 </span>
               )}
-              <span className="text-sm font-medium text-slate-100 leading-snug">
+              <span className="text-sm font-medium leading-snug text-slate-100">
                 {ticket.description}
               </span>
             </div>
@@ -64,7 +64,7 @@ export default function Ticket({ ticket, showDate = false }: TicketProps) {
       </div>
 
       <div className="ml-1 flex items-start">
-        <TicketContextMenu id={ticket.id} />
+        <TicketContextMenu ticket={ticket} />
       </div>
     </>
   )

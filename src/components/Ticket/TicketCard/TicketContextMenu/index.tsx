@@ -4,10 +4,12 @@ import Image from 'next/image'
 
 import { useState } from 'react'
 
-import { useDeleteTicket, useDuplicateTicket } from '@/hooks/tickets'
+import TicketForm from '@/components/Ticket/TicketForm'
+import { useDeleteTicket } from '@/hooks/tickets'
+import { TicketWithTag } from '@/models/ticket'
 
 type TicketContextMenuProps = {
-  id: string
+  ticket: TicketWithTag
 }
 
 const options = [
@@ -21,10 +23,10 @@ const options = [
   }
 ]
 
-export default function TicketContextMenu({ id }: TicketContextMenuProps) {
+export default function TicketContextMenu({ ticket }: TicketContextMenuProps) {
   const [open, setOpen] = useState(false)
+  const [showDuplicate, setShowDuplicate] = useState(false)
   const deleteTicket = useDeleteTicket()
-  const duplicateTicket = useDuplicateTicket()
 
   const handleOpen = () => setOpen(true)
   const handleClose = () => setOpen(false)
@@ -32,10 +34,11 @@ export default function TicketContextMenu({ id }: TicketContextMenuProps) {
   const onClickMenu = async (label: string) => {
     switch (label) {
       case 'Duplicate':
-        duplicateTicket.mutate(id)
-        break
+        handleClose()
+        setShowDuplicate(true)
+        return
       case 'Delete':
-        deleteTicket.mutate(id)
+        deleteTicket.mutate(ticket.id)
         break
       default:
         break
@@ -86,6 +89,16 @@ export default function TicketContextMenu({ id }: TicketContextMenuProps) {
           <div className="fixed inset-0 z-40" onClick={handleClose} />
         </div>
       )}
+
+      <TicketForm
+        open={showDuplicate}
+        onClose={() => setShowDuplicate(false)}
+        defaultValues={{
+          description: ticket.description,
+          date: ticket.date,
+          tagId: ticket.tagId
+        }}
+      />
     </div>
   )
 }

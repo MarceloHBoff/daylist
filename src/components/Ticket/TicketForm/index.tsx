@@ -10,17 +10,35 @@ import { Ticket } from '@prisma/client'
 import { format } from 'date-fns'
 
 type TicketFormProps = {
-  opener: ReactNode
+  opener?: ReactNode
   defaultValues?: any
+  open?: boolean
+  onClose?: () => void
 }
 
-export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
+export default function TicketForm({
+  opener,
+  defaultValues,
+  open,
+  onClose
+}: TicketFormProps) {
   const [showModal, setShowModal] = useState(false)
   const insertTicket = useInsertTicket()
   const updateTicket = useUpdateTicket()
 
+  const isControlled = open !== undefined
+  const isOpen = isControlled ? open : showModal
+
+  const handleClose = () => {
+    if (isControlled) {
+      onClose?.()
+    } else {
+      setShowModal(false)
+    }
+  }
+
   const onSubmit = async (data: Ticket) => {
-    setShowModal(false)
+    handleClose()
     if (data.id) {
       updateTicket.mutate(data)
     } else {
@@ -30,12 +48,14 @@ export default function TicketForm({ opener, defaultValues }: TicketFormProps) {
 
   return (
     <>
-      <div onClick={() => setShowModal(true)}>{opener}</div>
+      {opener && (
+        <div onClick={() => !isControlled && setShowModal(true)}>{opener}</div>
+      )}
 
-      {showModal && (
+      {isOpen && (
         <ModalContent
           title={defaultValues?.id ? 'Edit Ticket' : 'New Ticket'}
-          onClose={() => setShowModal(false)}
+          onClose={handleClose}
         >
           <Form.Form
             onSubmit={onSubmit}
