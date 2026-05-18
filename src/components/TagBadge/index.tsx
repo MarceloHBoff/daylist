@@ -11,23 +11,35 @@ export default function TagBadge({
   description,
   showIcon = false,
 }: TagBadgeProps) {
+  if (showIcon) {
+    return (
+      <span
+        className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-0.5 text-xs font-medium"
+        style={{
+          backgroundColor: `${color}22`,
+          color,
+          border: `1px solid ${color}44`,
+        }}
+      >
+        <TagIcon color={color} />
+        {description}
+      </span>
+    )
+  }
+
   return (
     <span
-      className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-0.5 text-xs font-medium"
+      className="inline-flex h-5 items-center gap-1.5 rounded-md px-1.5 text-[11px] font-medium uppercase tracking-wide"
       style={{
-        backgroundColor: `${color}22`,
+        backgroundColor: `${color}1f`,
         color,
-        border: `1px solid ${color}44`,
+        border: `1px solid ${color}33`,
       }}
     >
-      {showIcon ? (
-        <TagIcon color={color} />
-      ) : (
-        <span
-          className="h-1.5 w-1.5 rounded-full"
-          style={{ backgroundColor: color }}
-        />
-      )}
+      <span
+        className="h-1.5 w-1.5 rounded-full"
+        style={{ backgroundColor: color }}
+      />
       {description}
     </span>
   )

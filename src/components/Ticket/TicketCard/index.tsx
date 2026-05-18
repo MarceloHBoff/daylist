@@ -22,45 +22,46 @@ export default function Ticket({ ticket, showDate = false }: TicketProps) {
         <TicketCheck id={ticket.id} />
       </div>
 
-      <div className="flex min-w-0 flex-1 flex-col gap-2">
+      <div className="flex min-w-0 flex-1 flex-col gap-1.5">
         <TicketForm
           defaultValues={{ ...ticket }}
           opener={
-            <div className="flex cursor-pointer flex-wrap items-center gap-2">
-              {ticket.date && (
-                <span className="rounded border border-red-500/25 bg-red-500/15 px-1.5 py-0.5 text-xs font-semibold text-red-400">
-                  {format(new Date(ticket.date), 'HH:mm')}
-                </span>
+            <div className="cursor-pointer">
+              {(ticket.date || ticket.tag) && (
+                <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
+                  {ticket.date && (
+                    <span className="inline-flex h-5 items-center rounded-md border border-red-500/25 bg-red-500/15 px-1.5 font-mono text-[11px] font-semibold tabular-nums tracking-tight text-red-400">
+                      {format(new Date(ticket.date), 'HH:mm')}
+                    </span>
+                  )}
+
+                  {ticket.tag && (
+                    <TagBadge
+                      color={ticket.tag.color}
+                      description={ticket.tag.description}
+                    />
+                  )}
+
+                  {showDate && ticket.date && (
+                    <span className="ml-auto inline-flex items-center gap-1 text-[11px] text-neutral-500">
+                      <Image
+                        src="/calendar.svg"
+                        alt="calendar"
+                        width={11}
+                        height={11}
+                      />
+                      {getDaySuffix(ticket.date)}
+                    </span>
+                  )}
+                </div>
               )}
-              <span className="text-sm font-medium leading-snug text-slate-100">
+
+              <span className="block text-sm font-medium leading-snug text-neutral-100">
                 {ticket.description}
               </span>
             </div>
           }
         />
-
-        {(ticket.tag || (showDate && ticket.date)) && (
-          <div className="flex items-center gap-2">
-            {ticket.tag && (
-              <TagBadge
-                color={ticket.tag.color}
-                description={ticket.tag.description}
-              />
-            )}
-
-            {showDate && ticket.date && (
-              <div className="ml-auto flex items-center gap-1.5 text-xs text-zinc-500">
-                <Image
-                  src="/calendar.svg"
-                  alt="calendar"
-                  width={12}
-                  height={12}
-                />
-                {getDaySuffix(ticket.date)}
-              </div>
-            )}
-          </div>
-        )}
       </div>
 
       <div className="ml-1 flex items-start">

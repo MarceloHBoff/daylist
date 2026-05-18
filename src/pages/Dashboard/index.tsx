@@ -12,7 +12,7 @@ export default function Dashboard({ week }: DashboardProps) {
       <DashboardHeader week={week} />
 
       <div className="flex w-full">
-        <div className="flex w-full overflow-x-auto border-t-2 border-gray-700 p-5">
+        <div className="flex w-full overflow-x-auto border-t border-neutral-800 p-5">
           <DashboardOutdated />
 
           <DashboardTickets week={week} />

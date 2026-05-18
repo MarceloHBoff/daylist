@@ -19,10 +19,10 @@ export default function SignOut() {
           />
 
           <div className="mx-4 flex flex-col">
-            <span className="text-sm font-bold text-white">
+            <span className="text-sm font-bold text-neutral-50">
               {data?.user?.name}
             </span>
-            <span className="text-xs font-bold text-white">
+            <span className="text-xs font-medium text-neutral-500">
               {data?.user?.email}
             </span>
           </div>

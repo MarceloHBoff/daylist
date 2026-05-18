@@ -20,7 +20,7 @@ export default function TicketTags() {
 
   return (
     <div className="h-ticket-tags py-4">
-      <div className="mx-8 mb-4 flex justify-between border-b-2 border-b-slate-500 p-2 text-3xl font-bold text-white">
+      <div className="mx-8 mb-4 flex justify-between border-b border-neutral-800 p-2 text-3xl font-bold text-neutral-50">
         <span>Ticket by Tags</span>
 
         <div className="me-4 flex items-center">
@@ -29,11 +29,11 @@ export default function TicketTags() {
             type="checkbox"
             checked={onlyUndated}
             onChange={() => setOnlyUndated(!onlyUndated)}
-            className="h-8 w-8 cursor-pointer border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+            className="h-8 w-8 cursor-pointer rounded border-neutral-700 bg-neutral-950 text-sky-500 focus:ring-2 focus:ring-sky-500/40"
           />
           <label
             htmlFor="green-checkbox"
-            className="ms-2 cursor-pointer text-lg font-medium text-gray-900 dark:text-gray-300"
+            className="ms-2 cursor-pointer text-lg font-medium text-neutral-400"
           >
             Only undated
           </label>
@@ -41,7 +41,7 @@ export default function TicketTags() {
       </div>
 
       <article className="flex h-full overflow-x-auto">
-        {!isLoading ? (
+        {isLoading ? (
           <div className="mx-8 flex flex-1 gap-6">
             <div className="flex-1">
               <Skeleton type="ticket" count={4} />

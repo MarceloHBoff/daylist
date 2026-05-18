@@ -64,13 +64,13 @@ export default function TicketContextMenu({ ticket }: TicketContextMenuProps) {
       {open && (
         <div className="">
           <ul
-            className="absolute z-50 min-w-44 rounded-lg bg-zinc-600 py-2 shadow-lg"
+            className="absolute z-50 min-w-44 rounded-lg border border-neutral-800 bg-neutral-950 py-2 shadow-2xl shadow-black/60"
             style={{ top: 20, right: 20 }}
           >
             {options.map(item => (
               <li
                 key={item.label}
-                className="flex cursor-pointer items-center px-4 py-2 text-white hover:bg-zinc-700"
+                className="flex cursor-pointer items-center px-4 py-2 text-neutral-100 transition-colors hover:bg-neutral-900"
                 onClick={() => onClickMenu(item.label)}
               >
                 <Image

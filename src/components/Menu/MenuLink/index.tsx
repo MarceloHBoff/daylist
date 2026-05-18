@@ -18,10 +18,10 @@ export default function MenuLink() {
         <Link
           key={p.label}
           href={p.path}
-          className={`mx-8 text-base font-bold lg:text-xl ${
+          className={`mx-8 text-base font-bold transition-colors lg:text-xl ${
             pathname === p.path
-              ? 'text-blue-400 hover:text-blue-400'
-              : 'text-zinc-200 hover:text-zinc-50'
+              ? 'text-sky-400 hover:text-sky-300'
+              : 'text-neutral-400 hover:text-neutral-50'
           }`}
         >
           {p.label}

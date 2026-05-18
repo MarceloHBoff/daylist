@@ -60,12 +60,12 @@ export default function TicketCheck({ id }: TicketCheckProps) {
   return (
     <button
       ref={buttonRef}
-      className="group h-5 w-5 flex-shrink-0 rounded-full border-2 border-zinc-600 transition-all duration-200 hover:border-green-500 hover:bg-green-500/10"
+      className="group h-5 w-5 flex-shrink-0 rounded-full border border-neutral-700 transition-all duration-200 hover:border-green-400 hover:bg-green-400/10 hover:shadow-[0_0_12px_-2px_rgba(74,222,128,0.4)]"
       onClick={onMarkAsDone}
       disabled={markAsDone.isPending}
     >
       <svg
-        className="inset-0 m-auto h-4 w-4 text-green-500 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
+        className="inset-0 m-auto h-4 w-4 text-green-400 opacity-0 transition-opacity duration-200 group-hover:opacity-100"
         xmlns="http://www.w3.org/2000/svg"
         fill="none"
         viewBox="0 0 24 24"

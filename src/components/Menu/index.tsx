@@ -16,7 +16,7 @@ export default function Menu() {
 
   return (
     <>
-      <nav className="flex items-center justify-between border-b-2 border-b-slate-400 bg-zinc-700 p-1 md:justify-center">
+      <nav className="flex items-center justify-between border-b border-neutral-800 bg-black/95 p-1 backdrop-blur supports-[backdrop-filter]:bg-black/60 md:justify-center">
         <div className="flex w-full items-center justify-between md:hidden">
           <div className="flex items-center">
             <Image src="/favicon.ico" width={32} height={32} alt="Day list" />
@@ -24,7 +24,7 @@ export default function Menu() {
 
           <button
             onClick={toggleMenu}
-            className="flex h-10 w-10 flex-col items-center justify-center space-y-1 rounded-md bg-zinc-600 p-2 transition-colors hover:bg-zinc-500"
+            className="flex h-10 w-10 flex-col items-center justify-center space-y-1 rounded-md border border-neutral-800 bg-neutral-950 p-2 transition-colors hover:border-neutral-700 hover:bg-neutral-900"
             aria-label="Toggle menu"
           >
             <div
@@ -59,7 +59,7 @@ export default function Menu() {
       </nav>
 
       {isMenuOpen && (
-        <div className="bg-zinc-700 transition-all duration-300 md:hidden">
+        <div className="border-b border-neutral-800 bg-neutral-950 transition-all duration-300 md:hidden">
           <div className="flex h-full flex-col items-center justify-center space-y-8 p-8">
             <div className="text-center">
               <MenuLink />

@@ -30,7 +30,7 @@ export default function Select({ options, name }: SelectProps) {
         return (
           <div className="relative w-full">
             <button
-              className="flex min-h-16 w-full items-center rounded-xl border-2 border-gray-600 bg-gray-700 p-4 text-left outline-none focus:border-gray-500"
+              className="flex min-h-16 w-full items-center rounded-xl border border-neutral-800 bg-black p-4 text-left text-neutral-50 outline-none transition-colors focus:border-sky-400/40 focus:shadow-[0_0_0_3px_rgba(56,189,248,0.1)]"
               type="button"
               onClick={() => setIsOpen(true)}
             >
@@ -71,12 +71,12 @@ export default function Select({ options, name }: SelectProps) {
                   onClick={() => setIsOpen(false)}
                 />
 
-                <ul className="absolute z-50 mt-2 max-h-52 w-full overflow-y-auto overflow-x-hidden rounded-xl bg-zinc-600">
+                <ul className="absolute z-50 mt-2 max-h-52 w-full overflow-y-auto overflow-x-hidden rounded-xl border border-neutral-800 bg-neutral-950 shadow-2xl shadow-black/60">
                   {filteredOptions.map(p => (
                     <li
                       key={p.id}
                       value={p.id}
-                      className="flex cursor-pointer items-center px-4 py-3 text-white hover:bg-zinc-500"
+                      className="flex cursor-pointer items-center px-4 py-3 text-neutral-100 transition-colors hover:bg-neutral-900"
                       onClick={() => {
                         setIsOpen(false)
                         field.onChange(p.id)

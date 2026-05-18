@@ -59,7 +59,7 @@ export default function TagDraggable({ tags, isLoading }: TagDraggableProps) {
                     ref={providedItem.innerRef}
                     {...providedItem.draggableProps}
                     {...providedItem.dragHandleProps}
-                    className="group mb-4 flex items-center border-b-2 border-b-zinc-700 p-2"
+                    className="group mb-4 flex items-center border-b border-neutral-800 p-2"
                   >
                     <TagBadge
                       color={p.color}
@@ -67,7 +67,7 @@ export default function TagDraggable({ tags, isLoading }: TagDraggableProps) {
                       showIcon
                     />
 
-                    <span className="ml-4 text-xs text-gray-500">
+                    <span className="ml-4 text-xs text-neutral-500">
                       {p.ticket.filter(p => !p.done).length}
                     </span>
 
