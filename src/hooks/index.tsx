@@ -2,14 +2,16 @@
 
 import { SessionProvider } from 'next-auth/react'
 
+import { useState } from 'react'
+
 import { ComponentProps } from '@/types'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
 import { LoadingProvider } from './loading'
 
-const queryClient = new QueryClient()
-
 export default function AppProvider({ children }: ComponentProps) {
+  const [queryClient] = useState(() => new QueryClient())
+
   return (
     <QueryClientProvider client={queryClient}>
       <SessionProvider>

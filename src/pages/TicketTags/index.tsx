@@ -1,42 +1,14 @@
 'use client'
 
-import { useRouter } from 'next/navigation'
+import { useMemo, useState } from 'react'
 
-import { useEffect, useMemo, useState } from 'react'
-
+import Skeleton from '@/components/Skeleton'
 import * as Ticket from '@/components/Ticket'
-import RequestError from '@/error/requestError'
-import { useLoading } from '@/hooks/loading'
-import { apiGet } from '@/lib/api'
-import { TicketWithTag } from '@/models/ticket'
-
-type TicketTagsType = {
-  key: string
-  data: TicketWithTag[]
-}
+import { useAllTickets } from '@/hooks/tickets'
 
 export default function TicketTags() {
-  const router = useRouter()
-  const { loader } = useLoading()
-
-  const [tickets, setTickets] = useState<TicketTagsType[]>([])
+  const { data: tickets = [], isLoading } = useAllTickets()
   const [onlyUndated, setOnlyUndated] = useState(false)
-
-  useEffect(() => {
-    loader(async () => {
-      try {
-        setTickets(
-          await apiGet<TicketTagsType[]>(`/tickets/all`, { cache: 'no-cache' })
-        )
-      } catch (e) {
-        const { code } = e as RequestError
-        if (code === 401) {
-          router.replace('/login')
-        }
-      }
-    })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
 
   const ticketsFiltered = useMemo(() => {
     if (onlyUndated) {
@@ -69,26 +41,40 @@ export default function TicketTags() {
       </div>
 
       <article className="flex h-full overflow-x-auto">
-        {ticketsFiltered.map(p => (
-          <Ticket.TicketsWrapper
-            key={p.key}
-            title={p.key}
-            defaultValues={{ tagId: p.data[0].tagId }}
-          >
-            {p.data
-              .filter(p => (onlyUndated ? !p.date : true))
-              .sort((a, b) => {
-                if (!a.date) return 1
-                if (!b.date) return -1
-                return a.date > b.date ? 1 : -1
-              })
-              .map(ticket => (
-                <Ticket.TicketContainer key={ticket.id}>
-                  <Ticket.TicketCard ticket={ticket} showDate />
-                </Ticket.TicketContainer>
-              ))}
-          </Ticket.TicketsWrapper>
-        ))}
+        {!isLoading ? (
+          <div className="mx-8 flex flex-1 gap-6">
+            <div className="flex-1">
+              <Skeleton type="ticket" count={4} />
+            </div>
+            <div className="flex-1">
+              <Skeleton type="ticket" count={2} />
+            </div>
+            <div className="flex-1">
+              <Skeleton type="ticket" count={5} />
+            </div>
+          </div>
+        ) : (
+          ticketsFiltered.map(p => (
+            <Ticket.TicketsWrapper
+              key={p.key}
+              title={p.key}
+              defaultValues={{ tagId: p.data[0]?.tagId }}
+            >
+              {p.data
+                .filter(i => (onlyUndated ? !i.date : true))
+                .sort((a, b) => {
+                  if (!a.date) return 1
+                  if (!b.date) return -1
+                  return a.date > b.date ? 1 : -1
+                })
+                .map(ticket => (
+                  <Ticket.TicketContainer key={ticket.id}>
+                    <Ticket.TicketCard ticket={ticket} showDate />
+                  </Ticket.TicketContainer>
+                ))}
+            </Ticket.TicketsWrapper>
+          ))
+        )}
       </article>
     </div>
   )

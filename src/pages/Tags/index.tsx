@@ -10,7 +10,7 @@ import TagForm from './TagForm'
 
 export default function Tags() {
   const router = useRouter()
-  const { data: tags = [], error } = useTags()
+  const { data: tags = [], error, isLoading } = useTags()
 
   if (error) {
     const { code } = error as unknown as RequestError
@@ -23,16 +23,18 @@ export default function Tags() {
         Tags
       </div>
 
-      <TagDraggable tags={tags} />
+      <TagDraggable tags={tags} isLoading={isLoading} />
 
-      <TagForm
-        opener={
-          <div className="flex cursor-pointer items-center p-2 opacity-80 hover:opacity-100">
-            <span className="mr-2 text-2xl text-orange-600">+</span>
-            <span className="text-white">Add Tag</span>
-          </div>
-        }
-      />
+      {!isLoading && (
+        <TagForm
+          opener={
+            <div className="flex cursor-pointer items-center p-2 opacity-80 hover:opacity-100">
+              <span className="mr-2 text-2xl text-orange-600">+</span>
+              <span className="text-white">Add Tag</span>
+            </div>
+          }
+        />
+      )}
     </div>
   )
 }

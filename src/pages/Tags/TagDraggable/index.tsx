@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
+import Skeleton from '@/components/Skeleton'
 import TagBadge from '@/components/TagBadge'
 import { apiPost } from '@/lib/api'
 import { TagWithTickets } from '@/models/ticket'
@@ -12,15 +13,20 @@ import TagActions from '../TagActions'
 
 type TagDraggableProps = {
   tags: TagWithTickets[]
+  isLoading?: boolean
 }
 
-export default function TagDraggable({ tags }: TagDraggableProps) {
+export default function TagDraggable({ tags, isLoading }: TagDraggableProps) {
   const [data, setData] = useState<TagWithTickets[]>([])
   const [isDragging, setIsDragging] = useState(false)
 
   useEffect(() => {
     setData(tags)
   }, [tags])
+
+  if (isLoading) {
+    return <Skeleton type="tag" count={6} />
+  }
 
   return (
     <DragDropContext

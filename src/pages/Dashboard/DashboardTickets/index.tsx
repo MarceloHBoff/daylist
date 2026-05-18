@@ -2,6 +2,7 @@
 
 import { useCallback, useMemo } from 'react'
 
+import Skeleton from '@/components/Skeleton'
 import * as Ticket from '@/components/Ticket'
 import { useSortByTime, useTickets } from '@/hooks/tickets'
 import { formatDay } from '@/utils/date'
@@ -25,7 +26,7 @@ export default function DashboardTickets({ week }: DashboardTicketsProps) {
     () =>
       week > 0
         ? startOfWeek(addWeeks(new Date(), week), { weekStartsOn: 1 })
-        : new Date(),
+        : startOfDay(new Date()),
     [week]
   )
   const finalDate = useMemo(
@@ -41,7 +42,7 @@ export default function DashboardTickets({ week }: DashboardTicketsProps) {
     }))
   }, [initialDate, finalDate])
 
-  const { data: tickets = [] } = useTickets(initialDate, finalDate)
+  const { data: tickets = [], isLoading } = useTickets(initialDate, finalDate)
   const sortByTime = useSortByTime()
 
   const onReorder = useCallback(
@@ -58,13 +59,18 @@ export default function DashboardTickets({ week }: DashboardTicketsProps) {
           key={p.key}
           title={formatDay(p.date)}
           defaultValues={{ date: p.date }}
+          isLoading={isLoading}
           onReorder={() => onReorder(p.date)}
         >
-          <Ticket.TicketDraggable
-            tickets={tickets.filter(t =>
-              isSameDay(new Date(t.date ?? ''), p.date)
-            )}
-          />
+          {isLoading ? (
+            <Skeleton type="ticket" count={4} />
+          ) : (
+            <Ticket.TicketList
+              tickets={tickets.filter(t =>
+                isSameDay(new Date(t.date ?? ''), p.date)
+              )}
+            />
+          )}
         </Ticket.TicketsWrapper>
       ))}
     </>

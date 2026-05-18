@@ -8,6 +8,7 @@ type TicketsWrapperProps = ComponentProps & {
   title: string
   defaultValues?: any
   outdated?: boolean
+  isLoading?: boolean
   onReorder?: () => void
 }
 
@@ -15,29 +16,34 @@ export default function TicketsWrapper({
   title,
   defaultValues,
   outdated = false,
+  isLoading = false,
   onReorder,
   children
 }: TicketsWrapperProps) {
   // @ts-ignore
-  const length = children.length ?? children.props.tickets.length
+  const length = children.length ?? children.props?.tickets?.length
 
   return (
     <section className="h-ticket-list scrollbar-stable mx-2 w-full min-w-96 max-w-[400px] overflow-x-hidden p-2 xl:overflow-y-hidden xl:hover:overflow-y-auto">
       <div className="flex items-center">
         <strong className="ml-3 text-white">{title}</strong>
 
-        <span className="ml-2 text-xs text-gray-500">{length}</span>
+        {!isLoading && (
+          <>
+            <span className="ml-2 text-xs text-gray-500">{length}</span>
 
-        {onReorder && (
-          <button className="ml-4" type="button" onClick={onReorder}>
-            <Image alt="sort" src="/reorder.svg" height={15} width={15} />
-          </button>
+            {onReorder && (
+              <button className="ml-4" type="button" onClick={onReorder}>
+                <Image alt="sort" src="/reorder.svg" height={15} width={15} />
+              </button>
+            )}
+          </>
         )}
       </div>
 
       {children}
 
-      {!outdated && (
+      {!outdated && !isLoading && (
         <TicketForm
           defaultValues={defaultValues}
           opener={
