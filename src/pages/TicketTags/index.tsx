@@ -68,7 +68,7 @@ export default function TicketTags() {
                   return a.date > b.date ? 1 : -1
                 })
                 .map(ticket => (
-                  <Ticket.TicketContainer key={ticket.id}>
+                  <Ticket.TicketContainer key={ticket.id} tagColor={ticket.tag?.color}>
                     <Ticket.TicketCard ticket={ticket} showDate />
                   </Ticket.TicketContainer>
                 ))}

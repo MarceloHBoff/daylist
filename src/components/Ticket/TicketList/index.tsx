@@ -13,7 +13,7 @@ export default function TicketList({ tickets }: TicketDraggableProps) {
       {tickets
         .filter(p => !p.done)
         .map(p => (
-          <TicketContainer key={p.id}>
+          <TicketContainer key={p.id} tagColor={p.tag?.color}>
             <Ticket ticket={p} showDate={false} />
           </TicketContainer>
         ))}
