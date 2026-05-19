@@ -3,22 +3,30 @@
 @tailwind utilities;
 
 * {
-  &::-webkit-scrollbar {
-    scrollbar-width: thin;
-    scrollbar-color: #4a5568;
-  }
+  scrollbar-width: thin;
+  scrollbar-color: #404040 transparent;
+}
 
-  &::-webkit-scrollbar-track {
-    background: #4a5568;
-  }
+*::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
 
-  &::-webkit-scrollbar-thumb {
-    background-color: #2d3748;
-  }
+*::-webkit-scrollbar-track {
+  background: transparent;
+}
 
-  &::-webkit-scrollbar-thumb:hover {
-    background-color: #262e3a;
-  }
+*::-webkit-scrollbar-thumb {
+  background-color: #404040;
+  border-radius: 9999px;
+}
+
+*::-webkit-scrollbar-thumb:hover {
+  background-color: #525252;
+}
+
+*::-webkit-scrollbar-corner {
+  background: transparent;
 }
 
 .h-ticket-list {

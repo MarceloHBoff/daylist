@@ -15,26 +15,25 @@ export default function TicketContainer({
   if (tagColor) {
     return (
       <article
-        className={`group relative mx-2 my-3 flex w-full overflow-hidden rounded-xl border p-4 transition-all duration-200 ${className}`}
+        className={`group relative mx-2 my-3 flex w-full rounded-xl border border-x-4 p-4 transition-all duration-200 ${className}`}
         style={{
           backgroundColor: `${tagColor}1a`,
           borderColor: `${tagColor}77`,
+          borderLeftColor: tagColor,
           boxShadow: `inset 0 1px 0 0 ${tagColor}14, 0 4px 16px -10px ${tagColor}44`
         }}
         onMouseEnter={e => {
           e.currentTarget.style.borderColor = `${tagColor}66`
+          e.currentTarget.style.borderLeftColor = tagColor
           e.currentTarget.style.boxShadow = `inset 0 1px 0 0 ${tagColor}1f, 0 8px 28px -10px ${tagColor}66`
         }}
         onMouseLeave={e => {
           e.currentTarget.style.borderColor = `${tagColor}77`
+          e.currentTarget.style.borderLeftColor = tagColor
           e.currentTarget.style.boxShadow = `inset 0 1px 0 0 ${tagColor}14, 0 4px 16px -10px ${tagColor}44`
         }}
       >
-        <div
-          className="absolute left-0 top-0 h-full w-1"
-          style={{ backgroundColor: tagColor }}
-        />
-        <div className="ml-1 flex w-full">{children}</div>
+        {children}
       </article>
     )
   }
