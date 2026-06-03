@@ -1,10 +1,14 @@
 'use client'
 
+import { useMemo } from 'react'
+
 import * as Ticket from '@/components/Ticket'
 import { useOutdatedTickets } from '@/hooks/tickets'
+import { startOfDay } from 'date-fns'
 
 export default function DashboardOutdated() {
-  const { data: outdated = [] } = useOutdatedTickets()
+  const initialDate = useMemo(() => startOfDay(new Date()), [])
+  const { data: outdated = [] } = useOutdatedTickets(initialDate)
 
   return (
     <>

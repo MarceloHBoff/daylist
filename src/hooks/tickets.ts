@@ -31,11 +31,14 @@ export function useTickets(initialDate: Date, finalDate: Date) {
   })
 }
 
-export function useOutdatedTickets() {
+export function useOutdatedTickets(initialDate: Date) {
   return useQuery({
-    queryKey: [...TICKETS_KEY, 'outdated'],
+    queryKey: [...TICKETS_KEY, 'outdated', initialDate.toISOString()],
     queryFn: () =>
-      apiGet<TicketWithTag[]>('/tickets/outdated', { cache: 'no-cache' }),
+      apiGet<TicketWithTag[]>(
+        `/tickets/outdated?initialDate=${initialDate.toISOString()}`,
+        { cache: 'no-cache' }
+      ),
     staleTime: 0
   })
 }

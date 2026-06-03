@@ -12,12 +12,14 @@ export default async function handler(
   try {
     const userId = await auth(req, res)
 
+    const { initialDate } = req.query
+
     const tickets = await prisma.ticket.findMany({
       where: {
         userId,
         done: false,
         date: {
-          lt: startOfDay(new Date())
+          lt: startOfDay(initialDate?.toString() ?? new Date())
         }
       },
       include: { tag: true },
