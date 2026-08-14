@@ -38,9 +38,13 @@ export default function ChatPanel({
 
   const listRef = useRef<HTMLDivElement>(null)
 
-  useEffect(() => {
+  const [previousServerMessages, setPreviousServerMessages] =
+    useState(serverMessages)
+
+  if (previousServerMessages !== serverMessages) {
+    setPreviousServerMessages(serverMessages)
     if (serverMessages) setMessages(serverMessages)
-  }, [serverMessages])
+  }
 
   useEffect(() => {
     listRef.current?.scrollTo({ top: listRef.current.scrollHeight })

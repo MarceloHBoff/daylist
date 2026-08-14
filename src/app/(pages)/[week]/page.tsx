@@ -1,5 +1,11 @@
 import Dashboard from '@/pages/Dashboard'
 
-export default function Week({ params }: { params: { week: number } }) {
-  return <Dashboard week={params.week} />
+export default async function Week({
+  params
+}: {
+  params: Promise<{ week: string }>
+}) {
+  const { week } = await params
+
+  return <Dashboard week={Number(week)} />
 }

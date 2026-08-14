@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import Skeleton from '@/components/Skeleton'
 import TagBadge from '@/components/TagBadge'
@@ -16,13 +16,18 @@ type TagDraggableProps = {
   isLoading?: boolean
 }
 
-export default function TagDraggable({ tags, isLoading }: TagDraggableProps) {
-  const [data, setData] = useState<TagWithTickets[]>([])
+export default function TagDraggable({
+  tags = [],
+  isLoading
+}: TagDraggableProps) {
+  const [data, setData] = useState<TagWithTickets[]>(tags)
   const [isDragging, setIsDragging] = useState(false)
+  const [previousTags, setPreviousTags] = useState(tags)
 
-  useEffect(() => {
+  if (previousTags !== tags) {
+    setPreviousTags(tags)
     setData(tags)
-  }, [tags])
+  }
 
   if (isLoading) {
     return <Skeleton type="tag" count={6} />
