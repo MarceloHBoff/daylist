@@ -29,7 +29,11 @@ export default function SignOut() {
         </div>
       )}
 
-      <button onClick={() => signOut()} title="Sign Out" className="ml-4">
+      <button
+        onClick={() => signOut({ callbackUrl: '/login' })}
+        title="Sign Out"
+        className="ml-4"
+      >
         <Image src="/sign-out.svg" alt="Sign Out" width={26} height={26} />
       </button>
     </div>
