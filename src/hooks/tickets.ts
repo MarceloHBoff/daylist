@@ -67,12 +67,46 @@ export function useMarkAsDone() {
       })
       queryClient.setQueriesData<TicketWithTag[]>(
         { queryKey: [...TICKETS_KEY, 'weekly'] },
-        old => old?.filter(ticket => ticket.id !== id) ?? old
+        old =>
+          old?.map(ticket =>
+            ticket.id === id ? { ...ticket, done: true } : ticket
+          ) ?? old
       )
       queryClient.setQueriesData<TicketWithTag[]>(
         { queryKey: [...TICKETS_KEY, 'outdated'] },
         old => old?.filter(ticket => ticket.id !== id) ?? old
       )
+      return { previousData }
+    },
+    onError: (_err, _id, context) => {
+      context?.previousData.forEach(([queryKey, data]) => {
+        queryClient.setQueryData(queryKey, data)
+      })
+    },
+    onSettled: () => {
+      queryClient.invalidateQueries({ queryKey: TICKETS_KEY })
+    }
+  })
+}
+
+export function useMarkAsUndone() {
+  const queryClient = useQueryClient()
+  return useMutation({
+    mutationFn: (id: string) => apiPost(`/tickets/mark-as-undone?id=${id}`, {}),
+    onMutate: async id => {
+      await queryClient.cancelQueries({ queryKey: TICKETS_KEY })
+      const previousData = queryClient.getQueriesData<TicketWithTag[]>({
+        queryKey: TICKETS_KEY
+      })
+
+      queryClient.setQueriesData<TicketWithTag[]>(
+        { queryKey: [...TICKETS_KEY, 'weekly'] },
+        old =>
+          old?.map(ticket =>
+            ticket.id === id ? { ...ticket, done: false } : ticket
+          ) ?? old
+      )
+
       return { previousData }
     },
     onError: (_err, _id, context) => {

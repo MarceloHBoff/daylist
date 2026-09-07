@@ -10,13 +10,15 @@ type TicketDraggableProps = {
 export default function TicketList({ tickets }: TicketDraggableProps) {
   return (
     <>
-      {tickets
-        .filter(p => !p.done)
-        .map(p => (
-          <TicketContainer key={p.id} tagColor={p.tag?.color}>
-            <Ticket ticket={p} showDate={false} />
-          </TicketContainer>
-        ))}
+      {tickets.map(p => (
+        <TicketContainer
+          key={p.id}
+          tagColor={p.tag?.color}
+          className={p.done ? 'opacity-55 saturate-50' : ''}
+        >
+          <Ticket ticket={p} showDate={false} />
+        </TicketContainer>
+      ))}
     </>
   )
 }

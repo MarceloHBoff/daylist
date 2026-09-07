@@ -8,6 +8,7 @@ type TicketsWrapperProps = ComponentProps & {
   title: string
   defaultValues?: any
   outdated?: boolean
+  emphasis?: 'today' | 'muted'
   isLoading?: boolean
   onReorder?: () => void
 }
@@ -16,23 +17,46 @@ export default function TicketsWrapper({
   title,
   defaultValues,
   outdated = false,
+  emphasis,
   isLoading = false,
   onReorder,
   children
 }: TicketsWrapperProps) {
   // @ts-ignore
   const length = children.length ?? children.props?.tickets?.length
+  const isToday = emphasis === 'today'
+  const isMuted = outdated || emphasis === 'muted'
 
   return (
-    <section className="h-ticket-list scrollbar-stable mx-2 w-full min-w-96 max-w-[400px] overflow-x-hidden p-2 xl:overflow-y-hidden xl:hover:overflow-y-auto">
+    <section
+      className={`h-ticket-list scrollbar-stable mx-2 w-full min-w-96 max-w-[400px] overflow-x-hidden rounded-2xl border p-2 transition-all duration-200 xl:overflow-y-hidden xl:hover:overflow-y-auto ${
+        isToday
+          ? 'border-sky-400/35 bg-sky-400/[0.07] shadow-[0_0_0_1px_rgba(56,189,248,0.08),0_18px_48px_-30px_rgba(56,189,248,0.65)]'
+          : 'border-transparent'
+      } ${
+        isMuted
+          ? 'opacity-55 focus-within:opacity-100 hover:opacity-85'
+          : 'opacity-100'
+      }`}
+    >
       <div className="flex items-center">
-        <strong className="ml-3 text-sm font-semibold uppercase tracking-wider text-neutral-100">
+        <strong
+          className={`ml-3 text-sm font-semibold uppercase tracking-wider ${
+            isToday ? 'text-sky-300' : 'text-neutral-100'
+          }`}
+        >
           {title}
         </strong>
 
         {!isLoading && (
           <>
-            <span className="ml-2 inline-flex h-5 min-w-[20px] items-center justify-center rounded-md bg-neutral-900 px-1.5 text-[11px] font-medium text-neutral-500">
+            <span
+              className={`ml-2 inline-flex h-5 min-w-[20px] items-center justify-center rounded-md px-1.5 text-[11px] font-medium ${
+                isToday
+                  ? 'bg-sky-400/15 text-sky-200'
+                  : 'bg-neutral-900 text-neutral-500'
+              }`}
+            >
               {length}
             </span>
 

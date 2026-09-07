@@ -17,8 +17,7 @@ export default async function handler(
     const ticketsFromSameDay = await prisma.ticket.findMany({
       where: {
         userId,
-        date: getDateFilter(new Date(date)),
-        done: false
+        date: getDateFilter(new Date(date))
       },
       orderBy: { order: 'asc' }
     })

@@ -16,57 +16,68 @@ type TicketProps = {
 }
 
 export default function Ticket({ ticket, showDate = false }: TicketProps) {
+  const ticketContent = (
+    <div className={ticket.done ? '' : 'cursor-pointer'}>
+      {(ticket.date || ticket.tag) && (
+        <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
+          {ticket.date && (
+            <span className="inline-flex h-5 items-center rounded-md border border-red-500/25 bg-red-500/15 px-1.5 font-mono text-[11px] font-semibold tabular-nums tracking-tight text-red-400">
+              {format(new Date(ticket.date), 'HH:mm')}
+            </span>
+          )}
+
+          {ticket.tag && (
+            <TagBadge
+              color={ticket.tag.color}
+              description={ticket.tag.description}
+            />
+          )}
+
+          {showDate && ticket.date && (
+            <span className="ml-auto inline-flex items-center gap-1 text-[11px] text-neutral-500">
+              <Image
+                src="/calendar.svg"
+                alt="calendar"
+                width={11}
+                height={11}
+              />
+              {getDaySuffix(ticket.date)}
+            </span>
+          )}
+        </div>
+      )}
+
+      <span
+        className={`block text-sm font-medium leading-snug ${
+          ticket.done
+            ? 'text-neutral-400 line-through decoration-neutral-600'
+            : 'text-neutral-100'
+        }`}
+      >
+        {ticket.description}
+      </span>
+    </div>
+  )
+
   return (
     <>
       <div className="mr-3 flex items-start pt-0.5">
-        <TicketCheck id={ticket.id} />
+        <TicketCheck id={ticket.id} done={ticket.done} />
       </div>
 
       <div className="flex min-w-0 flex-1 flex-col gap-1.5">
-        <TicketForm
-          defaultValues={{ ...ticket }}
-          opener={
-            <div className="cursor-pointer">
-              {(ticket.date || ticket.tag) && (
-                <div className="mb-1.5 flex flex-wrap items-center gap-1.5">
-                  {ticket.date && (
-                    <span className="inline-flex h-5 items-center rounded-md border border-red-500/25 bg-red-500/15 px-1.5 font-mono text-[11px] font-semibold tabular-nums tracking-tight text-red-400">
-                      {format(new Date(ticket.date), 'HH:mm')}
-                    </span>
-                  )}
-
-                  {ticket.tag && (
-                    <TagBadge
-                      color={ticket.tag.color}
-                      description={ticket.tag.description}
-                    />
-                  )}
-
-                  {showDate && ticket.date && (
-                    <span className="ml-auto inline-flex items-center gap-1 text-[11px] text-neutral-500">
-                      <Image
-                        src="/calendar.svg"
-                        alt="calendar"
-                        width={11}
-                        height={11}
-                      />
-                      {getDaySuffix(ticket.date)}
-                    </span>
-                  )}
-                </div>
-              )}
-
-              <span className="block text-sm font-medium leading-snug text-neutral-100">
-                {ticket.description}
-              </span>
-            </div>
-          }
-        />
+        {ticket.done ? (
+          ticketContent
+        ) : (
+          <TicketForm defaultValues={{ ...ticket }} opener={ticketContent} />
+        )}
       </div>
 
-      <div className="ml-1 flex items-start">
-        <TicketContextMenu ticket={ticket} />
-      </div>
+      {!ticket.done && (
+        <div className="ml-1 flex items-start">
+          <TicketContextMenu ticket={ticket} />
+        </div>
+      )}
     </>
   )
 }

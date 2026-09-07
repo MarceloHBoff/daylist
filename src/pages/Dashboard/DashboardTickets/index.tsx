@@ -13,15 +13,20 @@ import {
   endOfWeek,
   getDay,
   isSameDay,
+  isToday,
   startOfDay,
   startOfWeek
 } from 'date-fns'
 
 type DashboardTicketsProps = {
   week: number
+  showCompleted: boolean
 }
 
-export default function DashboardTickets({ week }: DashboardTicketsProps) {
+export default function DashboardTickets({
+  week,
+  showCompleted
+}: DashboardTicketsProps) {
   const initialDate = useMemo(
     () =>
       week > 0
@@ -54,25 +59,32 @@ export default function DashboardTickets({ week }: DashboardTicketsProps) {
 
   return (
     <>
-      {days.map(p => (
-        <Ticket.TicketsWrapper
-          key={p.key}
-          title={formatDay(p.date)}
-          defaultValues={{ date: p.date }}
-          isLoading={isLoading}
-          onReorder={() => onReorder(p.date)}
-        >
-          {isLoading ? (
-            <Skeleton type="ticket" count={4} />
-          ) : (
-            <Ticket.TicketList
-              tickets={tickets.filter(t =>
-                isSameDay(new Date(t.date ?? ''), p.date)
-              )}
-            />
-          )}
-        </Ticket.TicketsWrapper>
-      ))}
+      {days.map(p => {
+        const dayTickets = tickets
+          .filter(
+            ticket =>
+              isSameDay(new Date(ticket.date ?? ''), p.date) &&
+              (showCompleted || !ticket.done)
+          )
+          .sort((a, b) => a.order - b.order)
+
+        return (
+          <Ticket.TicketsWrapper
+            key={p.key}
+            title={formatDay(p.date)}
+            defaultValues={{ date: p.date }}
+            emphasis={isToday(p.date) ? 'today' : 'muted'}
+            isLoading={isLoading}
+            onReorder={() => onReorder(p.date)}
+          >
+            {isLoading ? (
+              <Skeleton type="ticket" count={4} />
+            ) : (
+              <Ticket.TicketList tickets={dayTickets} />
+            )}
+          </Ticket.TicketsWrapper>
+        )
+      })}
     </>
   )
 }
