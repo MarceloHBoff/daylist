@@ -1,4 +1,7 @@
-import { ReactNode } from 'react'
+'use client'
+
+import { ReactNode, useEffect } from 'react'
+import { createPortal } from 'react-dom'
 
 type ModalContentProps = {
   title: string
@@ -11,13 +14,16 @@ export default function ModalContent({
   children,
   onClose
 }: ModalContentProps) {
-  document.addEventListener('keydown', event => {
-    if (event.key === 'Escape') {
-      onClose()
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') onClose()
     }
-  })
 
-  return (
+    document.addEventListener('keydown', handleKeyDown)
+    return () => document.removeEventListener('keydown', handleKeyDown)
+  }, [onClose])
+
+  return createPortal(
     <div
       className="fixed inset-0 z-10 flex items-center justify-center bg-black/70 backdrop-blur-sm"
       onClick={onClose}
@@ -37,6 +43,7 @@ export default function ModalContent({
         </div>
         <div className="mt-4">{children}</div>
       </div>
-    </div>
+    </div>,
+    document.body
   )
 }
