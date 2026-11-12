@@ -1,11 +1,11 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import RequestError from '@/error/requestError'
-import { prisma } from '@/lib/prisma'
+import { supabase, unwrap } from '@/lib/supabase'
+import { Ticket } from '@/models/ticket'
 import auth from '@/utils/auth'
-import { getCorrectDate, getDateFilter } from '@/utils/query'
-import { Ticket } from '@prisma/client'
-import { isSameDay } from 'date-fns'
+import { countTicketsOnDay } from '@/utils/query'
+import { parseTicketDate, zonedDayRange } from '@/utils/timezone'
 
 export default async function handler(
   req: NextApiRequest,
@@ -18,34 +18,39 @@ export default async function handler(
 
     const data = JSON.parse(body) as Ticket
 
-    const ticketDb = await prisma.ticket.findFirstOrThrow({
-      where: { id: data.id, userId }
-    })
+    const ticketDb = unwrap<Ticket>(
+      await supabase
+        .from('tickets')
+        .select('*')
+        .eq('id', data.id)
+        .eq('userId', userId)
+        .single()
+    )
 
     if (
       data.date &&
       (!ticketDb.date ||
-        isSameDay(new Date(ticketDb.date ?? ''), new Date(data.date ?? '')))
+        zonedDayRange(new Date(ticketDb.date)).gte ===
+          zonedDayRange(parseTicketDate(data.date)).gte)
     ) {
-      const total = await prisma.ticket.count({
-        where: {
-          userId,
-          date: getDateFilter(data.date)
-        }
-      })
-
-      data.order = 1 + total
+      data.order =
+        1 + (await countTicketsOnDay(userId, parseTicketDate(data.date)))
     }
 
-    const ticket = await prisma.ticket.update({
-      data: {
-        description: data.description,
-        date: data.date ? getCorrectDate(data.date) : null,
-        tagId: data.tagId,
-        order: data.order ?? 1
-      },
-      where: { id: data.id }
-    })
+    const ticket = unwrap(
+      await supabase
+        .from('tickets')
+        .update({
+          description: data.description,
+          date: data.date ? parseTicketDate(data.date) : null,
+          tagId: data.tagId,
+          order: data.order ?? 1
+        })
+        .eq('id', data.id)
+        .eq('userId', userId)
+        .select()
+        .single()
+    )
 
     return res.status(200).send(ticket)
   } catch (e) {

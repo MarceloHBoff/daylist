@@ -5,7 +5,7 @@ import { ReactNode, useState } from 'react'
 import * as Form from '@/components/Form'
 import ModalContent from '@/components/Modal/ModalContent'
 import { useInsertTag, useUpdateTag } from '@/hooks/tags'
-import { Tag } from '@prisma/client'
+import { Tag } from '@/models/ticket'
 
 type TagFormProps = {
   opener: ReactNode
@@ -13,7 +13,11 @@ type TagFormProps = {
   onSuccess?: () => void
 }
 
-export default function TagForm({ opener, defaultValues, onSuccess }: TagFormProps) {
+export default function TagForm({
+  opener,
+  defaultValues,
+  onSuccess
+}: TagFormProps) {
   const [showModal, setShowModal] = useState(false)
   const insertTag = useInsertTag()
   const updateTag = useUpdateTag()

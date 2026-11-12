@@ -3,7 +3,7 @@
 import Image from 'next/image'
 
 import { useDeleteTag } from '@/hooks/tags'
-import { Tag } from '@prisma/client'
+import { Tag } from '@/models/ticket'
 
 import TagForm from '../TagForm'
 

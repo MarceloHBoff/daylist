@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import RequestError from '@/error/requestError'
-import { prisma } from '@/lib/prisma'
+import { supabase, unwrap } from '@/lib/supabase'
 import auth from '@/utils/auth'
 
 export default async function handler(
@@ -13,10 +13,15 @@ export default async function handler(
 
     const id = req.query.id as string
 
-    const ticket = await prisma.ticket.update({
-      data: { done: true },
-      where: { id, userId }
-    })
+    const ticket = unwrap(
+      await supabase
+        .from('tickets')
+        .update({ done: true })
+        .eq('id', id)
+        .eq('userId', userId)
+        .select()
+        .single()
+    )
 
     return res.status(200).json(ticket)
   } catch (e) {

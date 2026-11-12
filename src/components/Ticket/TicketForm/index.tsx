@@ -6,7 +6,7 @@ import * as Form from '@/components/Form'
 import ModalContent from '@/components/Modal/ModalContent'
 import TagSelect from '@/components/TagSelect'
 import { useInsertTicket, useUpdateTicket } from '@/hooks/tickets'
-import { Ticket } from '@prisma/client'
+import { Ticket } from '@/models/ticket'
 import { format } from 'date-fns'
 
 type TicketFormProps = {

@@ -1,9 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import RequestError from '@/error/requestError'
-import { prisma } from '@/lib/prisma'
+import { supabase, unwrap } from '@/lib/supabase'
+import { Ticket } from '@/models/ticket'
 import auth from '@/utils/auth'
-import { getDateFilter } from '@/utils/query'
+import { zonedDayRange } from '@/utils/timezone'
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,23 +15,25 @@ export default async function handler(
 
     const date = req.query.date as string
 
-    const ticketsFromSameDay = await prisma.ticket.findMany({
-      where: {
-        userId,
-        date: getDateFilter(new Date(date))
-      },
-      orderBy: { order: 'asc' }
-    })
+    const { gte, lt } = zonedDayRange(new Date(date))
+    const ticketsFromSameDay = unwrap<Ticket[]>(
+      await supabase
+        .from('tickets')
+        .select('*')
+        .eq('userId', userId)
+        .gte('date', gte)
+        .lt('date', lt)
+        .order('order')
+    )
 
     ticketsFromSameDay.sort((a, b) => (a.date! > b.date! ? 1 : -1))
 
-    await prisma.$transaction(
-      ticketsFromSameDay.map((p, index) =>
-        prisma.ticket.updateMany({
-          data: { order: index + 1 },
-          where: { id: p.id }
-        })
-      )
+    unwrap(
+      await supabase
+        .from('tickets')
+        .upsert(
+          ticketsFromSameDay.map((p, index) => ({ ...p, order: index + 1 }))
+        )
     )
 
     return res.status(204).send('')

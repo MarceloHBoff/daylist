@@ -1,9 +1,8 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import RequestError from '@/error/requestError'
-import { prisma } from '@/lib/prisma'
+import { supabase, unwrap } from '@/lib/supabase'
 import auth from '@/utils/auth'
-import { endOfDay, startOfDay } from 'date-fns'
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,17 +13,15 @@ export default async function handler(
 
     const { initialDate, finalDate } = req.query
 
-    const tickets = await prisma.ticket.findMany({
-      where: {
-        userId,
-        date: {
-          gte: startOfDay(initialDate?.toString() ?? ''),
-          lt: endOfDay(finalDate?.toString() ?? '')
-        }
-      },
-      include: { tag: true },
-      orderBy: { order: 'asc' }
-    })
+    const tickets = unwrap(
+      await supabase
+        .from('tickets')
+        .select('*, tag:tags(*)')
+        .eq('userId', userId)
+        .gte('date', new Date(String(initialDate)).toISOString())
+        .lt('date', new Date(String(finalDate)).toISOString())
+        .order('order')
+    )
 
     return res.status(200).json(tickets)
   } catch (e) {

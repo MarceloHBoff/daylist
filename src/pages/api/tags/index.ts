@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import RequestError from '@/error/requestError'
-import { prisma } from '@/lib/prisma'
+import { supabase, unwrap } from '@/lib/supabase'
 import auth from '@/utils/auth'
 
 export default async function handler(
@@ -11,11 +11,13 @@ export default async function handler(
   try {
     const userId = await auth(req, res)
 
-    const tags = await prisma.tag.findMany({
-      where: { userId },
-      include: { ticket: true },
-      orderBy: { order: 'asc' }
-    })
+    const tags = unwrap(
+      await supabase
+        .from('tags')
+        .select('*, ticket:tickets(*)')
+        .eq('userId', userId)
+        .order('order')
+    )
 
     return res.status(200).json(tags)
   } catch (e) {

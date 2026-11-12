@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import RequestError from '@/error/requestError'
-import { prisma } from '@/lib/prisma'
+import { supabase, unwrap } from '@/lib/supabase'
 import { reorder } from '@/utils/array'
 import auth from '@/utils/auth'
 
@@ -15,20 +15,20 @@ export default async function handler(
     const startIndex = Number(req.query.startIndex)
     const endIndex = Number(req.query.endIndex)
 
-    const allTags = await prisma.tag.findMany({
-      where: { userId },
-      orderBy: { order: 'asc' }
-    })
+    const allTags = unwrap(
+      await supabase
+        .from('tags')
+        .select('*')
+        .eq('userId', userId)
+        .order('order')
+    )
 
     const newOrderTags = reorder(allTags, startIndex, endIndex)
 
-    await prisma.$transaction(
-      newOrderTags.map((p, index) =>
-        prisma.tag.updateMany({
-          data: { order: index + 1 },
-          where: { id: p.id }
-        })
-      )
+    unwrap(
+      await supabase
+        .from('tags')
+        .upsert(newOrderTags.map((p, index) => ({ ...p, order: index + 1 })))
     )
 
     return res.status(204).send('')

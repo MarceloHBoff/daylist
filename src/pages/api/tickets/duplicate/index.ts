@@ -1,9 +1,10 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import RequestError from '@/error/requestError'
-import { prisma } from '@/lib/prisma'
+import { supabase, unwrap } from '@/lib/supabase'
+import { Ticket } from '@/models/ticket'
 import auth from '@/utils/auth'
-import { getDateFilter } from '@/utils/query'
+import { countTicketsOnDay } from '@/utils/query'
 
 export default async function handler(
   req: NextApiRequest,
@@ -14,24 +15,23 @@ export default async function handler(
 
     const id = req.query.id as string
 
-    const ticket = await prisma.ticket.findUniqueOrThrow({
-      where: { id, userId }
-    })
+    const { id: _id, ...ticket } = unwrap<Ticket>(
+      await supabase
+        .from('tickets')
+        .select('*')
+        .eq('id', id)
+        .eq('userId', userId)
+        .single()
+    )
     ticket.done = false
 
     if (ticket.date) {
-      const total = await prisma.ticket.count({
-        where: {
-          userId,
-          date: getDateFilter(ticket.date)
-        }
-      })
-      ticket.order = total + 1
+      ticket.order = 1 + (await countTicketsOnDay(userId, ticket.date))
     }
 
-    const newTicket = await prisma.ticket.create({
-      data: { ...ticket, id: undefined }
-    })
+    const newTicket = unwrap(
+      await supabase.from('tickets').insert(ticket).select().single()
+    )
 
     return res.status(201).json(newTicket)
   } catch (e) {

@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import RequestError from '@/error/requestError'
-import { prisma } from '@/lib/prisma'
+import { supabase, unwrap } from '@/lib/supabase'
 import auth from '@/utils/auth'
 
 export default async function handler(
@@ -13,7 +13,9 @@ export default async function handler(
 
     const id = req.query.id as string
 
-    await prisma.ticket.delete({ where: { id, userId } })
+    unwrap(
+      await supabase.from('tickets').delete().eq('id', id).eq('userId', userId)
+    )
 
     return res.status(204).send('')
   } catch (e) {

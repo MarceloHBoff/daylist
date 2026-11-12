@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import RequestError from '@/error/requestError'
-import { prisma } from '@/lib/prisma'
+import { supabase, unwrap } from '@/lib/supabase'
+import { Tag } from '@/models/ticket'
 import auth from '@/utils/auth'
-import { Tag } from '@prisma/client'
 
 export default async function handler(
   req: NextApiRequest,
@@ -20,7 +20,9 @@ export default async function handler(
     data.color = data.color.toLocaleUpperCase()
     data.userId = userId
 
-    const tag = await prisma.tag.create({ data })
+    const tag = unwrap(
+      await supabase.from('tags').insert(data).select().single()
+    )
 
     return res.status(201).json(tag)
   } catch (e) {

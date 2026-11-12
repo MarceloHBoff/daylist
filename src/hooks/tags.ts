@@ -1,8 +1,7 @@
 'use client'
 
 import { apiGet, apiPost } from '@/lib/api'
-import { TagWithTickets } from '@/models/ticket'
-import { Tag } from '@prisma/client'
+import { Tag, TagWithTickets } from '@/models/ticket'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 
 export const TAGS_KEY = ['tags']

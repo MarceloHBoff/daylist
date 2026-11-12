@@ -1,7 +1,7 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import RequestError from '@/error/requestError'
-import { prisma } from '@/lib/prisma'
+import { supabase, unwrap } from '@/lib/supabase'
 import auth from '@/utils/auth'
 
 export default async function handler(
@@ -13,12 +13,17 @@ export default async function handler(
 
     const id = req.query.id as string
 
-    await prisma.ticket.updateMany({
-      data: { tagId: null },
-      where: { userId, tagId: id }
-    })
+    unwrap(
+      await supabase
+        .from('tickets')
+        .update({ tagId: null })
+        .eq('userId', userId)
+        .eq('tagId', id)
+    )
 
-    await prisma.tag.delete({ where: { id, userId } })
+    unwrap(
+      await supabase.from('tags').delete().eq('id', id).eq('userId', userId)
+    )
 
     return res.status(204).send('')
   } catch (e) {

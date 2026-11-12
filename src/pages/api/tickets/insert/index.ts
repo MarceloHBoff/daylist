@@ -1,9 +1,9 @@
 import type { NextApiRequest, NextApiResponse } from 'next'
 
 import RequestError from '@/error/requestError'
+import { Ticket } from '@/models/ticket'
 import auth from '@/utils/auth'
 import { createTicket } from '@/utils/query'
-import { Ticket } from '@prisma/client'
 
 export default async function handler(
   req: NextApiRequest,

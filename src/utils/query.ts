@@ -1,39 +1,24 @@
-import { prisma } from '@/lib/prisma'
-import { Ticket } from '@prisma/client'
-import { addDays, addHours, isFirstDayOfMonth } from 'date-fns'
+import { supabase, unwrap } from '@/lib/supabase'
+import { Ticket } from '@/models/ticket'
 
-export function getDateFilter(date: Date | null) {
-  const currentDate = new Date(date ?? '')
+import { parseTicketDate, zonedDayRange } from './timezone'
 
-  return {
-    gte: new Date(currentDate.setUTCHours(0, 0, 0)),
-    lt: new Date(currentDate.setUTCHours(23, 59, 59))
-  }
-}
-
-export function getCorrectDate(date: Date) {
-  let newDate = new Date(addHours(addDays(new Date(date), 1), 3))
-
-  if (typeof date === 'string') {
-    const day = Number(String(date).substring(8, 10))
-
-    if (newDate.getDate() !== day) {
-      if (isFirstDayOfMonth(newDate) && day > 1) {
-        newDate = addDays(newDate, -2)
-        newDate.setDate(day)
-      } else {
-        newDate.setDate(day)
-      }
-    }
-  }
-
-  return newDate
+export async function countTicketsOnDay(userId: string, date: Date) {
+  const { gte, lt } = zonedDayRange(date)
+  const { count, error } = await supabase
+    .from('tickets')
+    .select('*', { count: 'exact', head: true })
+    .eq('userId', userId)
+    .gte('date', gte)
+    .lt('date', lt)
+  unwrap({ data: null, error })
+  return count ?? 0
 }
 
 export async function createTicket(data: Ticket) {
   data.done = false
   if (data.date) {
-    data.date = getCorrectDate(data.date)
+    data.date = parseTicketDate(data.date)
   }
 
   if (!data.tagId) {
@@ -41,14 +26,10 @@ export async function createTicket(data: Ticket) {
   }
 
   if (data.date) {
-    const total = await prisma.ticket.count({
-      where: {
-        date: getDateFilter(data.date)
-      }
-    })
-
-    data.order = 1 + total
+    data.order = 1 + (await countTicketsOnDay(data.userId, data.date))
   }
 
-  return await prisma.ticket.create({ data })
+  return unwrap<Ticket>(
+    await supabase.from('tickets').insert(data).select().single()
+  )
 }
